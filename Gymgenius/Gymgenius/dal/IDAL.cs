@@ -2,7 +2,7 @@
 
 namespace Gymgenius.dal
 {
-    public interface IUserDAL
+    public interface IDAL
     { 
         User GetUserById(int userId);
         List<User> GetAllUsers();

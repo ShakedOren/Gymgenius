@@ -1,3 +1,6 @@
+using Gymgenius.bll;
+using Gymgenius.bo;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
