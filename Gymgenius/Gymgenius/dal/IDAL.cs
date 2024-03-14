@@ -8,6 +8,6 @@ namespace Gymgenius.dal
         List<User> GetAllUsers();
         void AddUser(User user);
         void DeleteUser(int userId);
-        public bool IsUserExists(int userId);
+        bool IsUserExists(int userId);
     }
 }

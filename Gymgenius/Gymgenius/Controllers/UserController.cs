@@ -24,12 +24,12 @@ namespace Gymgenius.Controllers
         [HttpGet("get_user/{id}")]
         public ActionResult<User> GetUser(int id)
         {
-            if (_users.IsUserExists(id))
+            if (!_users.IsUserExists(id))
             {
-                return _users.GetUserById(id);
+                return NotFound("No users found.");
             }
 
-            return NotFound("No users found.");
+            return _users.GetUserById(id);
         }
         
         [HttpPost("add_user")]
@@ -37,6 +37,18 @@ namespace Gymgenius.Controllers
         {
             _users.AddUser(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
+
+        [HttpDelete("delete_user/{id}")]
+        public ActionResult DeleteUser(int id)
+        {
+            if (!_users.IsUserExists(id))
+            {
+                return NotFound("No users found.");
+            }
+
+            _users.DeleteUser(id);
+            return NoContent();
         }
     }
 }
