@@ -20,6 +20,7 @@ namespace Gymgenius.bo
         {
             _users.DeleteUser(userId);
         }
+
         public List<User> GetAllUsers()
         {
             return _users.GetAllUsers();
@@ -29,6 +30,7 @@ namespace Gymgenius.bo
         {
             return _users.GetUserById(userId);
         }
+
         public bool IsUserExists(int userId)
         {
             return _users.IsUserExists(userId);
