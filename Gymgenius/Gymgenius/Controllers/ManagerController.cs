@@ -7,47 +7,49 @@ namespace Gymgenius.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class ManagerController : ControllerBase
     {
-        private readonly IUserDAL _users;
-        public UserController(IUserDAL userDAL)
+        private readonly Manager _manager;
+        
+        public ManagerController(IUserDAL userDAL)
         {
-            _users = userDAL;
+            _manager = new Manager(userDAL);
 
         }
+
         [HttpGet("list_users")]
         public ActionResult<IEnumerable<User>> GetAllUser()
         {
-            return _users.GetAllUsers();
+            return _manager.GetAllUsers();
         }
 
         [HttpGet("get_user/{id}")]
         public ActionResult<User> GetUser(int id)
         {
-            if (!_users.IsUserExists(id))
+            if (!_manager.IsUserExists(id))
             {
                 return NotFound("No users found.");
             }
 
-            return _users.GetUserById(id);
+            return _manager.GetUserById(id);
         }
         
         [HttpPost("add_user")]
         public ActionResult<User> AddUser(User user)
         {
-            _users.AddUser(user);
+            _manager.AddUser(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
         [HttpDelete("delete_user/{id}")]
         public ActionResult DeleteUser(int id)
         {
-            if (!_users.IsUserExists(id))
+            if (!_manager.IsUserExists(id))
             {
                 return NotFound("No users found.");
             }
 
-            _users.DeleteUser(id);
+            _manager.DeleteUser(id);
             return NoContent();
         }
     }
