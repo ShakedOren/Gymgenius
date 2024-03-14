@@ -2,6 +2,7 @@
 using Gymgenius.bo;
 using Gymgenius.dal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Gymgenius.Controllers
 {
@@ -11,10 +12,9 @@ namespace Gymgenius.Controllers
     {
         private readonly Manager _manager;
         
-        public ManagerController(IUserDAL userDAL)
+        public ManagerController(IUserDAL userDAL, IExerciseDAL exerciseDAL)
         {
-            _manager = new Manager(userDAL);
-
+            _manager = new Manager(userDAL, exerciseDAL);
         }
 
         [HttpGet("list_users")]
@@ -50,6 +50,42 @@ namespace Gymgenius.Controllers
             }
 
             _manager.DeleteUser(id);
+            return NoContent();
+        }
+
+        [HttpGet("list_exercises")]
+        public ActionResult<IEnumerable<Exercise>> GetAllExercises()
+        {
+            return _manager.GetAllExercises();
+        }
+
+        [HttpGet("get_exercise/{exercise}")]
+        public ActionResult<Exercise> GetExercise(string name)
+        {
+            if (!_manager.IsExerciseExists(name))
+            {
+                return NotFound("No exercise found.");
+            }
+
+            return _manager.GetExerciseByName(name);
+        }
+
+        [HttpPost("add_exercise")]
+        public ActionResult<User> AddExercise(Exercise exercise)
+        {
+            _manager.AddExercise(exercise);
+            return CreatedAtAction(nameof(GetExercise), new { id = exercise.Name}, exercise);
+        }
+
+        [HttpDelete("delete_exercise/{name}")]
+        public ActionResult DeleteExercise(string name)
+        {
+            if (!_manager.IsExerciseExists(name))
+            {
+                return NotFound("No exercise found.");
+            }
+
+            _manager.DeleteExercise(name);
             return NoContent();
         }
     }

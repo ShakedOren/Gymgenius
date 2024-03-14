@@ -5,33 +5,33 @@ namespace Gymgenius.bll
 {
     public class UserDataAccessMemory : IUserDAL
     {
-        private List<User> users = new List<User>();
+        private List<User> _users = new List<User>();
         public void AddUser(User user)
         {
-            users.Add(user);
+            _users.Add(user);
         }
 
         public void DeleteUser(int userId)
         {
-            users.Remove(GetUserById(userId));
+            _users.Remove(GetUserById(userId));
         }
         public List<User> GetAllUsers()
         {
-            return users;
+            return _users;
         }
 
         public User GetUserById(int userId)
         {
-            return users.Find(u => u.Id == userId) ?? throw new Exception("User Not Found");
+            return _users.Find(u => u.Id == userId) ?? throw new Exception("User Not Found");
         }
         public bool IsUserExists(int userId)
         {
-            return users.Any(u => u.Id == userId);
+            return _users.Any(u => u.Id == userId);
         }
 
         public override string ToString()
         {
-            return string.Join("\n", users);
+            return string.Join("\n", _users);
         }
     }
 }

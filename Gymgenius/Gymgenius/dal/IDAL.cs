@@ -10,4 +10,13 @@ namespace Gymgenius.dal
         void DeleteUser(int userId);
         bool IsUserExists(int userId);
     }
+
+    public interface IExerciseDAL
+    { 
+        Exercise GetExerciseByName(string name);
+        List<Exercise> GetAllExercises();
+        void AddExercise(Exercise exercise);
+        void DeleteExercise(string name);
+        bool IsExerciseExists(string name);
+    }
 }

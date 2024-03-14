@@ -5,10 +5,12 @@ namespace Gymgenius.bo
     public class Manager
     {
         private readonly IUserDAL _users;
+        private readonly IExerciseDAL _exercises;
 
-        public Manager(IUserDAL users)
-        { 
-            _users = users; 
+        public Manager(IUserDAL users, IExerciseDAL exercises)
+        {
+            _users = users;
+            _exercises = exercises;
         }
 
         public void AddUser(User user)
@@ -34,6 +36,31 @@ namespace Gymgenius.bo
         public bool IsUserExists(int userId)
         {
             return _users.IsUserExists(userId);
+        }
+
+        public Exercise GetExerciseByName(string name)
+        {
+            return _exercises.GetExerciseByName(name);
+        }
+
+        public List<Exercise> GetAllExercises()
+        {
+            return _exercises.GetAllExercises();
+        }
+
+        public void AddExercise(Exercise exercise)
+        {
+            _exercises.AddExercise(exercise);
+        }
+
+        public void DeleteExercise(string name)
+        {
+            _exercises.DeleteExercise(name);
+        }
+
+        public bool IsExerciseExists(string name)
+        {
+            return _exercises.IsExerciseExists(name);
         }
     }
 }
