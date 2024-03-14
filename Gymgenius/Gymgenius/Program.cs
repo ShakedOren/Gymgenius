@@ -1,11 +1,14 @@
 using Gymgenius.bll;
 using Gymgenius.bo;
+using Gymgenius.dal;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<IUserDAL, UserDataAccessMemory>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

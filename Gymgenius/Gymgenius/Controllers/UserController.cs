@@ -1,5 +1,6 @@
 ﻿using Gymgenius.bll;
 using Gymgenius.bo;
+using Gymgenius.dal;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gymgenius.Controllers
@@ -8,35 +9,34 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private UserDataAccessMemory _users;
-
-        public UserController()
+        private readonly IUserDAL _users;
+        public UserController(IUserDAL userDAL)
         {
-            _users = new UserDataAccessMemory();
-        }
+            _users = userDAL;
 
+        }
         [HttpGet("list_users")]
-        public IEnumerable<User> GetAllUser()
+        public ActionResult<IEnumerable<User>> GetAllUser()
         {
             return _users.GetAllUsers();
         }
 
-        [HttpGet("get_first_user")]
-        public User GetFirstUser()
-        {
-            return _users.GetUserById(0);
-        }
-
         [HttpGet("get_user/{id}")]
-        public User GetUser(int id)
+        public ActionResult<User> GetUser(int id)
         {
-            return _users.GetUserById(id);
+            if (_users.IsUserExists(id))
+            {
+                return _users.GetUserById(id);
+            }
+
+            return NotFound("No users found.");
         }
         
         [HttpPost("add_user")]
-        public void AddUser(User user)
+        public ActionResult<User> AddUser(User user)
         {
             _users.AddUser(user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
     }
 }

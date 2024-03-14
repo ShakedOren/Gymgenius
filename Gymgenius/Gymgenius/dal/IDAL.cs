@@ -2,11 +2,12 @@
 
 namespace Gymgenius.dal
 {
-    public interface IDAL
-    { 
+    public interface IUserDAL
+    {
         User GetUserById(int userId);
         List<User> GetAllUsers();
         void AddUser(User user);
         void DeleteUser(int userId);
+        public bool IsUserExists(int userId);
     }
 }
