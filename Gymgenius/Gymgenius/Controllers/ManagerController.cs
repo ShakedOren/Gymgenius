@@ -60,21 +60,21 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("get_exercise/{exercise}")]
-        public ActionResult<Exercise> GetExercise(string name)
+        public ActionResult<Exercise> GetExercise(string exercise)
         {
-            if (!_manager.IsExerciseExists(name))
+            if (!_manager.IsExerciseExists(exercise))
             {
                 return NotFound("No exercise found.");
             }
 
-            return _manager.GetExerciseByName(name);
+            return _manager.GetExerciseByName(exercise);
         }
 
         [HttpPost("add_exercise")]
-        public ActionResult<User> AddExercise(Exercise exercise)
+        public ActionResult<Exercise> AddExercise(Exercise exercise)
         {
             _manager.AddExercise(exercise);
-            return CreatedAtAction(nameof(GetExercise), new { id = exercise.Name}, exercise);
+            return CreatedAtAction(nameof(GetExercise), new { exercise = exercise.Name}, exercise);
         }
 
         [HttpDelete("delete_exercise/{name}")]

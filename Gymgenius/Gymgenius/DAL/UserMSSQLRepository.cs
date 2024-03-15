@@ -5,8 +5,9 @@ public class UserMSSQLRepository : IUserRepository
 {
     public UserMSSQLRepository()
     {
-        
+
     }
+
     public void AddUser(User user)
     {
         throw new NotImplementedException();
