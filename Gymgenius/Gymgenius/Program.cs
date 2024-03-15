@@ -1,6 +1,7 @@
 using Gymgenius.bll;
 using Gymgenius.bo;
 using Gymgenius.dal;
+using GymGenius.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 ﻿using Gymgenius.bo;
 using Gymgenius.dal;
 
-namespace Gymgenius.bll
+namespace GymGenius.DAL
 {
     public class ExerciseMemoryRepository : IExerciseRepository
     {
