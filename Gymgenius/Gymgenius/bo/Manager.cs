@@ -5,9 +5,9 @@ namespace Gymgenius.bo
     public class Manager
     {
         private readonly IUserDAL _users;
-        private readonly IExerciseDAL _exercises;
+        private readonly IExerciseRepository _exercises;
 
-        public Manager(IUserDAL users, IExerciseDAL exercises)
+        public Manager(IUserDAL users, IExerciseRepository exercises)
         {
             _users = users;
             _exercises = exercises;

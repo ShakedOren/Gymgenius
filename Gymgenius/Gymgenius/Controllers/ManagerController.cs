@@ -12,7 +12,7 @@ namespace Gymgenius.Controllers
     {
         private readonly Manager _manager;
         
-        public ManagerController(IUserDAL userDAL, IExerciseDAL exerciseDAL)
+        public ManagerController(IUserRepository userDAL, IExerciseRepository exerciseDAL)
         {
             _manager = new Manager(userDAL, exerciseDAL);
         }

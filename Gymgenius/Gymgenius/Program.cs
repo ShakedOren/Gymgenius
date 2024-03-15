@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton<IUserDAL, UserDataAccessMemory>();
-builder.Services.AddSingleton<IExerciseDAL, ExerciseDataAccessMemory>();
+builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
+builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
