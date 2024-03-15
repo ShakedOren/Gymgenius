@@ -26,4 +26,9 @@ public class UserMSSQLRepository : IUserRepository
     {
         throw new NotImplementedException();
     }
+
+    public bool IsUserExists(int userId)
+    {
+        throw new NotImplementedException();
+    }
 }
