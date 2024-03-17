@@ -1,6 +1,7 @@
 using Gymgenius.bll;
 using Gymgenius.bo;
 using Gymgenius.dal;
+using GymGenius.BLL;
 using GymGenius.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
 builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
 builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
+builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
