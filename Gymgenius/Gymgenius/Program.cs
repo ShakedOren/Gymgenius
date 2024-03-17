@@ -13,6 +13,7 @@ builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
 builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
 builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
 builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>();
+builder.Services.AddSingleton<IUserToProgramRepository, UserToProgramMemoryRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

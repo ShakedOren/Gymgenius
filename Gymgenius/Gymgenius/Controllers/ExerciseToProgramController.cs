@@ -11,13 +11,13 @@ namespace Gymgenius.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExerciseToProgram : ControllerBase
+    public class ExerciseToProgramController : ControllerBase
     {
         private readonly ExerciseToProgramManagment exerciseToProgramManagment;
         private readonly ExerciseManagment exerciseManagment;
         private readonly TrainingProgramManagment trainingManagment;
 
-        public ExerciseToProgram(IExerciseToProgramRepository exerciseToProgramDAL, IExerciseRepository exerciseDAL, ITrainingProgramRepository trainingProgramDAL)
+        public ExerciseToProgramController(IExerciseToProgramRepository exerciseToProgramDAL, IExerciseRepository exerciseDAL, ITrainingProgramRepository trainingProgramDAL)
         {
             exerciseToProgramManagment = new ExerciseToProgramManagment(exerciseToProgramDAL);
             exerciseManagment = new ExerciseManagment(exerciseDAL);
