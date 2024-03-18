@@ -8,6 +8,7 @@ namespace GymGenius.BO
     {
         public required int Id { get; set; }
 
+        [SetsRequiredMembers]
         public TrainingProgram(int id)
         {
             Id = id;
