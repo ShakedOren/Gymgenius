@@ -11,47 +11,66 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserManagment userManagment;
+        private readonly UserManagment _userManagment;
 
-        public UserController(IUserRepository userDAL)
+        public UserController(UserManagment userManagment)
         {
-            userManagment = new UserManagment(userDAL);
+            _userManagment = userManagment;
         }
 
         [HttpGet("list_users")]
         public ActionResult<IEnumerable<User>> GetAllUser()
         {
-            return userManagment.GetAllUsers();
+            try
+            {
+                return _userManagment.GetAllUsers();
+            }
+            catch (Exception ex) 
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
         [HttpGet("get_user/{id}")]
         public ActionResult<User> GetUser(int id)
         {
-            if (!userManagment.IsUserExists(id))
+            try
             {
-                return NotFound("No users found.");
+                return _userManagment.GetUserById(id);
             }
-
-            return userManagment.GetUserById(id);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("add_user")]
         public ActionResult<User> AddUser(User user)
         {
-            userManagment.AddUser(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            try
+            {
+                _userManagment.AddUser(user);
+                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("delete_user/{id}")]
         public ActionResult DeleteUser(int id)
         {
-            if (!userManagment.IsUserExists(id))
+            try
             {
-                return NotFound("No users found.");
+                _userManagment.DeleteUser(id);
+                return NoContent();
             }
-
-            userManagment.DeleteUser(id);
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

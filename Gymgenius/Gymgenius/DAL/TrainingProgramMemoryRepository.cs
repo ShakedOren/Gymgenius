@@ -24,7 +24,7 @@ namespace GymGenius.DAL
 
         public TrainingProgram GetTrainingProgramById(int trainingProgramId)
         {
-            return _programs.Find(u => u.Id == trainingProgramId) ?? throw new Exception("User Not Found");
+            return _programs.Find(u => u.Id == trainingProgramId) ?? throw new Exception("Program Not Found");
         }
 
         public bool IsTrainingProgramExists(int trainingProgramId)

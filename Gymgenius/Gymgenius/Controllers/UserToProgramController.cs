@@ -13,68 +13,52 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class UserToProgramController : ControllerBase
     {
-        private readonly UserToProgramManagment userToProgramManagment;
-        private readonly UserManagment userManagment;
-        private readonly TrainingProgramManagment trainingManagment;
+        private readonly UserToProgramManagment _userToProgramManagment;
 
-        public UserToProgramController(IUserToProgramRepository userToProgramRepository, IUserRepository userRepository, ITrainingProgramRepository trainingProgramRepository)
+        public UserToProgramController(UserToProgramManagment userToProgramManagment)
         {
-            userToProgramManagment = new UserToProgramManagment(userToProgramRepository);
-            userManagment = new UserManagment(userRepository);
-            trainingManagment = new TrainingProgramManagment(trainingProgramRepository);
+            _userToProgramManagment = userToProgramManagment;
         }
 
         [HttpGet("get_user_program/{id}")]
         public ActionResult<TrainingProgram> GetUserProgram(int id)
         {
-            if (!userManagment.IsUserExists(id))
+            try
             {
-                return NotFound("No user found.");
+                return _userToProgramManagment.GetUserProgram(id);
             }
-
-            return userToProgramManagment.GetUserProgram(userManagment.GetUserById(id));
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("add_program_to_user/{user_id}/{program_id}")]
         public ActionResult AddProgramToUser(int user_id, int program_id)
         {
-            if (!userManagment.IsUserExists(user_id))
+            try
             {
-                return NotFound("No user found.");
+                _userToProgramManagment.AddProgramToUser(user_id, program_id);
+                return NoContent();
             }
-
-            if (!trainingManagment.IsTrainingProgramExists(program_id))
+            catch (Exception ex)
             {
-                return NotFound("No program found.");
+                return NotFound(ex.Message);
             }
-
-            User user = userManagment.GetUserById(user_id);
-            TrainingProgram program = trainingManagment.GetTrainingProgramById(program_id);
-            if (userToProgramManagment.IsUserHaveProgram(user))
-            {
-                return NotFound("User already have program.");
-            }
-
-            userToProgramManagment.AddProgramToUser(user, program);
-            return NoContent();
         }
 
         [HttpDelete("remove_program_from_user/{user_id}")]
         public ActionResult RemoveProgramFromUser(int user_id)
         {
-            if (!userManagment.IsUserExists(user_id))
+            try
             {
-                return NotFound("No user found.");
+                _userToProgramManagment.RemoveProgramFromUser(user_id);
+                return NoContent();
             }
-
-            User user = userManagment.GetUserById(user_id);
-            if (!userToProgramManagment.IsUserHaveProgram(user))
+            catch (Exception ex)
             {
-                return NotFound("No program found for user.");
+                return NotFound(ex.Message);
             }
-
-            userToProgramManagment.RemoveProgramFromUser(user);
-            return NoContent();
         }
     }
 }

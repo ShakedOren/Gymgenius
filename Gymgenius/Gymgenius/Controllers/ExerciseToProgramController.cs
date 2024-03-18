@@ -13,74 +13,52 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class ExerciseToProgramController : ControllerBase
     {
-        private readonly ExerciseToProgramManagment exerciseToProgramManagment;
-        private readonly ExerciseManagment exerciseManagment;
-        private readonly TrainingProgramManagment trainingManagment;
+        private readonly ExerciseToProgramManagment _exerciseToProgramManagment;
 
-        public ExerciseToProgramController(IExerciseToProgramRepository exerciseToProgramDAL, IExerciseRepository exerciseDAL, ITrainingProgramRepository trainingProgramDAL)
+        public ExerciseToProgramController(ExerciseToProgramManagment exerciseToProgramManagment)
         {
-            exerciseToProgramManagment = new ExerciseToProgramManagment(exerciseToProgramDAL);
-            exerciseManagment = new ExerciseManagment(exerciseDAL);
-            trainingManagment = new TrainingProgramManagment(trainingProgramDAL);
+            _exerciseToProgramManagment = exerciseToProgramManagment;
         }
 
         [HttpGet("list_exercises/{id}")]
         public ActionResult<IEnumerable<Exercise>> GetAllExerciseOfProgram(int id)
         {
-            if (!trainingManagment.IsTrainingProgramExists(id))
+            try
             {
-                return NotFound("No program found.");
+                return _exerciseToProgramManagment.GetAllExerciseOfProgram(id);
             }
-
-            return exerciseToProgramManagment.GetAllExerciseOfProgram(trainingManagment.GetTrainingProgramById(id));
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("add_exercise_to_program/{exercise_name}/{program_id}")]
         public ActionResult AddExerciseToProgram(string exercise_name, int program_id)
         {
-            if (!exerciseManagment.IsExerciseExists(exercise_name))
+            try
             {
-                return NotFound("No exercise found.");
+                _exerciseToProgramManagment.AddExerciseToProgram(exercise_name, program_id);
+                return NoContent();
             }
-
-            if (!trainingManagment.IsTrainingProgramExists(program_id))
+            catch (Exception ex)
             {
-                return NotFound("No program found.");
+                return NotFound(ex.Message);
             }
-
-            Exercise exercise = exerciseManagment.GetExerciseByName(exercise_name);
-            TrainingProgram program = trainingManagment.GetTrainingProgramById(program_id);
-            if (exerciseToProgramManagment.IsExerciseExistsInProgram(exercise, program))
-            {
-                return NotFound("Exercise already in program.");
-            }
-
-            exerciseToProgramManagment.AddExerciseToProgram(exercise, program);
-            return NoContent();
         }
 
         [HttpDelete("delete_exercise_from_program/{exercise_name}/{program_id}")]
         public ActionResult DeleteExerciseFromProgram(string exercise_name, int program_id)
         {
-            if (!exerciseManagment.IsExerciseExists(exercise_name))
+            try
             {
-                return NotFound("No exercise found.");
+                _exerciseToProgramManagment.DeleteExerciseFromProgram(exercise_name, program_id);
+                return NoContent();
             }
-
-            if (!trainingManagment.IsTrainingProgramExists(program_id))
+            catch (Exception ex)
             {
-                return NotFound("No program found.");
+                return NotFound(ex.Message);
             }
-
-            Exercise exercise = exerciseManagment.GetExerciseByName(exercise_name);
-            TrainingProgram program = trainingManagment.GetTrainingProgramById(program_id);
-            if (!exerciseToProgramManagment.IsExerciseExistsInProgram(exercise, program))
-            {
-                return NotFound("Exercise not in program.");
-            }
-
-            exerciseToProgramManagment.DeleteExerciseFromProgram(exercise, program);
-            return NoContent();
         }
     }
 }

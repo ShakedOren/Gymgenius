@@ -20,6 +20,11 @@ namespace Gymgenius.bo
 
         public void DeleteUser(int userId)
         {
+            if (!_users.IsUserExists(userId))
+            {
+                throw new Exception("No users found.");
+            }
+
             _users.DeleteUser(userId);
         }
 
@@ -30,6 +35,11 @@ namespace Gymgenius.bo
 
         public User GetUserById(int userId)
         {
+            if (!_users.IsUserExists(userId))
+            {
+                throw new Exception("No users found.");
+            }
+
             return _users.GetUserById(userId);
         }
 

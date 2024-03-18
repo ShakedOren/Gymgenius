@@ -15,6 +15,12 @@ namespace Gymgenius.bo
 
         public TrainingProgram GetTrainingProgramById(int trainingProgramId)
         {
+
+            if (!_programs.IsTrainingProgramExists(trainingProgramId))
+            {
+                throw new Exception("No program found.");
+            }
+
             return _programs.GetTrainingProgramById(trainingProgramId);
         }
 
@@ -30,6 +36,11 @@ namespace Gymgenius.bo
 
         public void DeleteTrainingProgram(int trainingProgramId)
         {
+            if (!_programs.IsTrainingProgramExists(trainingProgramId))
+            {
+                throw new Exception("No program found.");
+            }
+
             _programs.DeleteTrainingProgram(trainingProgramId);
         }
 

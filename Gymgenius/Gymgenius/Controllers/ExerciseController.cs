@@ -4,6 +4,7 @@ using Gymgenius.dal;
 using GymGenius.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.IO.Compression;
 
 namespace Gymgenius.Controllers
 {
@@ -11,47 +12,65 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class ExerciseController : ControllerBase
     {
-        private readonly ExerciseManagment exerciseManagment;
+        private readonly ExerciseManagment _exerciseManagment;
 
-        public ExerciseController(IExerciseRepository exerciseDAL)
+        public ExerciseController(ExerciseManagment exerciseManagment)
         {
-            exerciseManagment = new ExerciseManagment(exerciseDAL);
+            _exerciseManagment = exerciseManagment;
         }
 
         [HttpGet("list_exercises")]
         public ActionResult<IEnumerable<Exercise>> GetAllExercises()
         {
-            return exerciseManagment.GetAllExercises();
+            try
+            {
+                return _exerciseManagment.GetAllExercises();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("get_exercise/{exercise}")]
         public ActionResult<Exercise> GetExercise(string exercise)
         {
-            if (!exerciseManagment.IsExerciseExists(exercise))
+            try
             {
-                return NotFound("No exercise found.");
+                return _exerciseManagment.GetExerciseByName(exercise);
             }
-
-            return exerciseManagment.GetExerciseByName(exercise);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("add_exercise")]
         public ActionResult<Exercise> AddExercise(Exercise exercise)
         {
-            exerciseManagment.AddExercise(exercise);
-            return CreatedAtAction(nameof(GetExercise), new { exercise = exercise.Name }, exercise);
+            try
+            {
+                _exerciseManagment.AddExercise(exercise);
+                return CreatedAtAction(nameof(GetExercise), new { exercise = exercise.Name }, exercise);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("delete_exercise/{name}")]
         public ActionResult DeleteExercise(string name)
         {
-            if (!exerciseManagment.IsExerciseExists(name))
+            try
             {
-                return NotFound("No exercise found.");
+                _exerciseManagment.DeleteExercise(name);
+                return NoContent();
             }
-
-            exerciseManagment.DeleteExercise(name);
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

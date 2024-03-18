@@ -15,6 +15,11 @@ namespace Gymgenius.bo
 
         public Exercise GetExerciseByName(string name)
         {
+            if (!_exercises.IsExerciseExists(name))
+            {
+                throw new Exception("No exercise found.");
+            }
+
             return _exercises.GetExerciseByName(name);
         }
 
@@ -30,6 +35,12 @@ namespace Gymgenius.bo
 
         public void DeleteExercise(string name)
         {
+
+            if (!_exercises.IsExerciseExists(name))
+            {
+                throw new Exception("No exercise found.");
+            }
+
             _exercises.DeleteExercise(name);
         }
 

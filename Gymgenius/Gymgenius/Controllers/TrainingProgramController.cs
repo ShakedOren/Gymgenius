@@ -12,47 +12,65 @@ namespace Gymgenius.Controllers
     [Route("[controller]")]
     public class TrainingProgramController : ControllerBase
     {
-        private readonly TrainingProgramManagment trainingManagment;
+        private readonly TrainingProgramManagment _trainingManagment;
 
-        public TrainingProgramController(ITrainingProgramRepository trainingDAL)
+        public TrainingProgramController(TrainingProgramManagment trainingManagment)
         {
-            trainingManagment = new TrainingProgramManagment(trainingDAL);
+            _trainingManagment = trainingManagment;
         }
 
         [HttpGet("list_programs")]
         public ActionResult<IEnumerable<TrainingProgram>> GetAllGetAllTrainingProgramsExercises()
         {
-            return trainingManagment.GetAllTrainingPrograms();
+            try
+            {
+                return _trainingManagment.GetAllTrainingPrograms();
+            }
+            catch (Exception ex) 
+            { 
+                return NotFound(ex.Message); 
+            }
         }
 
         [HttpGet("get_program/{id}")]
         public ActionResult<TrainingProgram> GetProgram(int id)
         {
-            if (!trainingManagment.IsTrainingProgramExists(id))
+            try
             {
-                return NotFound("No program found.");
+                return _trainingManagment.GetTrainingProgramById(id);
             }
-
-            return trainingManagment.GetTrainingProgramById(id);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost("add_program")]
         public ActionResult<TrainingProgram> AddProgram(TrainingProgram trainingProgram)
         {
-            trainingManagment.AddTrainingProgram(trainingProgram);
-            return CreatedAtAction(nameof(GetProgram), new { id = trainingProgram.Id }, trainingProgram);
+            try
+            {
+                _trainingManagment.AddTrainingProgram(trainingProgram);
+                return CreatedAtAction(nameof(GetProgram), new { id = trainingProgram.Id }, trainingProgram);
+            } 
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("delete_program/{id}")]
         public ActionResult DeleteProgram(int id)
         {
-            if (!trainingManagment.IsTrainingProgramExists(id))
+            try
             {
-                return NotFound("No users found.");
+                _trainingManagment.DeleteTrainingProgram(id);
+                return NoContent();
             }
-
-            trainingManagment.DeleteTrainingProgram(id);
-            return NoContent();
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
