@@ -5,7 +5,7 @@ namespace GymGenius.DAL
 {
     public class ExerciseToProgramMemoryRepository : IExerciseToProgramRepository
     {
-        private List<KeyValuePair<TrainingProgram, Exercise>> _exerciseToProgram = new List<KeyValuePair<TrainingProgram, Exercise>>();
+        private List<KeyValuePair<TrainingProgram, Exercise>> _exerciseToProgram = [];
 
         public void AddExerciseToProgram(Exercise exercise, TrainingProgram program)
         {

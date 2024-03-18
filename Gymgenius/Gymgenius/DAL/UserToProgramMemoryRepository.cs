@@ -5,7 +5,7 @@ namespace GymGenius.DAL
 {
     public class UserToProgramMemoryRepository : IUserToProgramRepository
     {
-        private Dictionary<User, TrainingProgram> userToProgram = new Dictionary<User, TrainingProgram>();
+        private Dictionary<User, TrainingProgram> userToProgram = [];
 
         public void AddProgramToUser(User user, TrainingProgram program)
         {

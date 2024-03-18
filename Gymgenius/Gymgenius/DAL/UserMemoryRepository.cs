@@ -5,7 +5,7 @@ namespace Gymgenius.bll
 {
     public class UserMemoryRepository : IUserRepository
     {
-        private List<User> _users = new List<User>();
+        private List<User> _users = [];
         public void AddUser(User user)
         {
             _users.Add(user);

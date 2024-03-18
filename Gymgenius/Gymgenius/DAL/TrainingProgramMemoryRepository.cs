@@ -5,7 +5,7 @@ namespace GymGenius.DAL
 {
     public class TrainingProgramMemoryRepository : ITrainingProgramRepository
     {
-        private List<TrainingProgram> _programs= new List<TrainingProgram>();
+        private List<TrainingProgram> _programs= [];
 
         public void AddTrainingProgram(TrainingProgram trainingProgram)
         {
