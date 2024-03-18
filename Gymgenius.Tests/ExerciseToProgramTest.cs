@@ -6,10 +6,10 @@ using GymGenius.DAL;
 namespace Gymgenius.Tests
 {
     [TestClass]
-    public class ExerciseToProgram
+    public class ExerciseToProgramTest
     {
         private readonly IExerciseToProgramRepository _exerciseToProgramRepository;
-        public ExerciseToProgram()
+        public ExerciseToProgramTest()
         {
             _exerciseToProgramRepository = Helper.GetRequiredService<IExerciseToProgramRepository>();
         }

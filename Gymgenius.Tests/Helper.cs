@@ -19,6 +19,7 @@ namespace Gymgenius.Tests
             services.AddSingleton<IUserRepository, UserMemoryRepository>().
             AddSingleton<IExerciseRepository, ExerciseMemoryRepository>().
             AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>().
+            AddSingleton<IUserToProgramRepository, UserToProgramMemoryRepository>().
             AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
 
             return services.BuildServiceProvider();
