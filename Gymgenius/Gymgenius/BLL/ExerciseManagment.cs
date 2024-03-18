@@ -1,45 +1,25 @@
 ﻿using Gymgenius.dal;
+using GymGenius.BO;
+using GymGenius.DAL;
 
 namespace Gymgenius.bo
 {
-    public class Manager
+    public class ExerciseManagment
     {
-        private readonly IUserRepository _users;
         private readonly IExerciseRepository _exercises;
 
-        public Manager(IUserRepository users, IExerciseRepository exercises)
+        public ExerciseManagment(IExerciseRepository exercises)
         {
-            _users = users;
             _exercises = exercises;
-        }
-
-        public void AddUser(User user)
-        {
-            _users.AddUser(user);
-        }
-
-        public void DeleteUser(int userId)
-        {
-            _users.DeleteUser(userId);
-        }
-
-        public List<User> GetAllUsers()
-        {
-            return _users.GetAllUsers();
-        }
-
-        public User GetUserById(int userId)
-        {
-            return _users.GetUserById(userId);
-        }
-
-        public bool IsUserExists(int userId)
-        {
-            return _users.IsUserExists(userId);
         }
 
         public Exercise GetExerciseByName(string name)
         {
+            if (!_exercises.IsExerciseExists(name))
+            {
+                throw new Exception("No exercise found.");
+            }
+
             return _exercises.GetExerciseByName(name);
         }
 
@@ -55,6 +35,12 @@ namespace Gymgenius.bo
 
         public void DeleteExercise(string name)
         {
+
+            if (!_exercises.IsExerciseExists(name))
+            {
+                throw new Exception("No exercise found.");
+            }
+
             _exercises.DeleteExercise(name);
         }
 

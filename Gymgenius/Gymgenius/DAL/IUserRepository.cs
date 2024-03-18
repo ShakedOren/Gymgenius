@@ -9,5 +9,6 @@ namespace Gymgenius.dal
         void AddUser(User user);
         void DeleteUser(int userId);
         bool IsUserExists(int userId);
+        bool IsUserTrainer(int userId);
     }
 }
