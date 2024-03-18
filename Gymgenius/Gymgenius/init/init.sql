@@ -1,0 +1,36 @@
+USE master;
+GO
+
+IF DB_ID(N'GymGenius') IS NOT NULL
+BEGIN
+    DROP DATABASE GymGenius;
+END
+GO
+
+-- Create the GymGenius database
+CREATE DATABASE GymGenius;
+GO
+
+USE GymGenius;
+GO
+
+CREATE TABLE dbo.Exercise (
+  Name VARCHAR(50) NOT NULL PRIMARY KEY,
+  DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL
+);
+
+CREATE TABLE dbo.[Users] (
+  Id INT PRIMARY KEY NOT NULL,
+  DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+  FirstName VARCHAR(50) NOT NULL,
+  LastName VARCHAR(50) NOT NULL,
+  Age INT NULL,
+  Email VARCHAR(255) NULL
+);
+
+CREATE TABLE dbo.TrainingProgram (
+  Id INT PRIMARY KEY NOT NULL,
+  DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+  Name NVARCHAR(255) NOT NULL,
+  Description NVARCHAR(max) NULL
+);

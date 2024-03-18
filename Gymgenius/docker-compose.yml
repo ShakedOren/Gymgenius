@@ -27,12 +27,12 @@ services:
   sqlserver.configurator:
     image: mcr.microsoft.com/mssql-tools
     volumes:
-      - ./init:/docker-entrypoint-initdb.d
+      - ./Gymgenius/init:/docker-entrypoint-initdb.d
     depends_on:
       mssql:
         condition: service_healthy
     command: >
       bash -c '
-      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P Qwer1234! -d master -i docker-entrypoint-initdb.d/init.sql;
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Qwer1234! -d master -i docker-entrypoint-initdb.d/init.sql;
       echo "All done!";
       '
