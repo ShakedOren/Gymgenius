@@ -24,23 +24,28 @@ public class UserMSSQLRepository : IUserRepository
         await connection.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = userId });
     }
 
-    public Task<List<User>> GetAllUsers()
+    public async Task<List<User>> GetAllUsers()
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        return (await connection.QueryAsync<User>("SELECT * FROM Users")).ToList();
     }
 
-    public Task<User> GetUserById(int userId)
+    public async Task<User> GetUserById(int userId)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        return await connection.QueryFirstAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = userId });
+
     }
 
-    public Task<bool> IsUserExists(int userId)
+    public async Task<bool> IsUserExists(int userId)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE Id = @Id) THEN 1 ELSE 0 END", new { Id = userId });
     }
 
-    public Task<bool> IsUserTrainer(int userId)
+    public async Task<bool> IsUserTrainer(int userId)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE Id = @Id and IsTrainer = 1) THEN 1 ELSE 0 END", new { Id = userId });
     }
 }

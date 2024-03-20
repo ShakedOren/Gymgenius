@@ -15,7 +15,8 @@ builder.Services.AddSingleton<TrainingProgramManagment>();
 builder.Services.AddSingleton<ExerciseToProgramManagment>();
 builder.Services.AddSingleton<UserToProgramManagment>();
 
-builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
+//builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
+builder.Services.AddSingleton<IUserRepository, UserMSSQLRepository>();
 builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
 builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
 builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>();
