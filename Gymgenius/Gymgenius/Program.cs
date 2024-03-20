@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddSingleton<DapperContext>();
+
 builder.Services.AddSingleton<UserManagment>();
 builder.Services.AddSingleton<ExerciseManagment>();
 builder.Services.AddSingleton<TrainingProgramManagment>();

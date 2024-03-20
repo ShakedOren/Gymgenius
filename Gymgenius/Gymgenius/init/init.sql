@@ -33,12 +33,13 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         CREATE TABLE dbo.Users (
-          Id INT PRIMARY KEY NOT NULL,
+          Id INT IDENTITY PRIMARY KEY NOT NULL,
           DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
           FirstName VARCHAR(50) NOT NULL,
           LastName VARCHAR(50) NOT NULL,
           Age INT,
-          Email VARCHAR(255)
+          Email VARCHAR(255),
+          IsTrainer bit NULL
         );
     END
     ELSE
@@ -49,7 +50,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TrainingProgram' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         CREATE TABLE dbo.TrainingProgram (
-          Id INT PRIMARY KEY NOT NULL,
+          Id INT IDENTITY PRIMARY KEY NOT NULL,
           DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
           Name NVARCHAR(255) NOT NULL,
           Description NVARCHAR(MAX)
