@@ -7,29 +7,31 @@ namespace GymGenius.DAL
     {
         private List<KeyValuePair<TrainingProgram, Exercise>> _exerciseToProgram = [];
 
-        public void AddExerciseToProgram(Exercise exercise, TrainingProgram program)
+        public Task AddExerciseToProgram(Exercise exercise, TrainingProgram program)
         {
             _exerciseToProgram.Add(new KeyValuePair<TrainingProgram, Exercise> (program, exercise));
+            return Task.CompletedTask;
         }
 
-        public void DeleteExerciseFromProgram(Exercise exercise, TrainingProgram program)
+        public Task DeleteExerciseFromProgram(Exercise exercise, TrainingProgram program)
         {
             KeyValuePair<TrainingProgram, Exercise > pairToRemove = _exerciseToProgram.Find(p =>
              p.Key.Id == program.Id && p.Value.Name == exercise.Name);
             _exerciseToProgram.Remove(pairToRemove);
+            return Task.CompletedTask;
         }
 
-        public List<Exercise> GetAllExerciseOfProgram(TrainingProgram program)
+        public Task<List<Exercise>> GetAllExerciseOfProgram(TrainingProgram program)
         {
-            return _exerciseToProgram
+            return Task.FromResult(_exerciseToProgram
                 .Where(p => p.Key.Id == program.Id)
                 .Select(p => p.Value)
-                .ToList();
+                .ToList());
         }
 
-        public bool IsExerciseExistsInProgram(Exercise exercise, TrainingProgram program)
+        public Task<bool> IsExerciseExistsInProgram(Exercise exercise, TrainingProgram program)
         {
-            return _exerciseToProgram.Any(p => p.Key.Id == program.Id && p.Value.Name == exercise.Name);
+            return Task.FromResult(_exerciseToProgram.Any(p => p.Key.Id == program.Id && p.Value.Name == exercise.Name));
         }
     }
 }

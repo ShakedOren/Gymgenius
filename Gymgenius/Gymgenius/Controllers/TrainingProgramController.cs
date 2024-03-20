@@ -20,11 +20,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("list_programs")]
-        public ActionResult<IEnumerable<TrainingProgram>> GetAllGetAllTrainingProgramsExercises()
+        public async Task<ActionResult<IEnumerable<TrainingProgram>>> GetAllGetAllTrainingProgramsExercises()
         {
             try
             {
-                return _trainingManagment.GetAllTrainingPrograms();
+                return await _trainingManagment.GetAllTrainingPrograms();
             }
             catch (Exception ex) 
             { 
@@ -33,11 +33,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("get_program/{id}")]
-        public ActionResult<TrainingProgram> GetProgram(int id)
+        public async Task<ActionResult<TrainingProgram>> GetProgram(int id)
         {
             try
             {
-                return _trainingManagment.GetTrainingProgramById(id);
+                return await _trainingManagment.GetTrainingProgramById(id);
             }
             catch (Exception ex)
             {
@@ -46,11 +46,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpPost("add_program")]
-        public ActionResult<TrainingProgram> AddProgram(TrainingProgram trainingProgram)
+        public async Task<ActionResult<TrainingProgram>> AddProgram(TrainingProgram trainingProgram)
         {
             try
             {
-                _trainingManagment.AddTrainingProgram(trainingProgram);
+                await _trainingManagment.AddTrainingProgram(trainingProgram);
                 return CreatedAtAction(nameof(GetProgram), new { id = trainingProgram.Id }, trainingProgram);
             } 
             catch (Exception ex)
@@ -60,11 +60,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpDelete("delete_program/{id}")]
-        public ActionResult DeleteProgram(int id)
+        public async Task<ActionResult> DeleteProgram(int id)
         {
             try
             {
-                _trainingManagment.DeleteTrainingProgram(id);
+                await _trainingManagment.DeleteTrainingProgram(id);
                 return NoContent();
             }
             catch (Exception ex)

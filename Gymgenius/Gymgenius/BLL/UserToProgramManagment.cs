@@ -17,37 +17,37 @@ namespace GymGenius.BLL
             _trainingProgramRepository = rainingProgramRepository;
         }
 
-        public void AddProgramToUser(int userId, int programId)
+        public async Task AddProgramToUser(int userId, int programId)
         {
-            User user = _userRepository.GetUserById(userId);
-            TrainingProgram program = _trainingProgramRepository.GetTrainingProgramById(programId);
-            if (_userToProgramRepository.IsUserHaveProgram(user))
+            var user = await _userRepository.GetUserById(userId);
+            var program = await _trainingProgramRepository.GetTrainingProgramById(programId);
+            if (await _userToProgramRepository.IsUserHaveProgram(user))
             {
                 throw new Exception("User already have program.");
             }
 
-            _userToProgramRepository.AddProgramToUser(user, program);
+            await _userToProgramRepository.AddProgramToUser(user, program);
         }
 
-        public TrainingProgram GetUserProgram(int userId)
+        public async Task<TrainingProgram> GetUserProgram(int userId)
         {
-            return _userToProgramRepository.GetUserProgram(_userRepository.GetUserById(userId));
+            return await _userToProgramRepository.GetUserProgram(await _userRepository.GetUserById(userId));
         }
 
-        public void RemoveProgramFromUser(int userId)
+        public async Task RemoveProgramFromUser(int userId)
         {
-            User user = _userRepository.GetUserById(userId);
-            if (!_userToProgramRepository.IsUserHaveProgram(user))
+            var user = await _userRepository.GetUserById(userId);
+            if (!await _userToProgramRepository.IsUserHaveProgram(user))
             {
                 throw new Exception("No program found for user.");
             }
 
-            _userToProgramRepository.RemoveProgramFromUser(user);
+            await _userToProgramRepository.RemoveProgramFromUser(user);
         }
 
-        public bool IsUserHaveProgram(User user)
+        public async Task<bool> IsUserHaveProgram(User user)
         {
-            return _userToProgramRepository.IsUserHaveProgram(user);
+            return await _userToProgramRepository.IsUserHaveProgram(user);
         }
     }
 }

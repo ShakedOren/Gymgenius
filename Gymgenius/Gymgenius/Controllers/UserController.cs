@@ -19,11 +19,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("list_users")]
-        public ActionResult<IEnumerable<User>> GetAllUser()
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUser()
         {
             try
             {
-                return _userManagment.GetAllUsers();
+                return await _userManagment.GetAllUsers();
             }
             catch (Exception ex) 
             {
@@ -33,11 +33,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("get_user/{id}")]
-        public ActionResult<User> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             try
             {
-                return _userManagment.GetUserById(id);
+                return await _userManagment.GetUserById(id);
             }
             catch (Exception ex)
             {
@@ -46,11 +46,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpPost("add_user")]
-        public ActionResult<User> AddUser(User user)
+        public async Task<ActionResult<User>> AddUser(User user)
         {
             try
             {
-                _userManagment.AddUser(user);
+                await _userManagment.AddUser(user);
                 return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
             }
             catch (Exception ex)
@@ -60,11 +60,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpDelete("delete_user/{id}")]
-        public ActionResult DeleteUser(int id)
+        public async Task<ActionResult> DeleteUser(int id)
         {
             try
             {
-                _userManagment.DeleteUser(id);
+                await _userManagment.DeleteUser(id);
                 return NoContent();
             }
             catch (Exception ex)

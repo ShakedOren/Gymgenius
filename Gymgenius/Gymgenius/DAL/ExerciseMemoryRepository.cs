@@ -7,29 +7,30 @@ namespace GymGenius.DAL
     {
         private List<Exercise> _exercises = [];
 
-        public void AddExercise(Exercise exercise)
+        public Task AddExercise(Exercise exercise)
         {
             _exercises.Add(exercise);
+            return Task.CompletedTask;
         }
 
-        public void DeleteExercise(string name)
+        public async Task DeleteExercise(string name)
         {
-            _exercises.Remove(GetExerciseByName(name));
+            _exercises.Remove(await GetExerciseByName(name));
         }
 
-        public List<Exercise> GetAllExercises()
+        public Task<List<Exercise>> GetAllExercises()
         {
-            return _exercises;
+            return Task.FromResult(_exercises);
         }
 
-        public Exercise GetExerciseByName(string name)
+        public Task<Exercise> GetExerciseByName(string name)
         {
-            return _exercises.Find(u => u.Name == name) ?? throw new Exception("Exercise Not Found");
+            return Task.FromResult(_exercises.Find(u => u.Name == name) ?? throw new Exception("Exercise Not Found"));
         }
 
-        public bool IsExerciseExists(string name)
+        public Task<bool> IsExerciseExists(string name)
         {
-            return _exercises.Any(u => u.Name == name);
+            return Task.FromResult(_exercises.Any(u => u.Name == name));
         }
     }
 }

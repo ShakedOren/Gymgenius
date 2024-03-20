@@ -4,11 +4,11 @@ namespace Gymgenius.dal
 {
     public interface IUserRepository
     { 
-        User GetUserById(int userId);
-        List<User> GetAllUsers();
-        void AddUser(User user);
-        void DeleteUser(int userId);
-        bool IsUserExists(int userId);
-        bool IsUserTrainer(int userId);
+        Task<User> GetUserById(int userId);
+        Task<List<User>> GetAllUsers();
+        Task AddUser(User user);
+        Task DeleteUser(int userId);
+        Task<bool> IsUserExists(int userId);
+        Task<bool> IsUserTrainer(int userId);
     }
 }

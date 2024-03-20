@@ -13,40 +13,40 @@ namespace Gymgenius.bo
             _programs = programs;
         }
 
-        public TrainingProgram GetTrainingProgramById(int trainingProgramId)
+        public async Task<TrainingProgram> GetTrainingProgramById(int trainingProgramId)
         {
 
-            if (!_programs.IsTrainingProgramExists(trainingProgramId))
+            if (!await _programs.IsTrainingProgramExists(trainingProgramId))
             {
                 throw new Exception("No program found.");
             }
 
-            return _programs.GetTrainingProgramById(trainingProgramId);
+            return await _programs.GetTrainingProgramById(trainingProgramId);
         }
 
-        public List<TrainingProgram> GetAllTrainingPrograms()
+        public async Task<List<TrainingProgram>> GetAllTrainingPrograms()
         {
-            return _programs.GetAllTrainingPrograms();
+            return await _programs.GetAllTrainingPrograms();
         }
 
-        public void AddTrainingProgram(TrainingProgram trainingProgram)
+        public async Task AddTrainingProgram(TrainingProgram trainingProgram)
         {
-            _programs.AddTrainingProgram(trainingProgram);
+            await _programs.AddTrainingProgram(trainingProgram);
         }
 
-        public void DeleteTrainingProgram(int trainingProgramId)
+        public async Task DeleteTrainingProgram(int trainingProgramId)
         {
-            if (!_programs.IsTrainingProgramExists(trainingProgramId))
+            if (!await _programs.IsTrainingProgramExists(trainingProgramId))
             {
                 throw new Exception("No program found.");
             }
 
-            _programs.DeleteTrainingProgram(trainingProgramId);
+            await _programs.DeleteTrainingProgram(trainingProgramId);
         }
 
-        public bool IsTrainingProgramExists(int trainingProgramId) 
+        public async Task<bool> IsTrainingProgramExists(int trainingProgramId) 
         {
-            return _programs.IsTrainingProgramExists(trainingProgramId);
+            return await _programs.IsTrainingProgramExists(trainingProgramId);
         }
     }
 }

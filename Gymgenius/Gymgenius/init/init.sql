@@ -21,7 +21,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Exercise' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         CREATE TABLE dbo.Exercise (
-          Name VARCHAR(50) NOT NULL PRIMARY KEY,
+          Name NVARCHAR(50) NOT NULL PRIMARY KEY,
           DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL
         );
     END

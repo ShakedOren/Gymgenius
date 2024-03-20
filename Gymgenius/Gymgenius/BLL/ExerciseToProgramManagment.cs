@@ -20,45 +20,45 @@ namespace GymGenius.BLL
             _training = trainingProgramRepository;
         }
 
-        public void AddExerciseToProgram(string exerciseName, int programId)
+        public async Task AddExerciseToProgram(string exerciseName, int programId)
         {
-            Exercise exercise = _exercise.GetExerciseByName(exerciseName);
-            TrainingProgram program = _training.GetTrainingProgramById(programId);
+            Exercise exercise = await _exercise.GetExerciseByName(exerciseName);
+            TrainingProgram program = await _training.GetTrainingProgramById(programId);
 
-            if (_exerciseToProgram.IsExerciseExistsInProgram(exercise, program))
+            if (await _exerciseToProgram.IsExerciseExistsInProgram(exercise, program))
             {
                 throw new Exception("Exercise already in program.");
             }
 
-            _exerciseToProgram.AddExerciseToProgram(exercise, program);
+            await _exerciseToProgram.AddExerciseToProgram(exercise, program);
         }
 
-        public void DeleteExerciseFromProgram(string exerciseName, int programId)
+        public async Task DeleteExerciseFromProgram(string exerciseName, int programId)
         {
-            Exercise exercise = _exercise.GetExerciseByName(exerciseName);
-            TrainingProgram program = _training.GetTrainingProgramById(programId);
+            Exercise exercise = await _exercise.GetExerciseByName(exerciseName);
+            TrainingProgram program = await _training.GetTrainingProgramById(programId);
 
-            if (!_exerciseToProgram.IsExerciseExistsInProgram(exercise, program))
+            if (!await _exerciseToProgram.IsExerciseExistsInProgram(exercise, program))
             {
                 throw new Exception("Exercise not in program.");
             }
 
-            _exerciseToProgram.DeleteExerciseFromProgram(exercise, program);
+            await _exerciseToProgram.DeleteExerciseFromProgram(exercise, program);
         }
 
-        public List<Exercise> GetAllExerciseOfProgram(int programId)
+        public async Task<List<Exercise>> GetAllExerciseOfProgram(int programId)
         {
-            if (!_training.IsTrainingProgramExists(programId))
+            if (!await _training.IsTrainingProgramExists(programId))
             {
                 throw new Exception("No program found.");
             }
 
-            return _exerciseToProgram.GetAllExerciseOfProgram(_training.GetTrainingProgramById(programId));
+            return await _exerciseToProgram.GetAllExerciseOfProgram(await _training.GetTrainingProgramById(programId));
         }
 
-        public bool IsExerciseExistsInProgram(Exercise exercise, TrainingProgram program)
+        public async Task<bool> IsExerciseExistsInProgram(Exercise exercise, TrainingProgram program)
         {
-            return _exerciseToProgram.IsExerciseExistsInProgram(exercise, program);
+            return await _exerciseToProgram.IsExerciseExistsInProgram(exercise, program);
         }
     }
 }

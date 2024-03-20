@@ -21,11 +21,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("get_user_program/{id}")]
-        public ActionResult<TrainingProgram> GetUserProgram(int id)
+        public async Task<ActionResult<TrainingProgram>> GetUserProgram(int id)
         {
             try
             {
-                return _userToProgramManagment.GetUserProgram(id);
+                return await _userToProgramManagment.GetUserProgram(id);
             }
             catch (Exception ex)
             {
@@ -34,11 +34,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("add_program_to_user/{user_id}/{program_id}")]
-        public ActionResult AddProgramToUser(int user_id, int program_id)
+        public async Task<ActionResult> AddProgramToUser(int user_id, int program_id)
         {
             try
             {
-                _userToProgramManagment.AddProgramToUser(user_id, program_id);
+                await _userToProgramManagment.AddProgramToUser(user_id, program_id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -48,11 +48,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpDelete("remove_program_from_user/{user_id}")]
-        public ActionResult RemoveProgramFromUser(int user_id)
+        public async Task<ActionResult> RemoveProgramFromUser(int user_id)
         {
             try
             {
-                _userToProgramManagment.RemoveProgramFromUser(user_id);
+                await _userToProgramManagment.RemoveProgramFromUser(user_id);
                 return NoContent();
             }
             catch (Exception ex)

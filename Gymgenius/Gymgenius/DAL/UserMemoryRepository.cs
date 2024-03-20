@@ -6,33 +6,34 @@ namespace Gymgenius.bll
     public class UserMemoryRepository : IUserRepository
     {
         private List<User> _users = [];
-        public void AddUser(User user)
+        public Task AddUser(User user)
         {
             _users.Add(user);
+            return Task.CompletedTask;
         }
 
-        public void DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
-            _users.Remove(GetUserById(userId));
+            _users.Remove(await GetUserById(userId));
         }
-        public List<User> GetAllUsers()
+        public Task<List<User>> GetAllUsers()
         {
-            return _users;
-        }
-
-        public User GetUserById(int userId)
-        {
-            return _users.Find(u => u.Id == userId) ?? throw new Exception("User Not Found");    
+            return Task.FromResult(_users);
         }
 
-        public bool IsUserExists(int userId)
+        public Task<User> GetUserById(int userId)
         {
-            return _users.Any(u => u.Id == userId);
+            return Task.FromResult(_users.Find(u => u.Id == userId) ?? throw new Exception("User Not Found"));    
         }
 
-        public bool IsUserTrainer(int userId)
+        public Task<bool> IsUserExists(int userId)
         {
-            return GetUserById(userId).IsTrainer;
+            return Task.FromResult(_users.Any(u => u.Id == userId));
+        }
+
+        public async Task<bool> IsUserTrainer(int userId)
+        {
+            return (await GetUserById(userId)).IsTrainer;
         }
     }
 }
