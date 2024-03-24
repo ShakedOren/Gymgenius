@@ -1,35 +1,56 @@
+using Dapper;
 using Gymgenius.bo;
 using Gymgenius.dal;
+using System.Data.Common;
 
 public class UserMSSQLRepository : IUserRepository
 {
-    public UserMSSQLRepository()
-    {
+    readonly DapperContext _dapperContext;
 
+    public UserMSSQLRepository(DapperContext dapperContext)
+    {
+        this._dapperContext = dapperContext;
     }
 
-    public void AddUser(User user)
+    public async Task AddUser(User user)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Age, Email) VALUES (@UserName, @FirstName, @LastName, @Age, @Email)", user);
     }
 
-    public void DeleteUser(int userId)
+    public async Task DeleteUser(string userName)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        await connection.ExecuteAsync("DELETE FROM Users WHERE UserName = @UserName", new { UserName = userName });
     }
 
-    public List<User> GetAllUsers()
+    public async Task<List<User>> GetAllUsers()
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        return (await connection.QueryAsync<User>("SELECT * FROM Users")).ToList();
     }
 
-    public User GetUserById(int userId)
+    public async Task<User> GetUserById(string userName)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        return await connection.QueryFirstAsync<User>("SELECT * FROM Users WHERE UserName = @UserName", new { UserName = userName });
     }
 
-    public bool IsUserExists(int userId)
+    public async Task<bool> IsUserExists(string userName)
     {
-        throw new NotImplementedException();
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE UserName = @UserName) THEN 1 ELSE 0 END", new { UserName = userName });
+    }
+
+    public async Task<bool> IsUserTrainer(string userName)
+    {
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE UserName = @UserName and IsTrainer = 1) THEN 1 ELSE 0 END", new { UserName = userName});
     }
 }

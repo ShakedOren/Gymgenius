@@ -4,10 +4,10 @@ namespace Gymgenius.dal
 {
     public interface IExerciseRepository
     { 
-        Exercise GetExerciseByName(string name);
-        List<Exercise> GetAllExercises();
-        void AddExercise(Exercise exercise);
-        void DeleteExercise(string name);
-        bool IsExerciseExists(string name);
+        Task<Exercise> GetExerciseByName(string name);
+        Task<List<Exercise>> GetAllExercises();
+        Task AddExercise(Exercise exercise);
+        Task DeleteExercise(string name);
+        Task<bool> IsExerciseExists(string name);
     }
 }

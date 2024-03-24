@@ -5,7 +5,7 @@ namespace Gymgenius.bo
     public class Exercise
     {
         public required string Name { get; set; }
-        
+        public Exercise(){}
 
         [SetsRequiredMembers]
         public Exercise(string name)
