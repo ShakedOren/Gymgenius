@@ -14,8 +14,15 @@ namespace GymGenius.DAL
 
         public void DeleteExerciseFromProgram(Exercise exercise, TrainingProgram program)
         {
-            KeyValuePair<TrainingProgram, Exercise > pairToRemove = _exerciseToProgram.Find(p =>
+
+            if (!IsExerciseExistsInProgram(exercise, program))
+            {
+                throw new Exception("Excercise not in program");
+            }
+
+            var pairToRemove = _exerciseToProgram.Find(p =>
              p.Key.Id == program.Id && p.Value.Name == exercise.Name);
+
             _exerciseToProgram.Remove(pairToRemove);
         }
 
