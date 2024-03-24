@@ -32,12 +32,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpGet("get_program/{id}")]
-        public async Task<ActionResult<TrainingProgram>> GetProgram(int id)
+        [HttpGet("get_program/{program_name}")]
+        public async Task<ActionResult<TrainingProgram>> GetProgram(string program_name)
         {
             try
             {
-                return await _trainingManagment.GetTrainingProgramById(id);
+                return await _trainingManagment.GetTrainingProgramByName(program_name);
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace Gymgenius.Controllers
             try
             {
                 await _trainingManagment.AddTrainingProgram(trainingProgram);
-                return CreatedAtAction(nameof(GetProgram), new { id = trainingProgram.Id }, trainingProgram);
+                return CreatedAtAction(nameof(GetProgram), new { name = trainingProgram.Name }, trainingProgram);
             } 
             catch (Exception ex)
             {
@@ -59,12 +59,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpDelete("delete_program/{id}")]
-        public async Task<ActionResult> DeleteProgram(int id)
+        [HttpDelete("delete_program/{program_name}")]
+        public async Task<ActionResult> DeleteProgram(string program_name)
         {
             try
             {
-                await _trainingManagment.DeleteTrainingProgram(id);
+                await _trainingManagment.DeleteTrainingProgram(program_name);
                 return NoContent();
             }
             catch (Exception ex)

@@ -20,12 +20,12 @@ namespace Gymgenius.Controllers
             _exerciseToProgramManagment = exerciseToProgramManagment;
         }
 
-        [HttpGet("list_exercises/{id}")]
-        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllExerciseOfProgram(int id)
+        [HttpGet("list_exercises/{program_name}")]
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllExerciseOfProgram(string program_name)
         {
             try
             {
-                return await _exerciseToProgramManagment.GetAllExerciseOfProgram(id);
+                return await _exerciseToProgramManagment.GetAllExerciseOfProgram(program_name);
             }
             catch (Exception ex)
             {
@@ -34,11 +34,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("add_exercise_to_program/{exercise_name}/{program_id}")]
-        public async Task<ActionResult> AddExerciseToProgram(string exercise_name, int program_id)
+        public async Task<ActionResult> AddExerciseToProgram(string exercise_name, string program_name)
         {
             try
             {
-                await _exerciseToProgramManagment.AddExerciseToProgram(exercise_name, program_id);
+                await _exerciseToProgramManagment.AddExerciseToProgram(exercise_name, program_name);
                 return NoContent();
             }
             catch (Exception ex)
@@ -47,12 +47,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpDelete("delete_exercise_from_program/{exercise_name}/{program_id}")]
-        public async Task<ActionResult> DeleteExerciseFromProgram(string exercise_name, int program_id)
+        [HttpDelete("delete_exercise_from_program/{exercise_name}/{program_name}")]
+        public async Task<ActionResult> DeleteExerciseFromProgram(string exercise_name, string program_name)
         {
             try
             {
-                await _exerciseToProgramManagment.DeleteExerciseFromProgram(exercise_name, program_id);
+                await _exerciseToProgramManagment.DeleteExerciseFromProgram(exercise_name, program_name);
                 return NoContent();
             }
             catch (Exception ex)

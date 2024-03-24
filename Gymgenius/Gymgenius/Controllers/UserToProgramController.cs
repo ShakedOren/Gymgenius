@@ -33,12 +33,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpGet("add_program_to_user/{username}/{program_id}")]
-        public async Task<ActionResult> AddProgramToUser(string username, int program_id)
+        [HttpGet("add_program_to_user/{username}/{program_name}")]
+        public async Task<ActionResult> AddProgramToUser(string username, string program_name)
         {
             try
             {
-                await _userToProgramManagment.AddProgramToUser(username, program_id);
+                await _userToProgramManagment.AddProgramToUser(username, program_name);
                 return NoContent();
             }
             catch (Exception ex)

@@ -5,10 +5,10 @@ namespace GymGenius.DAL
 {
     public interface ITrainingProgramRepository
     {
-        Task<TrainingProgram> GetTrainingProgramById(int trainingProgramId);
+        Task<TrainingProgram> GetTrainingProgramByName(string trainingProgramName);
         Task<List<TrainingProgram>> GetAllTrainingPrograms();
         Task AddTrainingProgram(TrainingProgram trainingProgram);
-        Task DeleteTrainingProgram(int trainingProgramId);
-        Task<bool> IsTrainingProgramExists(int trainingProgramId);
+        Task DeleteTrainingProgram(string trainingProgramName);
+        Task<bool> IsTrainingProgramExists(string trainingProgramName);
     }
 }

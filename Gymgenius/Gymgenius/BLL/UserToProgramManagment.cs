@@ -17,10 +17,10 @@ namespace GymGenius.BLL
             _trainingProgramRepository = rainingProgramRepository;
         }
 
-        public async Task AddProgramToUser(string userName, int programId)
+        public async Task AddProgramToUser(string userName, string programName)
         {
-            var user = await _userRepository.GetUserById(userName);
-            var program = await _trainingProgramRepository.GetTrainingProgramById(programId);
+            var user = await _userRepository.GetUserByUsername(userName);
+            var program = await _trainingProgramRepository.GetTrainingProgramByName(programName);
             if (await _userToProgramRepository.IsUserHaveProgram(user))
             {
                 throw new Exception("User already have program.");
@@ -31,12 +31,12 @@ namespace GymGenius.BLL
 
         public async Task<TrainingProgram> GetUserProgram(string userName)
         {
-            return await _userToProgramRepository.GetUserProgram(await _userRepository.GetUserById(userName));
+            return await _userToProgramRepository.GetUserProgram(await _userRepository.GetUserByUsername(userName));
         }
 
         public async Task RemoveProgramFromUser(string userName)
         {
-            var user = await _userRepository.GetUserById(userName);
+            var user = await _userRepository.GetUserByUsername(userName);
             if (!await _userToProgramRepository.IsUserHaveProgram(user))
             {
                 throw new Exception("No program found for user.");

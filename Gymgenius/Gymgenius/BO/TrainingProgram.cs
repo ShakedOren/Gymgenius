@@ -6,13 +6,11 @@ namespace GymGenius.BO
 {
     public class TrainingProgram
     {
-        public required int Id { get; set; }
         public string Name { get; set; }
-        public TrainingProgram(){}
 
-        public TrainingProgram(int id, string name)
+        [SetsRequiredMembers]
+        public TrainingProgram(string name)
         {
-            Id = id;
             Name = name;
         }
     }

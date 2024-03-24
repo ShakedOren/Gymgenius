@@ -17,7 +17,7 @@ namespace GymGenius.DAL
         {
             using var connection = _dapperContext.CreateConnection();
             connection.Open();
-            await connection.ExecuteAsync("INSERT INTO UserToTrainingProgram (ProgramId, UserId) VALUES (@ProgramId, @UserName)", new { ProgramId = program.Id, UserName = user.UserName });
+            await connection.ExecuteAsync("INSERT INTO UserToTrainingProgram (ProgramName, UserName) VALUES (@ProgramName, @UserName)", new { ProgramName = program.Name, UserName = user.UserName });
         }
 
         public async Task<TrainingProgram> GetUserProgram(User user)

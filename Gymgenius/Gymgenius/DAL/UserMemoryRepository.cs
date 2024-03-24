@@ -14,14 +14,14 @@ namespace Gymgenius.bll
 
         public async Task DeleteUser(string userName)
         {
-            _users.Remove(await GetUserById(userName));
+            _users.Remove(await GetUserByUsername(userName));
         }
         public Task<List<User>> GetAllUsers()
         {
             return Task.FromResult(_users);
         }
 
-        public Task<User> GetUserById(string userName)
+        public Task<User> GetUserByUsername(string userName)
         {
             return Task.FromResult(_users.Find(u => u.UserName == userName) ?? throw new Exception("User Not Found"));    
         }
@@ -33,7 +33,7 @@ namespace Gymgenius.bll
 
         public async Task<bool> IsUserTrainer(string userName)
         {
-            return (await GetUserById(userName)).IsTrainer;
+            return (await GetUserByUsername(userName)).IsTrainer;
         }
     }
 }

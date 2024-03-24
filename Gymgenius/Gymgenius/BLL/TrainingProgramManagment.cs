@@ -13,15 +13,15 @@ namespace Gymgenius.bo
             _programs = programs;
         }
 
-        public async Task<TrainingProgram> GetTrainingProgramById(int trainingProgramId)
+        public async Task<TrainingProgram> GetTrainingProgramByName(string trainingProgramName)
         {
 
-            if (!await _programs.IsTrainingProgramExists(trainingProgramId))
+            if (!await _programs.IsTrainingProgramExists(trainingProgramName))
             {
                 throw new Exception("No program found.");
             }
 
-            return await _programs.GetTrainingProgramById(trainingProgramId);
+            return await _programs.GetTrainingProgramByName(trainingProgramName);
         }
 
         public async Task<List<TrainingProgram>> GetAllTrainingPrograms()
@@ -34,19 +34,19 @@ namespace Gymgenius.bo
             await _programs.AddTrainingProgram(trainingProgram);
         }
 
-        public async Task DeleteTrainingProgram(int trainingProgramId)
+        public async Task DeleteTrainingProgram(string trainingProgramName)
         {
-            if (!await _programs.IsTrainingProgramExists(trainingProgramId))
+            if (!await _programs.IsTrainingProgramExists(trainingProgramName))
             {
                 throw new Exception("No program found.");
             }
 
-            await _programs.DeleteTrainingProgram(trainingProgramId);
+            await _programs.DeleteTrainingProgram(trainingProgramName);
         }
 
-        public async Task<bool> IsTrainingProgramExists(int trainingProgramId) 
+        public async Task<bool> IsTrainingProgramExists(string trainingProgramName) 
         {
-            return await _programs.IsTrainingProgramExists(trainingProgramId);
+            return await _programs.IsTrainingProgramExists(trainingProgramName);
         }
     }
 }

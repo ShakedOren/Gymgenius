@@ -15,8 +15,15 @@ namespace GymGenius.DAL
 
         public Task DeleteExerciseFromProgram(Exercise exercise, TrainingProgram program)
         {
-            KeyValuePair<TrainingProgram, Exercise > pairToRemove = _exerciseToProgram.Find(p =>
-             p.Key.Id == program.Id && p.Value.Name == exercise.Name);
+
+            if (!IsExerciseExistsInProgram(exercise, program).Result)
+            {
+                throw new Exception("Excercise not in program");
+            }
+
+            var pairToRemove = _exerciseToProgram.Find(p =>
+             p.Key.Name == program.Name && p.Value.Name == exercise.Name);
+
             _exerciseToProgram.Remove(pairToRemove);
             return Task.CompletedTask;
         }
@@ -24,14 +31,14 @@ namespace GymGenius.DAL
         public Task<List<Exercise>> GetAllExerciseOfProgram(TrainingProgram program)
         {
             return Task.FromResult(_exerciseToProgram
-                .Where(p => p.Key.Id == program.Id)
+                .Where(p => p.Key.Name == program.Name)
                 .Select(p => p.Value)
                 .ToList());
         }
 
         public Task<bool> IsExerciseExistsInProgram(Exercise exercise, TrainingProgram program)
         {
-            return Task.FromResult(_exerciseToProgram.Any(p => p.Key.Id == program.Id && p.Value.Name == exercise.Name));
+            return Task.FromResult(_exerciseToProgram.Any(p => p.Key.Name == program.Name && p.Value.Name == exercise.Name));
         }
     }
 }

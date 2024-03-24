@@ -33,7 +33,7 @@ public class UserMSSQLRepository : IUserRepository
         return (await connection.QueryAsync<User>("SELECT * FROM Users")).ToList();
     }
 
-    public async Task<User> GetUserById(string userName)
+    public async Task<User> GetUserByUsername(string userName)
     {
         using var connection = _dapperContext.CreateConnection();
         connection.Open();

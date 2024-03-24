@@ -13,9 +13,9 @@ namespace GymGenius.DAL
             return Task.CompletedTask;
         }
 
-        public async Task DeleteTrainingProgram(int trainingProgramId)
+        public async Task DeleteTrainingProgram(string trainingProgramName)
         {
-            _programs.Remove(await GetTrainingProgramById(trainingProgramId));
+            _programs.Remove(await GetTrainingProgramByName(trainingProgramName));
         }
 
         public Task<List<TrainingProgram>> GetAllTrainingPrograms()
@@ -23,14 +23,14 @@ namespace GymGenius.DAL
             return Task.FromResult(_programs);
         }
 
-        public Task<TrainingProgram> GetTrainingProgramById(int trainingProgramId)
+        public Task<TrainingProgram> GetTrainingProgramByName(string trainingProgramName)
         {
-            return Task.FromResult(_programs.Find(u => u.Id == trainingProgramId) ?? throw new Exception("Program Not Found"));
+            return Task.FromResult(_programs.Find(u => u.Name == trainingProgramName) ?? throw new Exception("Program Not Found"));
         }
 
-        public Task<bool> IsTrainingProgramExists(int trainingProgramId)
+        public Task<bool> IsTrainingProgramExists(string trainingProgramName)
         {
-            return Task.FromResult(_programs.Any(u => u.Id == trainingProgramId));
+            return Task.FromResult(_programs.Any(u => u.Name == trainingProgramName));
         }
     }
 }

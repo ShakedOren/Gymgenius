@@ -4,7 +4,7 @@ namespace Gymgenius.dal
 {
     public interface IUserRepository
     { 
-        Task<User> GetUserById(string userName);
+        Task<User> GetUserByUsername(string userName);
         Task<List<User>> GetAllUsers();
         Task AddUser(User user);
         Task DeleteUser(string userName);

@@ -40,7 +40,7 @@ namespace Gymgenius.bo
                 throw new Exception("No users found.");
             }
 
-            return await _users.GetUserById(userName);
+            return await _users.GetUserByUsername(userName);
         }
 
         public async Task<bool> IsUserExists(string userName)
