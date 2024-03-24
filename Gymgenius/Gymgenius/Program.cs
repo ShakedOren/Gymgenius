@@ -19,10 +19,10 @@ builder.Services.AddSingleton<UserToProgramManagment>();
 
 //builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
 builder.Services.AddSingleton<IUserRepository, UserMSSQLRepository>();
-builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
-builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
-builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>();
-builder.Services.AddSingleton<IUserToProgramRepository, UserToProgramMemoryRepository>();
+builder.Services.AddSingleton<IExerciseRepository, ExerciseMSSQLRepository>();
+builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMSSQLRepository>();
+builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMSSQLRepository>();
+builder.Services.AddSingleton<IUserToProgramRepository, UserToProgramMSSQLRepository>();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -18,46 +18,66 @@ GO
 IF DB_ID(N'GymGenius') IS NOT NULL
 BEGIN
     -- Truncate existing tables if they exist and then create them
-    IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Exercise' AND schema_id = SCHEMA_ID('dbo'))
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Exercises' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
-        CREATE TABLE dbo.Exercise (
-          Name NVARCHAR(50) NOT NULL PRIMARY KEY,
-          DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL
-        );
-    END
-    ELSE
-    BEGIN
-        TRUNCATE TABLE dbo.Exercise;
+        DROP TABLE Exercises;
     END
 
-    IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
-    BEGIN
-        CREATE TABLE dbo.Users (
-          Id INT IDENTITY PRIMARY KEY NOT NULL,
-          DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
-          FirstName VARCHAR(50) NOT NULL,
-          LastName VARCHAR(50) NOT NULL,
-          Age INT,
-          Email VARCHAR(255),
-          IsTrainer bit NULL
-        );
-    END
-    ELSE
-    BEGIN
-        TRUNCATE TABLE dbo.Users;
-    END
+    CREATE TABLE dbo.Exercises (
+        Name NVARCHAR(50) NOT NULL PRIMARY KEY,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL
+    );
 
-    IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TrainingProgram' AND schema_id = SCHEMA_ID('dbo'))
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
-        CREATE TABLE dbo.TrainingProgram (
-          Id INT IDENTITY PRIMARY KEY NOT NULL,
-          DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
-          Name NVARCHAR(255) NOT NULL,
-          Description NVARCHAR(MAX)
-        );
+        DROP TABLE Users;
     END
-    ELSE
+    
+    CREATE TABLE dbo.Users (
+        Id INT IDENTITY NOT NULL,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+        UserName NVARCHAR(50) PRIMARY KEY NOT NULL,
+        FirstName NVARCHAR(50) NOT NULL,
+        LastName NVARCHAR(50) NOT NULL,
+        Age INT,
+        Email VARCHAR(255),
+        IsTrainer bit NULL
+    );
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TrainingPrograms' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
-        TRUNCATE TABLE dbo.TrainingProgram;
+        DROP TABLE TrainingPrograms;
     END
+    CREATE TABLE dbo.TrainingPrograms (
+        Id INT IDENTITY NOT NULL,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+        TrainingProgramName NVARCHAR(50) PRIMARY KEY NOT NULL,
+        Name NVARCHAR(255) NOT NULL,
+        Description NVARCHAR(MAX)
+    );
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ExerciseToTrainingProgram' AND schema_id = SCHEMA_ID('dbo'))
+    BEGIN
+        DROP TABLE ExerciseToTrainingProgram;
+    END
+    CREATE TABLE dbo.ExerciseToTrainingProgram (
+        Id INT PRIMARY KEY NOT NULL,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+        ProgramId INT FOREIGN KEY REFERENCES TrainingPrograms(Id),
+        ExerciseName NVARCHAR(50) FOREIGN KEY REFERENCES Exercises(Name)
+    );
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'UserToTrainingProgram' AND schema_id = SCHEMA_ID('dbo'))
+    BEGIN
+        DROP TABLE UserToTrainingProgram;
+    END
+   CREATE TABLE dbo.UserToTrainingProgram (
+        Id INT PRIMARY KEY NOT NULL,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+        ProgramId INT NOT NULL,
+        UserId INT NOT NULL,
+        FOREIGN KEY (ProgramId) REFERENCES dbo.TrainingPrograms(Id),
+        FOREIGN KEY (UserId) REFERENCES dbo.Users(Id)
+    );
 END
