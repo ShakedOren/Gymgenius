@@ -64,7 +64,7 @@ BEGIN
     CREATE TABLE dbo.ExerciseToTrainingProgram (
         Id INT PRIMARY KEY NOT NULL,
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
-        ProgramId INT FOREIGN KEY REFERENCES TrainingPrograms(Id),
+        TrainingProgramName NVARCHAR(50) FOREIGN KEY REFERENCES TrainingPrograms(TrainingProgramName),
         ExerciseName NVARCHAR(50) FOREIGN KEY REFERENCES Exercises(Name)
     );
 
@@ -75,9 +75,9 @@ BEGIN
    CREATE TABLE dbo.UserToTrainingProgram (
         Id INT PRIMARY KEY NOT NULL,
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
-        ProgramId INT NOT NULL,
-        UserId INT NOT NULL,
-        FOREIGN KEY (ProgramId) REFERENCES dbo.TrainingPrograms(Id),
-        FOREIGN KEY (UserId) REFERENCES dbo.Users(Id)
+        TrainingProgramName NVARCHAR(50) NOT NULL,
+        UserName NVARCHAR(50) NOT NULL,
+        FOREIGN KEY (TrainingProgramName) REFERENCES dbo.TrainingPrograms(TrainingProgramName),
+        FOREIGN KEY (UserName) REFERENCES dbo.Users(UserName)
     );
 END

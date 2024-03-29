@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Globalization;
 using Gymgenius.bo;
 using Gymgenius.dal;
 
@@ -21,7 +23,8 @@ namespace Gymgenius.Tests
 
             CollectionAssert.AreEqual(new List<Exercise>(), _exerciseRepository.GetAllExercises().Result);
             _exerciseRepository.AddExercise(e1);
-            CollectionAssert.AreEqual(new List<Exercise>() { e1 }, _exerciseRepository.GetAllExercises().Result);
+            var result = _exerciseRepository.GetAllExercises().Result;
+            CollectionAssert.AreEqual(new List<Exercise>() { e1 }, result, new Comparer(CultureInfo.CurrentCulture));
             _exerciseRepository.AddExercise(e2);
             CollectionAssert.AreEqual(new List<Exercise>() { e1, e2}, _exerciseRepository.GetAllExercises().Result);
             _exerciseRepository.AddExercise(e3);

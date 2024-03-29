@@ -1,6 +1,7 @@
 ﻿using Gymgenius.bll;
 using Gymgenius.dal;
 using GymGenius.DAL;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,18 @@ namespace Gymgenius.Tests
     {
         private static IServiceProvider Provider()
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appSettings.json", false)
+                .Build();
+
             var services = new ServiceCollection();
-            services.AddSingleton<IUserRepository, UserMemoryRepository>().
-            AddSingleton<IExerciseRepository, ExerciseMemoryRepository>().
-            AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>().
-            AddSingleton<IUserToProgramRepository, UserToProgramMemoryRepository>().
-            AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
+            services.AddSingleton<IConfiguration>(configuration);
+            services.AddSingleton<DapperContext>();
+            services.AddSingleton<IUserRepository, UserMSSQLRepository>();
+            services.AddSingleton<IExerciseRepository, ExerciseMSSQLRepository>();
+            services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMSSQLRepository>();
+            services.AddSingleton<IUserToProgramRepository, UserToProgramMSSQLRepository>();
+            services.AddSingleton<ITrainingProgramRepository, TrainingProgramMSSQLRepository>();
 
             return services.BuildServiceProvider();
         }

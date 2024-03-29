@@ -16,5 +16,18 @@ namespace Gymgenius.bo
         {
             return $"Exercise Name: {Name}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is Exercise other)
+            {
+                return Name.Equals(other.Name);
+            }
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }
