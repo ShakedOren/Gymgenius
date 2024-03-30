@@ -7,24 +7,26 @@ namespace GymGenius.DAL
     {
         private Dictionary<User, TrainingProgram> userToProgram = [];
 
-        public void AddProgramToUser(User user, TrainingProgram program)
+        public Task AddProgramToUser(User user, TrainingProgram program)
         {
             userToProgram.Add(user, program);
+            return Task.CompletedTask;
         }
 
-        public TrainingProgram GetUserProgram(User user)
+        public Task<TrainingProgram> GetUserProgram(User user)
         {
-            return userToProgram[user];
+            return Task.FromResult(userToProgram[user]);
         }
 
-        public bool IsUserHaveProgram(User user)
+        public Task<bool> IsUserHaveProgram(User user)
         {
-            return userToProgram.ContainsKey(user);
+            return Task.FromResult(userToProgram.ContainsKey(user));
         }
 
-        public void RemoveProgramFromUser(User user)
+        public Task RemoveProgramFromUser(User user)
         {
             userToProgram.Remove(user);
+            return Task.CompletedTask;
         }
     }
 }

@@ -13,40 +13,40 @@ namespace Gymgenius.bo
             _exercises = exercises;
         }
 
-        public Exercise GetExerciseByName(string name)
+        public async Task<Exercise> GetExerciseByName(string name)
         {
-            if (!_exercises.IsExerciseExists(name))
+            if (!await _exercises.IsExerciseExists(name))
             {
                 throw new Exception("No exercise found.");
             }
 
-            return _exercises.GetExerciseByName(name);
+            return await _exercises.GetExerciseByName(name);
         }
 
-        public List<Exercise> GetAllExercises()
+        public async Task<List<Exercise>> GetAllExercises()
         {
-            return _exercises.GetAllExercises();
+            return await _exercises.GetAllExercises();
         }
 
-        public void AddExercise(Exercise exercise)
+        public async Task AddExercise(Exercise exercise)
         {
-            _exercises.AddExercise(exercise);
+            await _exercises.AddExercise(exercise);
         }
 
-        public void DeleteExercise(string name)
+        public async Task DeleteExercise(string name)
         {
 
-            if (!_exercises.IsExerciseExists(name))
+            if (!await _exercises.IsExerciseExists(name))
             {
                 throw new Exception("No exercise found.");
             }
 
-            _exercises.DeleteExercise(name);
+            await _exercises.DeleteExercise(name);
         }
 
-        public bool IsExerciseExists(string name)
+        public async Task<bool> IsExerciseExists(string name)
         {
-            return _exercises.IsExerciseExists(name);
+            return await _exercises.IsExerciseExists(name);
         }
     }
 }

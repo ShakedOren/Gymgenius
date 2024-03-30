@@ -13,39 +13,39 @@ namespace Gymgenius.bo
             _users = users;
         }
 
-        public void AddUser(User user)
+        public async Task AddUser(User user)
         {
-            _users.AddUser(user);
+            await _users.AddUser(user);
         }
 
-        public void DeleteUser(int userId)
+        public async Task DeleteUser(string userName)
         {
-            if (!_users.IsUserExists(userId))
+            if (!await _users.IsUserExists(userName))
             {
                 throw new Exception("No users found.");
             }
 
-            _users.DeleteUser(userId);
+            await _users.DeleteUser(userName);
         }
 
-        public List<User> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            return _users.GetAllUsers();
+            return await _users.GetAllUsers();
         }
 
-        public User GetUserById(int userId)
+        public async Task<User> GetUserById(string userName)
         {
-            if (!_users.IsUserExists(userId))
+            if (!await _users.IsUserExists(userName))
             {
                 throw new Exception("No users found.");
             }
 
-            return _users.GetUserById(userId);
+            return await _users.GetUserByUsername(userName);
         }
 
-        public bool IsUserExists(int userId)
+        public async Task<bool> IsUserExists(string userName)
         {
-            return _users.IsUserExists(userId);
+            return await _users.IsUserExists(userName);
         }
     }
 }

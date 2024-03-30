@@ -20,12 +20,12 @@ namespace Gymgenius.Controllers
             _userToProgramManagment = userToProgramManagment;
         }
 
-        [HttpGet("get_user_program/{id}")]
-        public ActionResult<TrainingProgram> GetUserProgram(int id)
+        [HttpGet("get_user_program/{username}")]
+        public async Task<ActionResult<TrainingProgram>> GetUserProgram(string username)
         {
             try
             {
-                return _userToProgramManagment.GetUserProgram(id);
+                return await _userToProgramManagment.GetUserProgram(username);
             }
             catch (Exception ex)
             {
@@ -33,12 +33,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpGet("add_program_to_user/{user_id}/{program_id}")]
-        public ActionResult AddProgramToUser(int user_id, int program_id)
+        [HttpGet("add_program_to_user/{username}/{program_name}")]
+        public async Task<ActionResult> AddProgramToUser(string username, string program_name)
         {
             try
             {
-                _userToProgramManagment.AddProgramToUser(user_id, program_id);
+                await _userToProgramManagment.AddProgramToUser(username, program_name);
                 return NoContent();
             }
             catch (Exception ex)
@@ -47,12 +47,12 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpDelete("remove_program_from_user/{user_id}")]
-        public ActionResult RemoveProgramFromUser(int user_id)
+        [HttpDelete("remove_program_from_user/{username}")]
+        public async Task<ActionResult> RemoveProgramFromUser(string username)
         {
             try
             {
-                _userToProgramManagment.RemoveProgramFromUser(user_id);
+                await _userToProgramManagment.RemoveProgramFromUser(username);
                 return NoContent();
             }
             catch (Exception ex)

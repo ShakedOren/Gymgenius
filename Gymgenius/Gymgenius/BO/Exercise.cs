@@ -5,7 +5,7 @@ namespace Gymgenius.bo
     public class Exercise
     {
         public required string Name { get; set; }
-        
+        public Exercise(){}
 
         [SetsRequiredMembers]
         public Exercise(string name)
@@ -15,6 +15,21 @@ namespace Gymgenius.bo
         public override string ToString()
         {
             return $"Exercise Name: {Name}";
+        }
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Exercise)obj);
+        }
+        protected bool Equals(Exercise other)
+        {
+            return Name.Equals(other.Name);
+        }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

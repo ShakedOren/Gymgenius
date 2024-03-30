@@ -6,12 +6,30 @@ namespace GymGenius.BO
 {
     public class TrainingProgram
     {
-        public required int Id { get; set; }
+        public string Name { get; set; }
 
         [SetsRequiredMembers]
-        public TrainingProgram(int id)
+        public TrainingProgram(string name)
         {
-            Id = id;
+            Name = name;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TrainingProgram)obj);
+        }
+
+        protected bool Equals(TrainingProgram other)
+        {
+            return Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

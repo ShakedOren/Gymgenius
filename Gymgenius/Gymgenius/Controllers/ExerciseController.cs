@@ -20,11 +20,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("list_exercises")]
-        public ActionResult<IEnumerable<Exercise>> GetAllExercises()
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllExercises()
         {
             try
             {
-                return _exerciseManagment.GetAllExercises();
+                return await _exerciseManagment.GetAllExercises();
             }
             catch (Exception ex)
             {
@@ -33,11 +33,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpGet("get_exercise/{exercise}")]
-        public ActionResult<Exercise> GetExercise(string exercise)
+        public async Task<ActionResult<Exercise>> GetExercise(string exercise)
         {
             try
             {
-                return _exerciseManagment.GetExerciseByName(exercise);
+                return await _exerciseManagment.GetExerciseByName(exercise);
             }
             catch (Exception ex)
             {
@@ -46,11 +46,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpPost("add_exercise")]
-        public ActionResult<Exercise> AddExercise(Exercise exercise)
+        public async Task<ActionResult<Exercise>> AddExercise(Exercise exercise)
         {
             try
             {
-                _exerciseManagment.AddExercise(exercise);
+                await _exerciseManagment.AddExercise(exercise);
                 return CreatedAtAction(nameof(GetExercise), new { exercise = exercise.Name }, exercise);
             }
             catch (Exception ex)
@@ -60,11 +60,11 @@ namespace Gymgenius.Controllers
         }
 
         [HttpDelete("delete_exercise/{name}")]
-        public ActionResult DeleteExercise(string name)
+        public async Task<ActionResult> DeleteExercise(string name)
         {
             try
             {
-                _exerciseManagment.DeleteExercise(name);
+                await _exerciseManagment.DeleteExercise(name);
                 return NoContent();
             }
             catch (Exception ex)
