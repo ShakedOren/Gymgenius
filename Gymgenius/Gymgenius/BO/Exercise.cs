@@ -16,14 +16,16 @@ namespace Gymgenius.bo
         {
             return $"Exercise Name: {Name}";
         }
-
         public override bool Equals(object? obj)
         {
-            if (obj is Exercise other)
-            {
-                return Name.Equals(other.Name);
-            }
-            return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Exercise)obj);
+        }
+        protected bool Equals(Exercise other)
+        {
+            return Name.Equals(other.Name);
         }
         public override int GetHashCode()
         {

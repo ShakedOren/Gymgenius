@@ -16,18 +16,12 @@ namespace Gymgenius.Tests
     {
         private static IServiceProvider Provider()
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appSettings.json", false)
-                .Build();
-
             var services = new ServiceCollection();
-            services.AddSingleton<IConfiguration>(configuration);
-            services.AddSingleton<DapperContext>();
-            services.AddSingleton<IUserRepository, UserMSSQLRepository>();
-            services.AddSingleton<IExerciseRepository, ExerciseMSSQLRepository>();
-            services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMSSQLRepository>();
-            services.AddSingleton<IUserToProgramRepository, UserToProgramMSSQLRepository>();
-            services.AddSingleton<ITrainingProgramRepository, TrainingProgramMSSQLRepository>();
+            services.AddSingleton<IUserRepository, UserMemoryRepository>();
+            services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
+            services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMemoryRepository>();
+            services.AddSingleton<IUserToProgramRepository, UserToProgramMemoryRepository>();
+            services.AddSingleton<ITrainingProgramRepository, TrainingProgramMemoryRepository>();
 
             return services.BuildServiceProvider();
         }

@@ -23,6 +23,24 @@ namespace Gymgenius.bo
             IsTrainer = isTrainer;
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((User)obj);
+        }
+
+        protected bool Equals(User other)
+            {
+            return UserName == other.UserName;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(UserName, FirstName, LastName, Age, Email, IsTrainer);
+        }
+
         public override string ToString()
         {
             return $"UserName: {UserName}, User Name: {FirstName} {LastName}, Email: {Email}";
