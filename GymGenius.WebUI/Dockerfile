@@ -12,11 +12,11 @@ COPY ["GymGenius.WebUI.csproj", "GymGenius.WebUI/"]
 RUN dotnet restore "./GymGenius.WebUI/GymGenius.WebUI.csproj"
 COPY . .
 WORKDIR "/src/GymGenius.WebUI"
-RUN dotnet build "./GymGenius.WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "GymGenius.WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GymGenius.WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "GymGenius.WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

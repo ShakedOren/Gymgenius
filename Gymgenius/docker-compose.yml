@@ -38,7 +38,7 @@ services:
   gymgenius.webui:
     image: ${DOCKER_REGISTRY-}gymgeniuswebui
     build:
-      context: .
+      context: ../GymGenius.WebUI
       dockerfile: ../GymGenius.WebUI/Dockerfile
     ports:
       - "8080:8080"
