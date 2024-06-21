@@ -1,4 +1,5 @@
 using GymGenius.WebUI.Components;
+using GymGenius.WebUI.Services;
 
 namespace GymGenius.WebUI
 {
@@ -11,6 +12,8 @@ namespace GymGenius.WebUI
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://gymgenius_api") });
+            builder.Services.AddScoped<ApiService>();
 
             var app = builder.Build();
 

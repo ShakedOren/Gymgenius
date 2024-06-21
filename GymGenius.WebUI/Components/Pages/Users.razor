@@ -1,0 +1,63 @@
+﻿@page "/users"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h3>Users</h3>
+
+@if (users == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Username</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+			<th>Actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var user in users)
+		{
+			<tr>
+				<td>
+					<a @onclick="() => NavigateToUserDetails(user.UserName)" style="cursor:pointer">@user.UserName</a>
+				</td>
+				<td>@user.FirstName</td>
+				<td>@user.LastName</td>
+				<td>@user.Email</td>
+				<td>
+					<button @onclick="() => DeleteUser(user.UserName)" class="btn btn-danger">Delete</button>
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+@code {
+	private IEnumerable<User> users;
+
+	protected override async Task OnInitializedAsync()
+	{
+		users = await ApiService.GetUsersAsync();
+	}
+
+	private async Task DeleteUser(string username)
+	{
+		await ApiService.DeleteUserAsync(username);
+		users = await ApiService.GetUsersAsync(); // Refresh the list
+	}
+
+	private void NavigateToUserDetails(string username)
+	{
+		Navigation.NavigateTo($"/user/{username}");
+	}
+}

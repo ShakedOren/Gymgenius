@@ -1,0 +1,35 @@
+﻿@page "/user/{username}"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>User Details</h3>
+
+@if (user == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <p><strong>Username:</strong> @user.UserName</p>
+        <p><strong>First Name:</strong> @user.FirstName</p>
+        <p><strong>Last Name:</strong> @user.LastName</p>
+        <p><strong>Email:</strong> @user.Email</p>
+        <p><strong>Age:</strong> @user.Age</p>
+        <p><strong>Is Trainer:</strong> @user.IsTrainer</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string username { get; set; }
+
+    private User user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await ApiService.GetUserAsync(username);
+    }
+}

@@ -1,0 +1,30 @@
+﻿@page "/exercise/{exerciseName}"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>Exercise Details</h3>
+
+@if (exercise == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div>
+		<p><strong>Name:</strong> @exercise.Name</p>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public string exerciseName { get; set; }
+
+	private Exercise exercise;
+
+	protected override async Task OnInitializedAsync()
+	{
+		exercise = await ApiService.GetExerciseAsync(exerciseName);
+	}
+}

@@ -1,0 +1,57 @@
+﻿@page "/exercises"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h3>Exercises</h3>
+
+@if (exercises == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var exercise in exercises)
+		{
+			<tr>
+				<td>
+					<a @onclick="() => NavigateToExerciseDetails(exercise.Name)" style="cursor:pointer">@exercise.Name</a>
+				</td>
+				<td>
+					<button @onclick="() => DeleteExercise(exercise.Name)" class="btn btn-danger">Delete</button>
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+@code {
+	private IEnumerable<Exercise> exercises;
+
+	protected override async Task OnInitializedAsync()
+	{
+		exercises = await ApiService.GetExercisesAsync();
+	}
+
+	private async Task DeleteExercise(string name)
+	{
+		await ApiService.DeleteExerciseAsync(name);
+		exercises = await ApiService.GetExercisesAsync(); // Refresh the list
+	}
+
+	private void NavigateToExerciseDetails(string name)
+	{
+		Navigation.NavigateTo($"/exercise/{name}");
+	}
+}
