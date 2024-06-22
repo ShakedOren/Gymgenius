@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Gymgenius.bo;
+using GymGenius.BO;
 
 namespace GymGenius.WebUI.Services
 {
@@ -47,5 +48,27 @@ namespace GymGenius.WebUI.Services
         {
 	        await httpClient.DeleteAsync($"/User/delete_user/{username}");
         }
-	}
+        // User Methods
+        public async Task<string> LoginAsync(User userLoginDto)
+        {
+            var response = await httpClient.PostAsJsonAsync("/Auth/login", userLoginDto);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                return result;
+            }
+            return null;
+        }
+
+        public async Task SignupAsync(User userSignupDto)
+        {
+            await httpClient.PostAsJsonAsync("/Auth/signup", userSignupDto);
+        }
+
+        public async Task<string> GetUserRoleAsync(string username)
+        {
+            var response = await httpClient.GetFromJsonAsync<Role>($"/Auth/user-role/{username}");
+            return response.RoleName;
+        }
+    }
 }
