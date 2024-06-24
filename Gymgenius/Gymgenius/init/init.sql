@@ -29,6 +29,20 @@ BEGIN
     );
 
 
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Roles' AND schema_id = SCHEMA_ID('dbo'))
+    BEGIN
+        DROP TABLE Roles;
+    END
+    
+    CREATE TABLE Roles (
+        RoleId INT PRIMARY KEY IDENTITY,
+        RoleName NVARCHAR(50) NOT NULL
+    );
+
+    INSERT INTO Roles (RuleName) VALUES ('Admin');
+
+    INSERT INTO Roles (RuleName) VALUES ('User');
+
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         DROP TABLE Users;
@@ -40,9 +54,12 @@ BEGIN
         UserName NVARCHAR(50) PRIMARY KEY NOT NULL,
         FirstName NVARCHAR(50) NOT NULL,
         LastName NVARCHAR(50) NOT NULL,
+        Password NVARCHAR(255) NOT NULL,
         Age INT,
         Email VARCHAR(255),
-        IsTrainer bit NULL
+        RoleId INT NOT NULL,
+        IsTrainer bit NULL,
+        FOREIGN KEY (RoleId) REFERENCES Roles(RoleId)
     );
 
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TrainingPrograms' AND schema_id = SCHEMA_ID('dbo'))

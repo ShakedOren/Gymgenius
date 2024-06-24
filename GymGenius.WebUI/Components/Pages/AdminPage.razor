@@ -1,0 +1,15 @@
+﻿// Pages/AdminPage.razor
+@page "/admin"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>Admin Only Content</h3>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>This content is only visible to users with the Admin role.</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized to view this content.</p>
+    </NotAuthorized>
+</AuthorizeView>

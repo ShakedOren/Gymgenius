@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using Blazored.LocalStorage;
 
 namespace GymGenius.WebUI.Services
 {
@@ -9,23 +10,26 @@ namespace GymGenius.WebUI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ApiService _apiService;
+        private readonly ILocalStorageService _localStorage;
 
-        public CustomAuthenticationStateProvider(HttpClient httpClient, ApiService apiService)
+        public CustomAuthenticationStateProvider(HttpClient httpClient, ApiService apiService, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
             _apiService = apiService;
+            _localStorage = localStorage;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _apiService.GetTokenAsync();
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+
             if (string.IsNullOrEmpty(token))
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var username = await _apiService.GetUsernameFromTokenAsync(token);
+            var username = await GetUsernameFromTokenAsync();
 
             var claims = new List<Claim>
         {
@@ -40,7 +44,14 @@ namespace GymGenius.WebUI.Services
 
             return new AuthenticationState(user);
         }
+        public async Task<string> GetUsernameFromTokenAsync()
+        {
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            var claims = ParseClaimsFromJwt(token);
+            var usernameClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
+            return usernameClaim?.Value;
+        }
         public void NotifyUserAuthentication(string token)
         {
             var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"));

@@ -1,0 +1,87 @@
+﻿@page "/signup"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<h3>Sign Up</h3>
+
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit" FormName="signUpForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="userName" class="form-label">Username</label>
+        <InputText id="userName" class="form-control" @bind-Value="user.UserName" />
+    </div>
+
+    <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <InputText id="firstName" class="form-control" @bind-Value="user.FirstName" />
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <InputText id="lastName" class="form-control" @bind-Value="user.LastName" />
+    </div>
+
+    <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <InputNumber id="age" class="form-control" @bind-Value="user.Age" />
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <InputText id="email" type="email" class="form-control" @bind-Value="user.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label for="isTrainer" class="form-label">Are you a Trainer?</label>
+        <InputCheckbox id="isTrainer" class="form-check-input" @bind-Value="user.IsTrainer" />
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
+    </div>
+
+    <div class="mb-3">
+        <label for="roleId" class="form-label">Role ID</label>
+        <InputNumber id="roleId" class="form-control" @bind-Value="user.RoleId" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</EditForm>
+
+@if (_signUpSuccess)
+{
+    <div class="alert alert-success mt-3">Signup successful! Redirecting to login...</div>
+}
+
+@code {
+	[SupplyParameterFromForm] 
+	public User user { get; set; }
+	private bool _signUpSuccess;
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await ApiService.SignupAsync(user);
+            _signUpSuccess = true;
+            await Task.Delay(2000); // wait for 2 seconds
+            Navigation.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            // Handle the error
+            Console.WriteLine($"Signup failed: {ex.Message}");
+        }
+    }
+
+    public void Dispose()
+    {
+        // Dispose resources if any
+    }
+}

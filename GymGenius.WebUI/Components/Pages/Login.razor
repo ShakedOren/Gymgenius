@@ -1,0 +1,42 @@
+﻿@page "/login"
+@using GymGenius.WebUI.Services
+@using Gymgenius.bo
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@inject CustomAuthenticationStateProvider AuthStateProvider
+
+<h3>Login</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="form-group">
+		<label>Username</label>
+		<InputText @bind-Value="loginModel.UserName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Password</label>
+		<InputText @bind-Value="loginModel.Password" type="password" class="form-control" />
+	</div>
+	<button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+
+@code {
+	[SupplyParameterFromForm] 
+    public User loginModel { get; set; }
+
+	private async Task HandleLogin()
+	{
+		var token = await ApiService.LoginAsync(loginModel);
+		if (token != null)
+		{
+			AuthStateProvider.NotifyUserAuthentication(token);
+			Navigation.NavigateTo("/");
+		}
+		else
+		{
+			// Handle login failure
+		}
+	}
+}

@@ -1,6 +1,8 @@
+using Blazored.LocalStorage;
 using GymGenius.WebUI.Components;
 using GymGenius.WebUI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -14,6 +16,10 @@ namespace GymGenius.WebUI
 
             var jwtSettings = builder.Configuration.GetSection("Jwt");
             var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+            // Register CustomAuthenticationStateProvider
+            builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -44,6 +50,8 @@ namespace GymGenius.WebUI
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://gymgenius_api") });
             builder.Services.AddScoped<ApiService>();
 
+            builder.Services.AddBlazoredLocalStorage();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -54,6 +62,8 @@ namespace GymGenius.WebUI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseStaticFiles();
             app.UseAntiforgery();
