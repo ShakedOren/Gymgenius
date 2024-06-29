@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Admin")]
 
+<CascadingAuthenticationState>
 <h3>Admin Only Content</h3>
 
 <AuthorizeView Roles="Admin">
@@ -13,3 +14,4 @@
         <p>You are not authorized to view this content.</p>
     </NotAuthorized>
 </AuthorizeView>
+</CascadingAuthenticationState>
