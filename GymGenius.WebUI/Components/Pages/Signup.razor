@@ -3,7 +3,6 @@
 @using GymGenius.WebUI.Services
 @inject ApiService ApiService
 @inject NavigationManager Navigation
-@implements IDisposable
 
 <h3>Sign Up</h3>
 
@@ -60,8 +59,7 @@
 }
 
 @code {
-	[SupplyParameterFromForm] 
-	public User user { get; set; }
+	[SupplyParameterFromForm] public User user { get; set; } = new User();
 	private bool _signUpSuccess;
 
     private async Task HandleValidSubmit()
@@ -78,10 +76,5 @@
             // Handle the error
             Console.WriteLine($"Signup failed: {ex.Message}");
         }
-    }
-
-    public void Dispose()
-    {
-        // Dispose resources if any
     }
 }

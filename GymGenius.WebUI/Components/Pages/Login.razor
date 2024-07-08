@@ -23,8 +23,12 @@
 </EditForm>
 
 @code {
-	[SupplyParameterFromForm] 
-    public User loginModel { get; set; }
+	public User loginModel { get; set; } = new User();
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+	{
+		return base.OnAfterRenderAsync(firstRender);
+	}
 
 	private async Task HandleLogin()
 	{

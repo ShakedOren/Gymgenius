@@ -4,6 +4,7 @@ using GymGenius.WebUI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Radzen;
 using System.Text;
 
 namespace GymGenius.WebUI
@@ -45,6 +46,7 @@ namespace GymGenius.WebUI
                     };
                 });
             builder.Services.AddAuthorization();
+            builder.Services.AddRadzenComponents();
 
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://gymgenius_api") });

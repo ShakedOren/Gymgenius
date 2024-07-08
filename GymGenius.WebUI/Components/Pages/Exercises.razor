@@ -7,41 +7,22 @@
 
 <h3>Exercises</h3>
 
-@if (exercises == null)
-{
-	<p><em>Loading...</em></p>
-}
-else
-{
-	<table class="table">
-		<thead>
-		<tr>
-			<th>Name</th>
-			<th>Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		@foreach (var exercise in exercises)
-		{
-			<tr>
-				<td>
-					<a @onclick="() => NavigateToExerciseDetails(exercise.Name)" style="cursor:pointer">@exercise.Name</a>
-				</td>
-				<td>
-					<button @onclick="() => DeleteExercise(exercise.Name)" class="btn btn-danger">Delete</button>
-				</td>
-			</tr>
-		}
-		</tbody>
-	</table>
-}
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+				Data="@exercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
+	<Columns>
+		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+	</Columns>
+</RadzenDataGrid>
 
 @code {
 	private IEnumerable<Exercise> exercises;
+	IList<Exercise> selectedExercise;
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
 		exercises = await ApiService.GetExercisesAsync();
+		selectedExercise = new List<Exercise>() { exercises.FirstOrDefault() };
 	}
 
 	private async Task DeleteExercise(string name)

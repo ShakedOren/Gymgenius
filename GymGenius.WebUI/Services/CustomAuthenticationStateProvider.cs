@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿    using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
@@ -21,7 +21,16 @@ namespace GymGenius.WebUI.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _localStorage.GetItemAsync<string>("authToken");
+            string token = "";
+            try
+            {
+                token = await _localStorage.GetItemAsync<string>("authToken");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
 
             if (string.IsNullOrEmpty(token))
             {
