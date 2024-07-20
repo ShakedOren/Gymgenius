@@ -6,48 +6,26 @@
 @rendermode InteractiveServer
 
 <h3>Users</h3>
-
-@if (users == null)
-{
-	<p><em>Loading...</em></p>
-}
-else
-{
-	<table class="table">
-		<thead>
-		<tr>
-			<th>Username</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Email</th>
-			<th>Actions</th>
-		</tr>
-		</thead>
-		<tbody>
-		@foreach (var user in users)
-		{
-			<tr>
-				<td>
-					<a @onclick="() => NavigateToUserDetails(user.UserName)" style="cursor:pointer">@user.UserName</a>
-				</td>
-				<td>@user.FirstName</td>
-				<td>@user.LastName</td>
-				<td>@user.Email</td>
-				<td>
-					<button @onclick="() => DeleteUser(user.UserName)" class="btn btn-danger">Delete</button>
-				</td>
-			</tr>
-		}
-		</tbody>
-	</table>
-}
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+				Data="@users" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedUser>
+	<Columns>
+		<RadzenDataGridColumn Property="@nameof(User.UserName)" Filterable="false" Title="Username" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.FirstName)" Filterable="false" Title="First Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.LastName)" Filterable="false" Title="Last Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.Age)" Filterable="false" Title="Age" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.Email)" Filterable="false" Title="Email" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+	</Columns>
+</RadzenDataGrid>
 
 @code {
 	private IEnumerable<User> users;
+	IList<User> selectedUser;
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
 		users = await ApiService.GetUsersAsync();
+		selectedUser = new List<User>() { users.FirstOrDefault() };
 	}
 
 	private async Task DeleteUser(string username)

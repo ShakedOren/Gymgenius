@@ -60,12 +60,13 @@
 }
 
 @code {
-	[SupplyParameterFromForm] public User? user { get; set; }
-	private bool _signUpSuccess;
-	protected override void OnInitialized()
-	{
-		user ??= new();
-	}
+    [SupplyParameterFromForm] public User? user { get; set; }
+    private bool _signUpSuccess;
+    protected override void OnInitialized()
+    {
+        user ??= new();
+        user.RoleId = 1;
+    }
 
 	private async Task HandleValidSubmit()
     {

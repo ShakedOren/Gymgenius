@@ -7,30 +7,44 @@
 @rendermode InteractiveServer
 
 <h3>Login</h3>
+<RadzenFieldset>
+	<fieldset>
+		<div class="row mb-3">
+			<div class="col-md-3">
+				<RadzenLabel Text="Username" />
+				<RadzenTextBox @bind-Value="@loginModel.UserName" Placeholder="Enter your username" Style="width: 100%;" />
+			</div>
+		</div>
 
-<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
+		<div class="row mb-3">
+			<div class="col-md-3">
+				<RadzenLabel Text="Password" />
+				<RadzenPassword @bind-Value="@loginModel.Password" Placeholder="Enter your password" Style="width: 100%;" />
+			</div>
+		</div>
 
-	<div class="form-group">
-		<label>Username</label>
-		<InputText @bind-Value="loginModel.UserName" class="form-control" />
-	</div>
-	<div class="form-group">
-		<label>Password</label>
-		<InputText @bind-Value="loginModel.Password" type="password" class="form-control" />
-	</div>
-	<button type="submit" class="btn btn-primary">Login</button>
-</EditForm>
-@if (submissionFailed)
+		<div class="row">
+			<div class="col-md-3">
+				<RadzenButton Text="Login" ButtonStyle="ButtonStyle.Primary" Click="@HandleLogin" Style="width: 100%;" />
+			</div>
+		</div>
+	</fieldset>
+	
+</RadzenFieldset>
+@if (errorMessage != "")
 {
-	<div class="alert alert-failure mt-3">
-		Login Failed!
+	<div class="row mb-3">
+		<div class="col-md-3">
+	        <RadzenText Text="@errorMessage" Style="color: red;" />
+		</div>
 	</div>
 }
 @code {
 	public UserLogin loginModel { get; set; } = new UserLogin();
 	public bool submissionFailed { get; set; } = false;
+
+	private string errorMessage = "";
+
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
 		return base.OnAfterRenderAsync(firstRender);
@@ -41,13 +55,14 @@
 		var token = await ApiService.LoginAsync(loginModel);
 		if (token != null)
 		{
+			errorMessage = "";
 			await AuthStateProvider.NotifyUserAuthentication(token);
 			Navigation.NavigateTo("/");
 		}
 		else
 		{
 			// Handle login failure
-			submissionFailed = true;
+			errorMessage = "Invalid username or password. Please try again.";
 		}
 	}
 }
