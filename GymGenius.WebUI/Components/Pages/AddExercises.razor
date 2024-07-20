@@ -3,7 +3,6 @@
 @using GymGenius.WebUI.Services
 @inject ApiService ApiService
 @inject NavigationManager Navigation
-<CascadingAuthenticationState>
 <h3>Add Exercise</h3>
 
 <EditForm Model="Exercise" OnSubmit="HandleValidSubmit" FormName="addExerciseForm">
@@ -59,5 +58,3 @@
 		}
 	}
 }
-
-</CascadingAuthenticationState>

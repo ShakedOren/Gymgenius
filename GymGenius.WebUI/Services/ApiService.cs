@@ -53,8 +53,6 @@ namespace GymGenius.WebUI.Services
 		// User MethodsGetUserByUsername
 		public async Task<string> LoginAsync(UserLogin userLoginDto)
         {
-	        userLoginDto.Password = "test";
-	        userLoginDto.UserName = "test";
 			var json = JsonSerializer.Serialize(userLoginDto);
             var response = await httpClient.PostAsJsonAsync("/Auth/login", userLoginDto);
             if (response.IsSuccessStatusCode)
@@ -72,8 +70,8 @@ namespace GymGenius.WebUI.Services
 
         public async Task<string> GetUserRoleAsync(string username)
         {
-            var response = await httpClient.GetFromJsonAsync<Role>($"/Auth/user-role/{username}");
-            return response.RoleName;
+            var response = await httpClient.GetStringAsync($"/Auth/user-role/{username}");
+            return response;
         }
     }
 }

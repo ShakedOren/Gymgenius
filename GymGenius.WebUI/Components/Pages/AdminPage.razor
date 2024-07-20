@@ -1,16 +1,43 @@
-﻿// Pages/AdminPage.razor
-@page "/admin"
+﻿@page "/admin"
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 @attribute [Authorize(Roles = "Admin")]
 
 
 <h3>Admin Only Content</h3>
-
 <AuthorizeView Roles="Admin">
-    <Authorized>
-        <p>This content is only visible to users with the Admin role.</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>You are not authorized to view this content.</p>
-    </NotAuthorized>
+	<Authorized>
+		<p>This content is only visible to users with the Admin role.</p>
+	</Authorized>
+	<NotAuthorized>
+		<p>You are not authorized to view this content.</p>
+	</NotAuthorized>
 </AuthorizeView>
+
+<p>Role: @Role</p>
+
+@code {
+	[CascadingParameter]
+	private Task<AuthenticationState> authenticationStateTask { get; set; }
+	public string Role { get; set; }
+
+	private async Task CheckAuthentication()
+	{
+		var authState = await authenticationStateTask;
+		var user = authState.User;
+
+		if (user.Identity.IsAuthenticated)
+		{
+			var claims = user.Claims;
+			var roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
+			Role = roles.FirstOrDefault();
+			// Inspect roles and other claims
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await CheckAuthentication();
+	}
+}

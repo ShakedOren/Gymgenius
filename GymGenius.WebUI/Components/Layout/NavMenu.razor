@@ -1,10 +1,11 @@
 ﻿// Shared/NavMenu.razor
 @using Microsoft.AspNetCore.Components.Authorization
 @using GymGenius.WebUI.Services
+@using Microsoft.AspNetCore.Authorization
 @inject NavigationManager Navigation
 @inject CustomAuthenticationStateProvider AuthStateProvider
+@attribute [Authorize(Roles = "Admin")]
 
-<CascadingAuthenticationState>
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">GymGenius.WebUI</a>
@@ -60,8 +61,14 @@
                 </div>
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" @onclick="Logout">
-                        <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Logout
+	                <NavLink class="nav-link" href="" @onclick="Logout">
+		                <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Logout
+	                </NavLink>
+                </div>
+                
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="admin">
+                        <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Admin Page
                     </NavLink>
                 </div>
             </Authorized>
@@ -85,8 +92,7 @@
 @code {
     private async Task Logout()
     {
-        AuthStateProvider.NotifyUserLogout();
-        Navigation.NavigateTo("/");
+        await AuthStateProvider.NotifyUserLogout();
+        Navigation.NavigateTo("/", true);
     }
 }
-</CascadingAuthenticationState>
