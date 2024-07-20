@@ -53,7 +53,7 @@ namespace GymGenius.WebUI
             builder.Services.AddScoped<ApiService>();
 
             builder.Services.AddBlazoredLocalStorage();
-
+            builder.Services.AddCascadingAuthenticationState();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

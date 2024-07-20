@@ -24,7 +24,7 @@ namespace GymGenius.WebUI.Services
             string token = "";
             try
             {
-                token = await _localStorage.GetItemAsync<string>("authToken ");
+                token = await _localStorage.GetItemAsync<string>("authToken");
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace GymGenius.WebUI.Services
         {
             var token = await _localStorage.GetItemAsync<string>("authToken");
             var claims = ParseClaimsFromJwt(token);
-            var usernameClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            var usernameClaim = claims.FirstOrDefault(c => c.Type == "unique_name");
 
             return usernameClaim?.Value;
         }
@@ -69,40 +69,20 @@ namespace GymGenius.WebUI.Services
             NotifyAuthenticationStateChanged(authState);
         }
 
-        public void NotifyUserLogout()
+        public async Task NotifyUserLogout()
         {
-            var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
+	        await _localStorage.RemoveItemAsync("authToken");
+			var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(anonymousUser));
             NotifyAuthenticationStateChanged(authState);
         }
 
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
-            var claims = new List<Claim>();
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-
-            keyValuePairs.TryGetValue(ClaimTypes.Role, out var roles);
-
-            if (roles != null)
-            {
-                if (roles.ToString().Trim().StartsWith("["))
-                {
-                    var parsedRoles = JsonSerializer.Deserialize<string[]>(roles.ToString());
-
-                    foreach (var parsedRole in parsedRoles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, parsedRole));
-                    }
-                }
-                else
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
-                }
-            }
-
-            return claims;
+			return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
         }
 
         private byte[] ParseBase64WithoutPadding(string base64)

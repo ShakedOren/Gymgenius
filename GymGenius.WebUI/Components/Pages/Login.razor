@@ -4,7 +4,6 @@
 @inject ApiService ApiService
 @inject NavigationManager Navigation
 @inject CustomAuthenticationStateProvider AuthStateProvider
-@rendermode InteractiveServer
 
 <h3>Login</h3>
 <RadzenFieldset>
@@ -57,7 +56,7 @@
 		{
 			errorMessage = "";
 			await AuthStateProvider.NotifyUserAuthentication(token);
-			Navigation.NavigateTo("/");
+			Navigation.NavigateTo("/", true);
 		}
 		else
 		{

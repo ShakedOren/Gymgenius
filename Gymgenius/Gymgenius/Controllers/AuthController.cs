@@ -91,7 +91,7 @@ namespace GymGenius.WebAPI.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, roleId.ToString())
+                new Claim(ClaimTypes.Role, ((Role.Roles)roleId).ToString())
 			// Add other claims here if needed
 		};
 
