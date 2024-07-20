@@ -1,0 +1,56 @@
+﻿@page "/programs"
+@using Gymgenius.bo
+@using GymGenius.BO
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h3>Programs</h3>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+				Data="@programs" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedProgram>
+	<Columns>
+		<RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(TrainingProgram.Description)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="View Program" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+			<Template Context="program">
+				<RadzenButton Text="View"
+							  Click="@(() => NavigateToProgramDetails(program.Name))"
+							  ButtonStyle="ButtonStyle.Primary"
+							  Style="margin: 2px;" />
+			</Template>
+		</RadzenDataGridColumn>
+		<RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Deletion" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+			<Template Context="program">
+				<RadzenButton Text="Delete"
+					Click="@(() => DeleteProgram(program.Name))"
+					ButtonStyle="ButtonStyle.Danger"
+					Style="margin: 2px;" />
+			</Template>
+		</RadzenDataGridColumn>
+	</Columns>
+</RadzenDataGrid>
+ 
+@code {
+	private IEnumerable<TrainingProgram> programs;
+	IList<TrainingProgram> selectedProgram;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		programs = await ApiService.GetProgramsAsync();
+		selectedProgram= new List<TrainingProgram>() { programs.FirstOrDefault() };
+	}
+
+	private async Task DeleteProgram(string name)
+	{
+		await ApiService.DeleteProgramAsync(name);
+		programs = await ApiService.GetProgramsAsync(); // Refresh the list
+	}
+
+	private void NavigateToProgramDetails(string name)
+	{
+		Navigation.NavigateTo($"/program/{name}");
+	}
+}

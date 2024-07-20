@@ -26,8 +26,8 @@ namespace Gymgenius.Tests
 	            Email = "aaa1@gmail.com",
 	            IsTrainer = false
             };
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
@@ -46,8 +46,8 @@ namespace Gymgenius.Tests
 	            Email = "aaa1@gmail.com",
 	            IsTrainer = false
             };
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
@@ -67,7 +67,7 @@ namespace Gymgenius.Tests
 	            Email = "aaa1@gmail.com",
 	            IsTrainer = false
             };
-            TrainingProgram t1 = new TrainingProgram("1");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             
             Assert.IsFalse(_userToProgramRepository.IsUserHaveProgram(u1).Result);
             _userToProgramRepository.AddProgramToUser(u1, t1);
@@ -98,7 +98,7 @@ namespace Gymgenius.Tests
 	            Email = "aaa2@gmail.com", 
 	            IsTrainer = false
             };
-            TrainingProgram t1 = new TrainingProgram("1");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
