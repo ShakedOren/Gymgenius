@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using GymGenius.WebUI.Components;
 using GymGenius.WebUI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Radzen;
@@ -21,6 +22,7 @@ namespace GymGenius.WebUI
             // Register CustomAuthenticationStateProvider
             builder.Services.AddScoped<CustomAuthenticationStateProvider>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, BlazorAuthorizationMiddlewareResultHandler>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
