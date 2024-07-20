@@ -1,0 +1,32 @@
+﻿@page "/program/{programName}"
+@using Gymgenius.bo
+@using GymGenius.BO
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>Program Details</h3>
+
+@if (program == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div>
+		<p><strong>Name:</strong> @program.Name</p>
+		<p><strong>Description:</strong> @program.Description</p>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public string programName { get; set; }
+
+	private TrainingProgram program;
+
+	protected override async Task OnInitializedAsync()
+	{
+		program = await ApiService.GetProgramAsync(programName);
+	}
+}

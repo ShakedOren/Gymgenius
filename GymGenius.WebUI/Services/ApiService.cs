@@ -50,6 +50,23 @@ namespace GymGenius.WebUI.Services
         {
 	        await httpClient.DeleteAsync($"/User/delete_user/{username}");
         }
+		public async Task AddProgramAsync(TrainingProgram program)
+		{
+			await httpClient.PostAsJsonAsync("/TrainingProgram/add_program", program);
+		}
+		public async Task<IEnumerable<TrainingProgram>> GetProgramsAsync()
+		{
+			return await httpClient.GetFromJsonAsync<IEnumerable<TrainingProgram>>("/TrainingProgram/list_programs");
+		}
+		public async Task DeleteProgramAsync(string name)
+		{
+			await httpClient.DeleteAsync($"/TrainingProgram/delete_program/{name}");
+		}
+		public async Task<TrainingProgram> GetProgramAsync(string name)
+		{
+			return await httpClient.GetFromJsonAsync<TrainingProgram>($"/TrainingProgram/get_program/{name}");
+		}
+
 		// User MethodsGetUserByUsername
 		public async Task<string> LoginAsync(UserLogin userLoginDto)
         {

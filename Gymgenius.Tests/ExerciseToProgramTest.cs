@@ -17,7 +17,7 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestAddExerciseToProgram()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
+            TrainingProgram t1 = new TrainingProgram();
             Exercise e1 = new Exercise("e1");
             Exercise e2 = new Exercise("e2");
 
@@ -31,7 +31,7 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestDeleteExerciseFromProgram()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
+            TrainingProgram t1 = new TrainingProgram() { Name = "sa", Description = "ASD"};
             Exercise e1 = new Exercise("e1");
             Exercise e2 = new Exercise("e2");
 
@@ -48,7 +48,7 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestIsExerciseExistsInProgram()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa"};
             Exercise e1 = new Exercise("e1");
             Exercise e2 = new Exercise("e2");
             
