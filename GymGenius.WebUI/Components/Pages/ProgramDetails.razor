@@ -17,6 +17,12 @@ else
 		<p><strong>Name:</strong> @program.Name</p>
 		<p><strong>Description:</strong> @program.Description</p>
 	</div>
+	<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@programExercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
+		<Columns>
+			<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		</Columns>
+	</RadzenDataGrid>
 }
 
 @code {
@@ -25,8 +31,14 @@ else
 
 	private TrainingProgram program;
 
+	IEnumerable<Exercise> programExercises;
+	IList<Exercise> selectedExercise;
+
+
 	protected override async Task OnInitializedAsync()
 	{
 		program = await ApiService.GetProgramAsync(programName);
+		programExercises = await ApiService.GetExercisesOfProgramAsync(programName);
+		selectedExercise = new List<Exercise>() { programExercises.FirstOrDefault() };
 	}
 }

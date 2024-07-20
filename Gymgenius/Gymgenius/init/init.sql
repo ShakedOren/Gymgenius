@@ -78,7 +78,7 @@ BEGIN
         DROP TABLE ExerciseToTrainingProgram;
     END
     CREATE TABLE dbo.ExerciseToTrainingProgram (
-        Id INT PRIMARY KEY NOT NULL,
+        Id INT IDENTITY PRIMARY KEY NOT NULL,
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
         TrainingProgramName NVARCHAR(50) FOREIGN KEY REFERENCES TrainingPrograms(Name),
         ExerciseName NVARCHAR(50) FOREIGN KEY REFERENCES Exercises(Name)
@@ -89,7 +89,7 @@ BEGIN
         DROP TABLE UserToTrainingProgram;
     END
    CREATE TABLE dbo.UserToTrainingProgram (
-        Id INT PRIMARY KEY NOT NULL,
+        Id INT IDENTITY PRIMARY KEY NOT NULL,
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
         TrainingProgramName NVARCHAR(50) NOT NULL,
         UserName NVARCHAR(50) NOT NULL,
