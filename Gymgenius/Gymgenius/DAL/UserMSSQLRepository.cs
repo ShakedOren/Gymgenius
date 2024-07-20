@@ -36,11 +36,11 @@ public class UserMSSQLRepository : IUserRepository
         return (await connection.QueryAsync<User>("SELECT * FROM Users")).ToList();
     }
 
-    public async Task<User> GetUserByUsername(string userName)
+    public async Task<User?> GetUserByUsername(string userName)
     {
         using var connection = _dapperContext.CreateConnection();
         connection.Open();
-        return await connection.QueryFirstAsync<User>("SELECT * FROM Users WHERE UserName = @UserName", new { UserName = userName });
+        return await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE UserName = @UserName", new { UserName = userName });
     }
 
     public async Task<bool> IsUserExists(string userName)
@@ -58,6 +58,10 @@ public class UserMSSQLRepository : IUserRepository
     }
 	private string HashPassword(string password)
 	{
+		if (string.IsNullOrEmpty(password))
+		{
+			return null;
+		}
 		using (var sha256 = SHA256.Create())
 		{
 			var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));

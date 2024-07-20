@@ -13,17 +13,6 @@ namespace Gymgenius.bo
         public string Password { get; set; }
         public int RoleId { get; set; }
 
-        public User(){}
-        public User(string userName, string firstName, string lastName, int? age, string? email, bool isTrainer)
-        {
-            UserName = userName;
-            FirstName = firstName;
-            LastName = lastName;
-            Age = age;
-            Email = email;
-            IsTrainer = isTrainer;
-        }
-
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;

@@ -1,9 +1,10 @@
 ﻿@page "/login"
 @using GymGenius.WebUI.Services
-@using Gymgenius.bo
+@using GymGenius.BO
 @inject ApiService ApiService
 @inject NavigationManager Navigation
 @inject CustomAuthenticationStateProvider AuthStateProvider
+@rendermode InteractiveServer
 
 <h3>Login</h3>
 
@@ -21,10 +22,15 @@
 	</div>
 	<button type="submit" class="btn btn-primary">Login</button>
 </EditForm>
-
+@if (submissionFailed)
+{
+	<div class="alert alert-failure mt-3">
+		Login Failed!
+	</div>
+}
 @code {
-	public User loginModel { get; set; } = new User();
-
+	public UserLogin loginModel { get; set; } = new UserLogin();
+	public bool submissionFailed { get; set; } = false;
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
 		return base.OnAfterRenderAsync(firstRender);
@@ -35,12 +41,13 @@
 		var token = await ApiService.LoginAsync(loginModel);
 		if (token != null)
 		{
-			AuthStateProvider.NotifyUserAuthentication(token);
+			await AuthStateProvider.NotifyUserAuthentication(token);
 			Navigation.NavigateTo("/");
 		}
 		else
 		{
 			// Handle login failure
+			submissionFailed = true;
 		}
 	}
 }

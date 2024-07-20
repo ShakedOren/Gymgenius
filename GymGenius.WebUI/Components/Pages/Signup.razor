@@ -1,5 +1,6 @@
 ﻿@page "/signup"
 @using Gymgenius.bo
+@using GymGenius.BO
 @using GymGenius.WebUI.Services
 @inject ApiService ApiService
 @inject NavigationManager Navigation
@@ -59,10 +60,14 @@
 }
 
 @code {
-	[SupplyParameterFromForm] public User user { get; set; } = new User();
+	[SupplyParameterFromForm] public User? user { get; set; }
 	private bool _signUpSuccess;
+	protected override void OnInitialized()
+	{
+		user ??= new();
+	}
 
-    private async Task HandleValidSubmit()
+	private async Task HandleValidSubmit()
     {
         try
         {

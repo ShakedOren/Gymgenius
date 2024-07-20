@@ -2,6 +2,8 @@
 // Services/ApiService.cs
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Gymgenius.bo;
 using GymGenius.BO;
@@ -48,9 +50,12 @@ namespace GymGenius.WebUI.Services
         {
 	        await httpClient.DeleteAsync($"/User/delete_user/{username}");
         }
-        // User Methods
-        public async Task<string> LoginAsync(User userLoginDto)
+		// User MethodsGetUserByUsername
+		public async Task<string> LoginAsync(UserLogin userLoginDto)
         {
+	        userLoginDto.Password = "test";
+	        userLoginDto.UserName = "test";
+			var json = JsonSerializer.Serialize(userLoginDto);
             var response = await httpClient.PostAsJsonAsync("/Auth/login", userLoginDto);
             if (response.IsSuccessStatusCode)
             {

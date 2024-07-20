@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Gymgenius.dal;
+using GymGenius.BO;
 
 namespace GymGenius.WebAPI.Controllers
 {
@@ -38,7 +39,7 @@ namespace GymGenius.WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(User userLoginDto)
+        public async Task<IActionResult> Login(UserLogin userLoginDto)
         {
             var user = await _userRepository.GetUserByUsername(userLoginDto.UserName);
             if (user == null || !VerifyPassword(userLoginDto.Password, user.Password))
@@ -47,7 +48,7 @@ namespace GymGenius.WebAPI.Controllers
             }
 
             // Generate JWT token (implement JWT token generation logic)
-            var token = GenerateJwtToken(user.UserName);
+            var token = GenerateJwtToken(user.UserName, user.RoleId);
             return Ok(token);
             
         }
@@ -77,7 +78,7 @@ namespace GymGenius.WebAPI.Controllers
             return hash == storedHash;
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string username, int roleId)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
             var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
@@ -89,8 +90,10 @@ namespace GymGenius.WebAPI.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                // Add other claims here if needed
-            };
+                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, roleId.ToString())
+			// Add other claims here if needed
+		};
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

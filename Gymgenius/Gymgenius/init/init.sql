@@ -39,9 +39,9 @@ BEGIN
         RoleName NVARCHAR(50) NOT NULL
     );
 
-    INSERT INTO Roles (RuleName) VALUES ('Admin');
+    INSERT INTO Roles (RoleName) VALUES ('Admin');
 
-    INSERT INTO Roles (RuleName) VALUES ('User');
+    INSERT INTO Roles (RoleName) VALUES ('User');
 
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN

@@ -24,7 +24,7 @@ namespace GymGenius.WebUI.Services
             string token = "";
             try
             {
-                token = await _localStorage.GetItemAsync<string>("authToken");
+                token = await _localStorage.GetItemAsync<string>("authToken ");
             }
             catch (Exception e)
             {
@@ -41,9 +41,9 @@ namespace GymGenius.WebUI.Services
             var username = await GetUsernameFromTokenAsync();
 
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, username)
-        };
+	        {
+	            new Claim(ClaimTypes.Name, username)
+	        };
 
             var role = await _apiService.GetUserRoleAsync(username);
             claims.Add(new Claim(ClaimTypes.Role, role));
@@ -61,9 +61,10 @@ namespace GymGenius.WebUI.Services
 
             return usernameClaim?.Value;
         }
-        public void NotifyUserAuthentication(string token)
+        public async Task NotifyUserAuthentication(string token)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"));
+	        await _localStorage.SetItemAsync("authToken", token);
+			var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }
