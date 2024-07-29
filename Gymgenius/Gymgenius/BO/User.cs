@@ -19,7 +19,7 @@ namespace Gymgenius.bo
         public bool IsTrainer{ get; set; }
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
-        [Range(1, 2, ErrorMessage = "RoleId must be between 1 and 2")]
+        [Range(1, 3, ErrorMessage = "RoleId must be between 1 and 3")]
         public int RoleId { get; set; }
 
         public override bool Equals(object? obj)

@@ -40,8 +40,9 @@ BEGIN
     );
 
     INSERT INTO Roles (RoleName) VALUES ('Admin');
-
-    INSERT INTO Roles (RoleName) VALUES ('User');
+    INSERT INTO Roles (RoleName) VALUES ('Trainer');
+    INSERT INTO Roles (RoleName) VALUES ('Trainee');
+    
 
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
