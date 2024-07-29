@@ -30,8 +30,8 @@
 		if (user.Identity.IsAuthenticated)
 		{
 			var claims = user.Claims;
-			var roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
-			Role = roles.FirstOrDefault();
+			var username = claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value);
+			Role = username.FirstOrDefault();
 			// Inspect roles and other claims
 		}
 	}
