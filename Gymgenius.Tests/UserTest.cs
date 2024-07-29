@@ -15,11 +15,35 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestAddUser()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            User u2 = new User("1", "F2", "L2", 10, "aaa2@gmail.com", false);
-            User u3 = new User("2", "F3", "L3", 10, "aaa3@gmail.com", false);
+	        User u1 = new User
+	        {
+		        UserName = "0",
+		        FirstName = "F1",
+		        LastName = "L1",
+		        Age = 10,
+		        Email = "aaa1@gmail.com",
+		        IsTrainer = false
+	        };
+			User u2 = new User
+			{
+				UserName = "1",
+				FirstName = "F2",
+				LastName = "L2",
+				Age = 10,
+				Email = "aaa2@gmail.com",
+				IsTrainer = false
+			};
+			User u3 = new User
+			{
+				UserName = "2",
+				FirstName = "F3",
+				LastName = "L3",
+				Age = 10,
+				Email = "aaa3@gmail.com",
+				IsTrainer = false
+			};
 
-            CollectionAssert.AreEqual(new List<User>(), _userRepository.GetAllUsers().Result);
+			CollectionAssert.AreEqual(new List<User>(), _userRepository.GetAllUsers().Result);
             _userRepository.AddUser(u1);
             CollectionAssert.AreEqual(new List<User>() { u1 }, _userRepository.GetAllUsers().Result);
             _userRepository.AddUser(u2);
@@ -31,8 +55,24 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestIsUserExists()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            User u2 = new User("1", "F2", "L2", 10, "aaa2@gmail.com", false);
+            User u1 = new User
+            {
+	            UserName = "0",
+	            FirstName = "F1",
+	            LastName = "L1",
+	            Age = 10,
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            User u2 = new User
+            {
+	            UserName = "1",
+	            FirstName = "F2",
+	            LastName = "L2",
+	            Age = 10,
+	            Email = "aaa2@gmail.com",
+	            IsTrainer = false
+            };
 
             Assert.IsFalse(_userRepository.IsUserExists("0").Result);
             _userRepository.AddUser(u1);
@@ -46,8 +86,24 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestDeleteUser()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            User u2 = new User("1", "F2", "L2", 10, "aaa2@gmail.com", false);
+            User u1 = new User
+            {
+	            UserName = "0",
+	            FirstName = "F1",
+	            LastName = "L1",
+	            Age = 10, 
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            User u2 = new User
+            {
+	            UserName = "1", 
+	            FirstName = "F2",
+	            LastName = "L2",
+	            Age = 10, 
+	            Email = "aaa2@gmail.com",
+	            IsTrainer = false
+            };
 
             _userRepository.AddUser(u1);
             _userRepository.AddUser(u2);
@@ -62,9 +118,33 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestGetAllUsers()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            User u2 = new User("1", "F2", "L2", 10, "aaa2@gmail.com", false);
-            User u3 = new User("2", "F3", "L3", 10, "aaa3@gmail.com", false);
+            User u1 = new User
+            {
+	            UserName = "0",
+	            FirstName = "F1", 
+	            LastName = "L1",
+	            Age = 10, 
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            User u2 = new User
+            {
+	            UserName = "1",
+	            FirstName = "F2",
+	            LastName = "L2",
+	            Age = 10,
+	            Email = "aaa2@gmail.com",
+	            IsTrainer = false
+            };
+            User u3 = new User
+            {
+	            UserName = "2",
+	            FirstName = "F3",
+	            LastName = "L3",
+	            Age = 10, 
+	            Email = "aaa3@gmail.com",
+	            IsTrainer = false
+            };
 
             CollectionAssert.AreEqual(new List<User>(), _userRepository.GetAllUsers().Result);
             _userRepository.AddUser(u1);

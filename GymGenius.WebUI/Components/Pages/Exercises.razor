@@ -1,0 +1,37 @@
+﻿@page "/exercises"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>Exercises</h3>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+				Data="@exercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
+	<Columns>
+		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+	</Columns>
+</RadzenDataGrid>
+
+@code {
+	private IEnumerable<Exercise> exercises;
+	IList<Exercise> selectedExercise;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		exercises = await ApiService.GetExercisesAsync();
+		selectedExercise = new List<Exercise>() { exercises.FirstOrDefault() };
+	}
+
+	private async Task DeleteExercise(string name)
+	{
+		await ApiService.DeleteExerciseAsync(name);
+		exercises = await ApiService.GetExercisesAsync(); // Refresh the list
+	}
+
+	private void NavigateToExerciseDetails(string name)
+	{
+		Navigation.NavigateTo($"/exercise/{name}");
+	}
+}

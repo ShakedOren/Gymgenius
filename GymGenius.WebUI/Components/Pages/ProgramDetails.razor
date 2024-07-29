@@ -1,0 +1,44 @@
+﻿@page "/program/{programName}"
+@using Gymgenius.bo
+@using GymGenius.BO
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>Program Details</h3>
+
+@if (program == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div>
+		<p><strong>Name:</strong> @program.Name</p>
+		<p><strong>Description:</strong> @program.Description</p>
+	</div>
+	<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+					Data="@programExercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
+		<Columns>
+			<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		</Columns>
+	</RadzenDataGrid>
+}
+
+@code {
+	[Parameter]
+	public string programName { get; set; }
+
+	private TrainingProgram program;
+
+	IEnumerable<Exercise> programExercises;
+	IList<Exercise> selectedExercise;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		program = await ApiService.GetProgramAsync(programName);
+		programExercises = await ApiService.GetExercisesOfProgramAsync(programName);
+		selectedExercise = new List<Exercise>() { programExercises.FirstOrDefault() };
+	}
+}

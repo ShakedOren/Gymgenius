@@ -34,5 +34,12 @@ services:
     command: >
       bash -c '
       /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Qwer1234! -d master -i docker-entrypoint-initdb.d/init.sql;
-      echo "All done!";
-      '
+      echo "All done!";'
+  gymgenius.webui:
+    image: ${DOCKER_REGISTRY-}gymgeniuswebui
+    build:
+      context: ../GymGenius.WebUI
+      dockerfile: ../GymGenius.WebUI/Dockerfile
+    ports:
+      - "8080:8080"
+

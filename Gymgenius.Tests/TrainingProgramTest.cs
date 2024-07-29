@@ -18,9 +18,9 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestAddTrainingProgram()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
-            TrainingProgram t3 = new TrainingProgram("3");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "ASD" , Name = "sad"};
+            TrainingProgram t3 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             CollectionAssert.AreEqual(new List<TrainingProgram>(), _trainingProgramRepository.GetAllTrainingPrograms().Result);
             _trainingProgramRepository.AddTrainingProgram(t1);
@@ -34,8 +34,8 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestIsTrainingProgramExists()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             Assert.IsFalse(_trainingProgramRepository.IsTrainingProgramExists("1").Result);
             _trainingProgramRepository.AddTrainingProgram(t1);
@@ -49,8 +49,8 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestDeleteTrainingProgram()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             
             _trainingProgramRepository.AddTrainingProgram(t1);
             _trainingProgramRepository.AddTrainingProgram(t2);
@@ -65,9 +65,9 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestGetAllTrainingPrograms()
         {
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
-            TrainingProgram t3 = new TrainingProgram("3");
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t3 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             CollectionAssert.AreEqual(new List<TrainingProgram>(), _trainingProgramRepository.GetAllTrainingPrograms().Result);
             _trainingProgramRepository.AddTrainingProgram(t1);

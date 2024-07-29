@@ -1,0 +1,40 @@
+﻿@page "/users"
+@using Gymgenius.bo
+@using GymGenius.WebUI.Services
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+
+<h3>Users</h3>
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+				Data="@users" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedUser>
+	<Columns>
+		<RadzenDataGridColumn Property="@nameof(User.UserName)" Filterable="false" Title="Username" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.FirstName)" Filterable="false" Title="First Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.LastName)" Filterable="false" Title="Last Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.Age)" Filterable="false" Title="Age" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(User.Email)" Filterable="false" Title="Email" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+	</Columns>
+</RadzenDataGrid>
+
+@code {
+	private IEnumerable<User> users;
+	IList<User> selectedUser;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		users = await ApiService.GetUsersAsync();
+		selectedUser = new List<User>() { users.FirstOrDefault() };
+	}
+
+	private async Task DeleteUser(string username)
+	{
+		await ApiService.DeleteUserAsync(username);
+		users = await ApiService.GetUsersAsync(); // Refresh the list
+	}
+
+	private void NavigateToUserDetails(string username)
+	{
+		Navigation.NavigateTo($"/user/{username}");
+	}
+}

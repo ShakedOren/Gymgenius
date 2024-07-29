@@ -59,7 +59,7 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpDelete("delete_user/{id}")]
+        [HttpDelete("delete_user/{username}")]
         public async Task<ActionResult> DeleteUser(string username)
         {
             try

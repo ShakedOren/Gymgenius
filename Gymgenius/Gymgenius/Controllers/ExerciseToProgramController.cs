@@ -33,7 +33,7 @@ namespace Gymgenius.Controllers
             }
         }
 
-        [HttpGet("add_exercise_to_program/{exercise_name}/{program_id}")]
+        [HttpGet("add_exercise_to_program/{exercise_name}/{program_name}")]
         public async Task<ActionResult> AddExerciseToProgram(string exercise_name, string program_name)
         {
             try

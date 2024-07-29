@@ -2,6 +2,8 @@ using Dapper;
 using Gymgenius.bo;
 using Gymgenius.dal;
 using System.Data.Common;
+using System.Security.Cryptography;
+using System.Text;
 
 public class UserMSSQLRepository : IUserRepository
 {
@@ -16,7 +18,8 @@ public class UserMSSQLRepository : IUserRepository
     {
         using var connection = _dapperContext.CreateConnection();
         connection.Open();
-        await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Age, Email) VALUES (@UserName, @FirstName, @LastName, @Age, @Email)", user);
+        user.Password = HashPassword(user.Password);
+        await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Password, Age, Email, RoleId, IsTrainer) VALUES (@UserName, @FirstName, @LastName, @Password, @Age, @Email, @RoleId, @IsTrainer)", user);
     }
 
     public async Task DeleteUser(string userName)
@@ -33,11 +36,11 @@ public class UserMSSQLRepository : IUserRepository
         return (await connection.QueryAsync<User>("SELECT * FROM Users")).ToList();
     }
 
-    public async Task<User> GetUserByUsername(string userName)
+    public async Task<User?> GetUserByUsername(string userName)
     {
         using var connection = _dapperContext.CreateConnection();
         connection.Open();
-        return await connection.QueryFirstAsync<User>("SELECT * FROM Users WHERE UserName = @UserName", new { UserName = userName });
+        return await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE UserName = @UserName", new { UserName = userName });
     }
 
     public async Task<bool> IsUserExists(string userName)
@@ -53,4 +56,16 @@ public class UserMSSQLRepository : IUserRepository
         connection.Open();
         return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE UserName = @UserName and IsTrainer = 1) THEN 1 ELSE 0 END", new { UserName = userName});
     }
+	private string HashPassword(string password)
+	{
+		if (string.IsNullOrEmpty(password))
+		{
+			return null;
+		}
+		using (var sha256 = SHA256.Create())
+		{
+			var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+			return Convert.ToBase64String(bytes);
+		}
+	}
 }

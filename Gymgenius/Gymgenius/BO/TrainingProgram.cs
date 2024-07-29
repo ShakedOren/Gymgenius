@@ -1,18 +1,18 @@
 ﻿using Gymgenius.bo;
 using Gymgenius.dal;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace GymGenius.BO
 {
     public class TrainingProgram
     {
-        public string Name { get; set; }
+		[Required(ErrorMessage = "Name is required")]
+		public string Name { get; set; }
+		[Required(ErrorMessage = "Description is required")]
+		public string Description { get; set; }
 
-        [SetsRequiredMembers]
-        public TrainingProgram(string name)
-        {
-            Name = name;
-        }
+        public TrainingProgram() {}
 
         public override bool Equals(object? obj)
         {

@@ -17,9 +17,17 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestAddProgramToUser()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            User u1 = new User
+            {
+	            UserName = "0", 
+	            FirstName = "F1", 
+	            LastName = "L1", 
+	            Age = 10,
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
@@ -29,9 +37,17 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestRemoveProgramFromUser()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            TrainingProgram t1 = new TrainingProgram("1");
-            TrainingProgram t2 = new TrainingProgram("2");
+            User u1 = new User
+            {
+	            UserName = "0",
+	            FirstName = "F1",
+	            LastName = "L1", 
+	            Age = 10,
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
+            TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
@@ -42,8 +58,16 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void TestIsUserHaveProgram()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            TrainingProgram t1 = new TrainingProgram("1");
+            User u1 = new User
+            {
+	            UserName = "0",
+	            FirstName = "F1",
+	            LastName = "L1",
+	            Age = 10,
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             
             Assert.IsFalse(_userToProgramRepository.IsUserHaveProgram(u1).Result);
             _userToProgramRepository.AddProgramToUser(u1, t1);
@@ -56,9 +80,25 @@ namespace Gymgenius.Tests
         [TestMethod]
         public void GetUserProgram()
         {
-            User u1 = new User("0", "F1", "L1", 10, "aaa1@gmail.com", false);
-            User u2 = new User("1", "F2", "L2", 10, "aaa2@gmail.com", false);
-            TrainingProgram t1 = new TrainingProgram("1");
+            User u1 = new User
+            {
+	            UserName = "0", 
+	            FirstName = "F1",
+	            LastName = "L1",
+	            Age = 10, 
+	            Email = "aaa1@gmail.com",
+	            IsTrainer = false
+            };
+            User u2 = new User
+            {
+	            UserName = "1",
+	            FirstName = "F2", 
+	            LastName = "L2", 
+	            Age = 10,
+	            Email = "aaa2@gmail.com", 
+	            IsTrainer = false
+            };
+            TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 
             _userToProgramRepository.AddProgramToUser(u1, t1);
             Assert.AreEqual(t1, _userToProgramRepository.GetUserProgram(u1).Result);
