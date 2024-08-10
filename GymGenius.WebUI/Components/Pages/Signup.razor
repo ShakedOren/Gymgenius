@@ -42,16 +42,16 @@
     </div>
 
     <div class="mb-3">
-	    <label for="role" class="form-label">Role</label>
-	    <select id="role" class="form-control" @bind="user.RoleId">
-		    @if (roles != null)
-		    {
-			    @foreach (var role in roles)
-			    {
-				    <option value="@role.RoleName">@role.RoleName</option>
-			    }
-		    }
-	    </select>
+        <label for="role" class="form-label">Role</label>
+        <select id="role" class="form-control" @bind="@user.RoleId">
+            @if (roles != null)
+            {
+                @foreach (var role in roles)
+                {
+                    <option value="@role.RoleId">@role.RoleName</option>
+                }
+            }
+        </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Sign Up</button>
