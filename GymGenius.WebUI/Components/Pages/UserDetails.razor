@@ -1,4 +1,5 @@
 ﻿@page "/user/{username}"
+@using GymGenius.BO
 @using Gymgenius.bo
 @using GymGenius.WebUI.Services
 @inject ApiService ApiService
@@ -12,13 +13,51 @@
 }
 else
 {
-    <div>
-        <p><strong>Username:</strong> @user.UserName</p>
-        <p><strong>First Name:</strong> @user.FirstName</p>
-        <p><strong>Last Name:</strong> @user.LastName</p>
-        <p><strong>Email:</strong> @user.Email</p>
-        <p><strong>Age:</strong> @user.Age</p>
-        <p><strong>Is Trainer:</strong> @user.IsTrainer</p>
+    <div class="profile-container">
+        <div class="profile-item">
+            <RadzenLabel Text="Username:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.UserName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        <div class="profile-item">
+            <RadzenLabel Text="First Name:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.FirstName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        <div class="profile-item">
+            <RadzenLabel Text="Last Name:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.LastName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        <div class="profile-item">
+            <RadzenLabel Text="Email:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.Email" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        <div class="profile-item">
+            <RadzenLabel Text="Age:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.Age.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        <div class="profile-item">
+            <RadzenLabel Text="Is Trainer:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="@user.IsTrainer.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+        </div>
+
+        @if (program != null)
+        {
+            <div class="profile-item">
+                <RadzenLabel Text="Training Program:" Style="font-weight: bold; margin-right: 10px;" />
+            <RadzenTextBox Value="has program" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            </div>
+        }
+        else
+        {
+            <div class="profile-item">
+                <RadzenLabel Text="Training Program:" Style="font-weight: bold; margin-right: 10px;" />
+                <RadzenTextBox Value="no program" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            </div>
+        }
     </div>
 }
 
@@ -28,8 +67,11 @@ else
 
     private User user;
 
+    private TrainingProgram? program;
+
     protected override async Task OnInitializedAsync()
     {
         user = await ApiService.GetUserAsync(username);
+        program = await ApiService.GetUserProgramAsync(username);
     }
 }

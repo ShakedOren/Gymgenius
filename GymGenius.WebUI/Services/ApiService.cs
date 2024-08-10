@@ -62,17 +62,28 @@ namespace GymGenius.WebUI.Services
 		{
 			await httpClient.DeleteAsync($"/TrainingProgram/delete_program/{name}");
 		}
-		public async Task<TrainingProgram> GetProgramAsync(string name)
-		{
-			return await httpClient.GetFromJsonAsync<TrainingProgram>($"/TrainingProgram/get_program/{name}");
-		}
-		public async Task<IEnumerable<Exercise>> GetExercisesOfProgramAsync(string name)
+        public async Task<TrainingProgram> GetProgramAsync(string name)
+        {
+            return await httpClient.GetFromJsonAsync<TrainingProgram>($"/TrainingProgram/get_program/{name}");
+        }
+        public async Task<TrainingProgram?> GetUserProgramAsync(string username)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<TrainingProgram?>($"/UserToProgram/get_user_program/{username}");
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public async Task<IEnumerable<Exercise>> GetExercisesOfProgramAsync(string name)
 		{
 			return await httpClient.GetFromJsonAsync<IEnumerable<Exercise>>($"/ExerciseToProgram/list_exercises/{name}");
 		}
 
-		// User MethodsGetUserByUsername
-		public async Task<string> LoginAsync(UserLogin userLoginDto)
+        // User MethodsGetUserByUsername
+        public async Task<string> LoginAsync(UserLogin userLoginDto)
         {
 			var json = JsonSerializer.Serialize(userLoginDto);
             var response = await httpClient.PostAsJsonAsync("/Auth/login", userLoginDto);

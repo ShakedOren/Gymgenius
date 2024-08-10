@@ -20,14 +20,14 @@ namespace GymGenius.DAL
             await connection.ExecuteAsync("INSERT INTO UserToTrainingProgram (ProgramName, UserName) VALUES (@ProgramName, @UserName)", new { ProgramName = program.Name, UserName = user.UserName });
         }
 
-        public async Task<TrainingProgram> GetUserProgram(User user)
+        public async Task<TrainingProgram?> GetUserProgram(User user)
         {
             using var connection = _dapperContext.CreateConnection();
             connection.Open();
-            return await connection.QueryFirstAsync<TrainingProgram>("SELECT t.* FROM UserToTrainingProgram uttp JOIN TrainingPrograms t on t.id = uttp.ProgramId WHERE uttp.UserName=@UserName", new { UserName = user.UserName });
+            return await connection.QueryFirstOrDefaultAsync<TrainingProgram>("SELECT t.* FROM UserToTrainingProgram uttp JOIN TrainingPrograms t on t.id = uttp.ProgramId WHERE uttp.UserName=@UserName", new { UserName = user.UserName });
         }
 
-        public async Task<bool> IsUserHaveProgram(User user)
+        public async Task<bool> IsUserHasProgram(User user)
         {
             using var connection = _dapperContext.CreateConnection();
             connection.Open();
