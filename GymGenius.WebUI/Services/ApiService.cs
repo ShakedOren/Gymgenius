@@ -24,12 +24,14 @@ namespace GymGenius.WebUI.Services
 
         public async Task AddExerciseAsync(Exercise exercise)
         {
-            await httpClient.PostAsJsonAsync("/Exercise/add_exercise", exercise);
+            var response = await httpClient.PostAsJsonAsync("/Exercise/add_exercise", exercise);
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteExerciseAsync(string name)
         {
-            await httpClient.DeleteAsync($"/Exercise/delete_exercise/{name}");
+            var response = await httpClient.DeleteAsync($"/Exercise/delete_exercise/{name}");
+            response.EnsureSuccessStatusCode();
         }
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
@@ -41,18 +43,15 @@ namespace GymGenius.WebUI.Services
 	        return await httpClient.GetFromJsonAsync<User>($"/User/get_user/{username}");
         }
 
-        public async Task AddUserAsync(User user)
-        {
-	        await httpClient.PostAsJsonAsync("/User/add_user", user);
-        }
-
         public async Task DeleteUserAsync(string username)
         {
-	        await httpClient.DeleteAsync($"/User/delete_user/{username}");
+	        var response = await httpClient.DeleteAsync($"/User/delete_user/{username}");
+            response.EnsureSuccessStatusCode();
         }
 		public async Task AddProgramAsync(TrainingProgram program)
 		{
-			await httpClient.PostAsJsonAsync("/TrainingProgram/add_program", program);
+			var response = await httpClient.PostAsJsonAsync("/TrainingProgram/add_program", program);
+            response.EnsureSuccessStatusCode();
 		}
 		public async Task<IEnumerable<TrainingProgram>> GetProgramsAsync()
 		{
@@ -60,7 +59,8 @@ namespace GymGenius.WebUI.Services
 		}
 		public async Task DeleteProgramAsync(string name)
 		{
-			await httpClient.DeleteAsync($"/TrainingProgram/delete_program/{name}");
+			var response = await httpClient.DeleteAsync($"/TrainingProgram/delete_program/{name}");
+            response.EnsureSuccessStatusCode();
 		}
         public async Task<TrainingProgram> GetProgramAsync(string name)
         {
@@ -97,13 +97,17 @@ namespace GymGenius.WebUI.Services
 
         public async Task SignupAsync(User userSignupDto)
         {
-            await httpClient.PostAsJsonAsync("/Auth/signup", userSignupDto);
+            var response = await httpClient.PostAsJsonAsync("/Auth/signup", userSignupDto);
+            response.EnsureSuccessStatusCode();
         }
-
         public async Task<string> GetUserRoleAsync(string username)
         {
-            var response = await httpClient.GetStringAsync($"/Auth/user-role/{username}");
-            return response;
+            return await httpClient.GetStringAsync($"/Auth/user-role/{username}");
+        }
+
+        public async Task<List<Role>?> GetRolesAsync()
+        {
+            return await httpClient.GetFromJsonAsync<List<Role>>("/Role/list_roles");
         }
     }
 }

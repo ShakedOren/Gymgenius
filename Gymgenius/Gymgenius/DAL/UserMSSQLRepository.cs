@@ -19,7 +19,7 @@ public class UserMSSQLRepository : IUserRepository
         using var connection = _dapperContext.CreateConnection();
         connection.Open();
         user.Password = HashPassword(user.Password);
-        await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Password, Age, Email, RoleId, IsTrainer) VALUES (@UserName, @FirstName, @LastName, @Password, @Age, @Email, @RoleId, @IsTrainer)", user);
+        await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Password, Age, Email, RoleId) VALUES (@UserName, @FirstName, @LastName, @Password, @Age, @Email, @RoleId)", user);
     }
 
     public async Task DeleteUser(string userName)
@@ -48,13 +48,6 @@ public class UserMSSQLRepository : IUserRepository
         using var connection = _dapperContext.CreateConnection();
         connection.Open();
         return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE UserName = @UserName) THEN 1 ELSE 0 END", new { UserName = userName });
-    }
-
-    public async Task<bool> IsUserTrainer(string userName)
-    {
-        using var connection = _dapperContext.CreateConnection();
-        connection.Open();
-        return await connection.ExecuteScalarAsync<bool>("SELECT CASE WHEN EXISTS (SELECT 1 FROM Users WHERE UserName = @UserName and IsTrainer = 1) THEN 1 ELSE 0 END", new { UserName = userName});
     }
 	private string HashPassword(string password)
 	{

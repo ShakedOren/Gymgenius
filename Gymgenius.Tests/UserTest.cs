@@ -21,8 +21,7 @@ namespace Gymgenius.Tests
 		        FirstName = "F1",
 		        LastName = "L1",
 		        Age = 10,
-		        Email = "aaa1@gmail.com",
-		        IsTrainer = false
+		        Email = "aaa1@gmail.com"
 	        };
 			User u2 = new User
 			{
@@ -30,8 +29,7 @@ namespace Gymgenius.Tests
 				FirstName = "F2",
 				LastName = "L2",
 				Age = 10,
-				Email = "aaa2@gmail.com",
-				IsTrainer = false
+				Email = "aaa2@gmail.com"
 			};
 			User u3 = new User
 			{
@@ -39,8 +37,7 @@ namespace Gymgenius.Tests
 				FirstName = "F3",
 				LastName = "L3",
 				Age = 10,
-				Email = "aaa3@gmail.com",
-				IsTrainer = false
+				Email = "aaa3@gmail.com"
 			};
 
 			CollectionAssert.AreEqual(new List<User>(), _userRepository.GetAllUsers().Result);
@@ -61,8 +58,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1",
 	            LastName = "L1",
 	            Age = 10,
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             User u2 = new User
             {
@@ -70,8 +66,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F2",
 	            LastName = "L2",
 	            Age = 10,
-	            Email = "aaa2@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa2@gmail.com"
             };
 
             Assert.IsFalse(_userRepository.IsUserExists("0").Result);
@@ -92,8 +87,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1",
 	            LastName = "L1",
 	            Age = 10, 
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             User u2 = new User
             {
@@ -101,8 +95,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F2",
 	            LastName = "L2",
 	            Age = 10, 
-	            Email = "aaa2@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa2@gmail.com"
             };
 
             _userRepository.AddUser(u1);
@@ -124,8 +117,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1", 
 	            LastName = "L1",
 	            Age = 10, 
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             User u2 = new User
             {
@@ -133,8 +125,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F2",
 	            LastName = "L2",
 	            Age = 10,
-	            Email = "aaa2@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa2@gmail.com"
             };
             User u3 = new User
             {
@@ -142,8 +133,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F3",
 	            LastName = "L3",
 	            Age = 10, 
-	            Email = "aaa3@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa3@gmail.com"
             };
 
             CollectionAssert.AreEqual(new List<User>(), _userRepository.GetAllUsers().Result);

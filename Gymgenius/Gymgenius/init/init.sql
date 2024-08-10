@@ -59,7 +59,6 @@ BEGIN
         Age INT,
         Email VARCHAR(255),
         RoleId INT NOT NULL,
-        IsTrainer bit NULL,
         FOREIGN KEY (RoleId) REFERENCES Roles(RoleId)
     );
 
