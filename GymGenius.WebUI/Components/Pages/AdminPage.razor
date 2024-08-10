@@ -1,13 +1,21 @@
 ﻿@page "/admin"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider;
 @attribute [Authorize(Roles = "Admin")]
 
 
 <h3>Admin Only Content</h3>
 <AuthorizeView Roles="Admin">
 	<Authorized>
+		@if(@context.User.Identity is not null)
+		{
+		<p>Welcome, @context.User.Identity.Name</p>
+		}
+		else
+		{
+		<p>Not worked</p>
+		}
 		<p>This content is only visible to users with the Admin role.</p>
 	</Authorized>
 	<NotAuthorized>
@@ -18,26 +26,17 @@
 <p>Role: @Role</p>
 
 @code {
-	[CascadingParameter]
-	private Task<AuthenticationState> authenticationStateTask { get; set; }
 	public string Role { get; set; }
-
-	private async Task CheckAuthentication()
-	{
-		var authState = await authenticationStateTask;
-		var user = authState.User;
-
-		if (user.Identity.IsAuthenticated)
-		{
-			var claims = user.Claims;
-			var username = claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value);
-			Role = username.FirstOrDefault();
-			// Inspect roles and other claims
-		}
-	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		await CheckAuthentication();
+		//await CheckAuthentication();
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user?.Identity?.IsAuthenticated ?? false)
+		{
+			var name = user.Identity.Name;
+			Role = name;
+		}
 	}
 }

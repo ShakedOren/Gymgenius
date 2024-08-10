@@ -23,8 +23,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1", 
 	            LastName = "L1", 
 	            Age = 10,
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
@@ -43,8 +42,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1",
 	            LastName = "L1", 
 	            Age = 10,
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             TrainingProgram t2 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
@@ -64,8 +62,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1",
 	            LastName = "L1",
 	            Age = 10,
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             
@@ -86,8 +83,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F1",
 	            LastName = "L1",
 	            Age = 10, 
-	            Email = "aaa1@gmail.com",
-	            IsTrainer = false
+	            Email = "aaa1@gmail.com"
             };
             User u2 = new User
             {
@@ -95,8 +91,7 @@ namespace Gymgenius.Tests
 	            FirstName = "F2", 
 	            LastName = "L2", 
 	            Age = 10,
-	            Email = "aaa2@gmail.com", 
-	            IsTrainer = false
+	            Email = "aaa2@gmail.com"
             };
             TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
 

@@ -30,10 +30,5 @@ namespace Gymgenius.bll
         {
             return Task.FromResult(_users.Any(u => u.UserName == userName));
         }
-
-        public async Task<bool> IsUserTrainer(string userName)
-        {
-            return (await GetUserByUsername(userName)).IsTrainer;
-        }
     }
 }

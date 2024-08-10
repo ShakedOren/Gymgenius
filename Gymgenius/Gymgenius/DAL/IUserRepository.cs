@@ -9,6 +9,5 @@ namespace Gymgenius.dal
         Task AddUser(User user);
         Task DeleteUser(string userName);
         Task<bool> IsUserExists(string userName);
-        Task<bool> IsUserTrainer(string userName);
     }
 }

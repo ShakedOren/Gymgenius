@@ -37,18 +37,21 @@
     </div>
 
     <div class="mb-3">
-        <label for="isTrainer" class="form-label">Are you a Trainer?</label>
-        <InputCheckbox id="isTrainer" class="form-check-input" @bind-Value="user.IsTrainer" />
-    </div>
-
-    <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <InputText id="password" type="password" class="form-control" @bind-Value="user.Password" />
     </div>
 
     <div class="mb-3">
-        <label for="roleId" class="form-label">Role ID</label>
-        <InputNumber id="roleId" class="form-control" @bind-Value="user.RoleId" />
+        <label for="role" class="form-label">Role</label>
+        <select id="role" class="form-control" @bind="@user.RoleId">
+            @if (roles != null)
+            {
+                @foreach (var role in roles)
+                {
+                    <option value="@role.RoleId">@role.RoleName</option>
+                }
+            }
+        </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Sign Up</button>
@@ -62,10 +65,12 @@
 @code {
     [SupplyParameterFromForm] public User? user { get; set; }
     private bool _signUpSuccess;
-    protected override void OnInitialized()
+    private List<Role>? roles;
+    protected override async Task OnInitializedAsync()
     {
         user ??= new();
         user.RoleId = 1;
+        roles = await ApiService.GetRolesAsync();
     }
 
 	private async Task HandleValidSubmit()
