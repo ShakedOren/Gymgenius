@@ -21,7 +21,7 @@ namespace GymGenius.BLL
         {
             var user = await _userRepository.GetUserByUsername(userName);
             var program = await _trainingProgramRepository.GetTrainingProgramByName(programName);
-            if (await _userToProgramRepository.IsUserHaveProgram(user))
+            if (await _userToProgramRepository.IsUserHasProgram(user))
             {
                 throw new Exception("User already have program.");
             }
@@ -29,7 +29,7 @@ namespace GymGenius.BLL
             await _userToProgramRepository.AddProgramToUser(user, program);
         }
 
-        public async Task<TrainingProgram> GetUserProgram(string userName)
+        public async Task<TrainingProgram?> GetUserProgram(string userName)
         {
             return await _userToProgramRepository.GetUserProgram(await _userRepository.GetUserByUsername(userName));
         }
@@ -37,7 +37,7 @@ namespace GymGenius.BLL
         public async Task RemoveProgramFromUser(string userName)
         {
             var user = await _userRepository.GetUserByUsername(userName);
-            if (!await _userToProgramRepository.IsUserHaveProgram(user))
+            if (!await _userToProgramRepository.IsUserHasProgram(user))
             {
                 throw new Exception("No program found for user.");
             }
@@ -45,9 +45,10 @@ namespace GymGenius.BLL
             await _userToProgramRepository.RemoveProgramFromUser(user);
         }
 
-        public async Task<bool> IsUserHaveProgram(User user)
+        public async Task<bool> IsUserHasProgram(string userName)
         {
-            return await _userToProgramRepository.IsUserHaveProgram(user);
+            var user = await _userRepository.GetUserByUsername(userName);
+            return await _userToProgramRepository.IsUserHasProgram(user);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace GymGenius.DAL
             return Task.FromResult(userToProgram[user]);
         }
 
-        public Task<bool> IsUserHaveProgram(User user)
+        public Task<bool> IsUserHasProgram(User user)
         {
             return Task.FromResult(userToProgram.ContainsKey(user));
         }

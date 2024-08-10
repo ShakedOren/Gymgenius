@@ -23,15 +23,14 @@ namespace Gymgenius.Controllers
         [HttpGet("get_user_program/{username}")]
         public async Task<ActionResult<TrainingProgram>> GetUserProgram(string username)
         {
-            try
+            var response = await _userToProgramManagment.GetUserProgram(username);
+            if (response != null)
             {
-                return await _userToProgramManagment.GetUserProgram(username);
+                return response;
             }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
+
+            return NotFound();
+         }
 
         [HttpGet("add_program_to_user/{username}/{program_name}")]
         public async Task<ActionResult> AddProgramToUser(string username, string program_name)
@@ -60,5 +59,19 @@ namespace Gymgenius.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpDelete("is_user_has_program/{username}")]
+        public async Task<ActionResult<bool>> IsUserHasProgram(string username)
+        {
+            try
+            {
+                return await _userToProgramManagment.IsUserHasProgram(username);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        
     }
 }

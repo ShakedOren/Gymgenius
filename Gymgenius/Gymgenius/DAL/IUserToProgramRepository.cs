@@ -7,7 +7,7 @@ namespace GymGenius.DAL
     {
         Task AddProgramToUser(User user, TrainingProgram program);
         Task RemoveProgramFromUser(User user);
-        Task<TrainingProgram> GetUserProgram(User user);
-        Task<bool> IsUserHaveProgram(User user);
+        Task<TrainingProgram?> GetUserProgram(User user);
+        Task<bool> IsUserHasProgram(User user);
     }
 }

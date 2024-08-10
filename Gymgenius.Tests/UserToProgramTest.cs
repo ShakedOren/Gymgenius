@@ -66,11 +66,11 @@ namespace Gymgenius.Tests
             };
             TrainingProgram t1 = new TrainingProgram() { Description = "asdsad", Name = "asdsa" };
             
-            Assert.IsFalse(_userToProgramRepository.IsUserHaveProgram(u1).Result);
+            Assert.IsFalse(_userToProgramRepository.IsUserHasProgram(u1).Result);
             _userToProgramRepository.AddProgramToUser(u1, t1);
-            Assert.IsTrue(_userToProgramRepository.IsUserHaveProgram(u1).Result);
+            Assert.IsTrue(_userToProgramRepository.IsUserHasProgram(u1).Result);
             _userToProgramRepository.RemoveProgramFromUser(u1);
-            Assert.IsFalse(_userToProgramRepository.IsUserHaveProgram(u1).Result);
+            Assert.IsFalse(_userToProgramRepository.IsUserHasProgram(u1).Result);
         }
 
 
