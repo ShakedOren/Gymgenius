@@ -16,7 +16,6 @@ namespace Gymgenius.bo
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public string? Email { get; set; }
-        public bool IsTrainer{ get; set; }
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
         [Range(1, 3, ErrorMessage = "RoleId must be between 1 and 3")]
@@ -37,7 +36,7 @@ namespace Gymgenius.bo
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(UserName, FirstName, LastName, Age, Email, IsTrainer);
+            return HashCode.Combine(UserName, FirstName, LastName, Age, Email);
         }
 
         public override string ToString()

@@ -8,8 +8,8 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>gymgenius</DockerServiceName>
-	<Configurations>Debug;Release;staging;production</Configurations>
-	<DockerComposeBaseFilePath>.\docker-compose</DockerComposeBaseFilePath>
+    <Configurations>Debug;Release;staging;production</Configurations>
+    <DockerComposeBaseFilePath>.\docker-compose</DockerComposeBaseFilePath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
