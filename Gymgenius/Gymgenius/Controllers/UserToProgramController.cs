@@ -32,7 +32,7 @@ namespace Gymgenius.Controllers
             return NotFound();
          }
 
-        [HttpGet("add_program_to_user/{username}/{program_name}")]
+        [HttpPost("add_program_to_user/{username}/{program_name}")]
         public async Task<ActionResult> AddProgramToUser(string username, string program_name)
         {
             try

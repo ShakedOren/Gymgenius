@@ -81,7 +81,10 @@ namespace GymGenius.WebUI.Services
 		{
 			return await httpClient.GetFromJsonAsync<IEnumerable<Exercise>>($"/ExerciseToProgram/list_exercises/{name}");
 		}
-
+        public async Task AddProgramToUser(string username, string program)
+        {
+            await httpClient.PostAsync($"/UserToProgram/add_program_to_user/{username}/{program}", null);
+        }
         // User MethodsGetUserByUsername
         public async Task<string> LoginAsync(UserLogin userLoginDto)
         {
