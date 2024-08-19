@@ -43,7 +43,8 @@ else
         {
             <div class="profile-item">
                 <RadzenLabel Text="Training Program:" Style="font-weight: bold; margin-right: 10px;" />
-            <RadzenTextBox Value="has program" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+                <RadzenButton Text="@program.Name" Click="@(() => NavigateToProgramDetails(program.Name))"
+                              Style="background-color: transparent; text-transform: none; border: none; color: inherit; font-weight: bold;" />
             </div>
         }
         else
@@ -51,7 +52,38 @@ else
             <div class="profile-item">
                 <RadzenLabel Text="Training Program:" Style="font-weight: bold; margin-right: 10px;" />
                 <RadzenTextBox Value="no program" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+                <RadzenButton Text="Add Program" Click="@(() => showAddProgram = true)"
+                              Style="background-color: transparent; border: none; color: inherit; font-weight: bold;" />
             </div>
+
+            if (showAddProgram)
+            {
+                <RadzenStack Gap="1rem">
+
+                <RadzenCard Variant="Variant.Outlined">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
+                        <RadzenButton Click="@AddProgramToUser" Text="Add Program" />
+                        @if (selectedProgram?.Any() == true)
+                        {
+                            <div>
+                                    Selected Program: @selectedProgram[0].Name
+                            </div>
+                        }
+                    </RadzenStack>
+                </RadzenCard>
+                <RadzenDataGrid AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+                                AllowSorting="true" Data="@programs" ColumnWidth="200px"
+                                SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedProgram>
+	                <Columns>
+		                <RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		                <RadzenDataGridColumn Property="@nameof(TrainingProgram.Description)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+                    </Columns>
+                </RadzenDataGrid>
+                <RadzenButton Text="Add Program" Click="@(() => showAddProgram = true)"
+                              Style="background-color: transparent; border: none; color: inherit; font-weight: bold;" />
+                </RadzenStack>
+
+            }
         }
     </div>
 }
@@ -64,9 +96,27 @@ else
 
     private TrainingProgram? program;
 
+    private bool showAddProgram { get; set; }
+
+    private IEnumerable<TrainingProgram> programs;
+
+    IList<TrainingProgram> selectedProgram;
+
     protected override async Task OnInitializedAsync()
     {
         user = await ApiService.GetUserAsync(username);
         program = await ApiService.GetUserProgramAsync(username);
+        programs = await ApiService.GetProgramsAsync();
+        selectedProgram = new List<TrainingProgram>() { programs.FirstOrDefault() };
+    }
+
+    async Task AddProgramToUser() {
+        await ApiService.AddProgramToUser(user.UserName, selectedProgram.FirstOrDefault().Name);
+        program = await ApiService.GetUserProgramAsync(username);
+    }
+
+    private void NavigateToProgramDetails(string program_name)
+    {
+        Navigation.NavigateTo($"/program/{program_name}");
     }
 }

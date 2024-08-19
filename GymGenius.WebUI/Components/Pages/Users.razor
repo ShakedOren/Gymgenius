@@ -11,7 +11,7 @@
 		<RadzenDataGridColumn Property="@nameof(User.UserName)" Filterable="false" Title="Username" Frozen="true" Width="80px" TextAlign="TextAlign.Center" >
 			<Template Context="user">
 				<RadzenButton Text="@user.UserName" Click="@(() => NavigateToUserDetails(user.UserName))"
-				Style="background-color: transparent; border: none; color: inherit; font-weight: bold;"/>
+							  Style="background-color: transparent; text-transform: none; border: none; color: inherit; font-weight: bold;" />
 			</Template>
 		</RadzenDataGridColumn>
 		<RadzenDataGridColumn Property="@nameof(User.FirstName)" Filterable="false" Title="First Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />

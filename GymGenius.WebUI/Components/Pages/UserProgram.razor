@@ -2,12 +2,14 @@
 @using GymGenius.BO
 @using Gymgenius.bo
 @using GymGenius.WebUI.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @inject ApiService ApiService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider;
 
 <h3>User Program</h3>
 
-  <p><em>No Program For This User</em></p>
+<p><em>No Program For This User</em></p>
 
 @code {
     private User user;
@@ -17,9 +19,9 @@
     {
         try
         {
-            string username = getCurrentUser();
+            string username = await getCurrentUser();
             user = await ApiService.GetUserAsync(username);
-            program = await ApiService.GetProgramAsync(username);
+            program = await ApiService.GetUserProgramAsync(username);
             Navigation.NavigateTo($"/program/{program.Name}");
         }
         catch (Exception ex)
@@ -27,8 +29,10 @@
         }
     }
 
-    protected string getCurrentUser()
+    protected async Task<string> getCurrentUser()
     {
-        return "guest3";
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        return user.Identity.Name;
     }
 }

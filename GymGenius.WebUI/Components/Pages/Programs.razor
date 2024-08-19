@@ -17,7 +17,7 @@
 				<RadzenButton Text="View"
 							  Click="@(() => NavigateToProgramDetails(program.Name))"
 							  ButtonStyle="ButtonStyle.Primary"
-							  Style="margin: 2px;" />
+							  Style="margin: 2px; text-transform: none;" />
 			</Template>
 		</RadzenDataGridColumn>
 		<RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Deletion" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
@@ -25,7 +25,7 @@
 				<RadzenButton Text="Delete"
 					Click="@(() => DeleteProgram(program.Name))"
 					ButtonStyle="ButtonStyle.Danger"
-					Style="margin: 2px;" />
+							  Style="margin: 2px; text-transform: none;" />
 			</Template>
 		</RadzenDataGridColumn>
 	</Columns>
