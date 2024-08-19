@@ -1,5 +1,4 @@
-﻿using Gymgenius.bll;
-using Gymgenius.dal;
+﻿using Gymgenius.dal;
 using GymGenius.DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
