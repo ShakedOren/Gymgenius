@@ -1,5 +1,4 @@
-﻿using Gymgenius.bll;
-using GymGenius.BO;
+﻿using GymGenius.BO;
 using Gymgenius.dal;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -43,6 +42,12 @@ namespace Gymgenius.Controllers
             {
                 return NotFound(ex.Message);
             }
+        }
+        [HttpGet("user-role/{username}")]
+        public async Task<ActionResult<Role>> GetUserRole(string username)
+        {
+            return Ok(await _roleManagement.GetUserRole(username));
+
         }
     }
 }

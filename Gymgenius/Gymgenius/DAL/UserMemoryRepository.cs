@@ -1,7 +1,8 @@
 ﻿using Gymgenius.bo;
+using GymGenius.BO;
 using Gymgenius.dal;
 
-namespace Gymgenius.bll
+namespace GymGenius.DAL
 {
     public class UserMemoryRepository : IUserRepository
     {
@@ -10,6 +11,11 @@ namespace Gymgenius.bll
         {
             _users.Add(user);
             return Task.CompletedTask;
+        }
+
+        public async Task ChangeUserRole(string username, int roleId)
+        {
+            _users.Find(u => u.UserName == username).RoleId = roleId;
         }
 
         public async Task DeleteUser(string userName)

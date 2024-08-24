@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using GymGenius.dal;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GymGenius.DAL
 {
@@ -30,6 +31,12 @@ namespace GymGenius.DAL
             using var connection = _dapperContext.CreateConnection();
             connection.Open();
             return await connection.QueryFirstAsync<Role>("SELECT * FROM Roles WHERE RoleName = @RoleName", new { RoleName = name });
+        }
+        public async Task<Role> GetUserRole(string username)
+        {
+            using var connection = _dapperContext.CreateConnection();
+            var query = "SELECT r.RoleName FROM Users u INNER JOIN Roles r ON u.RoleId = r.RoleId WHERE u.Username = @Username";
+            return await connection.QueryFirstAsync<Role>(query, new { Username = username });
         }
     }
 }

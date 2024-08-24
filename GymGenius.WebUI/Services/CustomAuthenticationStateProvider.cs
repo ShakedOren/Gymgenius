@@ -46,7 +46,7 @@ namespace GymGenius.WebUI.Services
 	        };
 
             var role = await _apiService.GetUserRoleAsync(username);
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
 
             var identity = new ClaimsIdentity(claims, "apiauth_type");
             var user = new ClaimsPrincipal(identity);

@@ -47,5 +47,9 @@ namespace Gymgenius.bo
         {
             return await _users.IsUserExists(userName);
         }
+        public async Task ChangeUserRole(string username, int roleId)
+        {
+            await _users.ChangeUserRole(username, roleId);
+        }
     }
 }

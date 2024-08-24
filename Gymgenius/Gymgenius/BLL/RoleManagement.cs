@@ -31,6 +31,11 @@ namespace Gymgenius.bo
         {
             return await _roles.GetAllRoles();
         }
+
+        public async Task<Role> GetUserRole(string username)
+        {
+            return await _roles.GetUserRole(username);
+        }
     }
 }
 

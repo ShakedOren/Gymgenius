@@ -4,6 +4,7 @@ using Gymgenius.dal;
 using System.Data.Common;
 using System.Security.Cryptography;
 using System.Text;
+using GymGenius.BO;
 
 public class UserMSSQLRepository : IUserRepository
 {
@@ -20,6 +21,13 @@ public class UserMSSQLRepository : IUserRepository
         connection.Open();
         user.Password = HashPassword(user.Password);
         await connection.ExecuteAsync("INSERT INTO Users (UserName, FirstName, LastName, Password, Age, Email, RoleId) VALUES (@UserName, @FirstName, @LastName, @Password, @Age, @Email, @RoleId)", user);
+    }
+
+    public async Task ChangeUserRole(string username, int roleId)
+    {
+        using var connection = _dapperContext.CreateConnection();
+        connection.Open();
+        await connection.ExecuteAsync("UPDATE Users SET RoleId = @RoleId WHERE UserName = @UserName", new {roleId, username });
     }
 
     public async Task DeleteUser(string userName)
