@@ -183,11 +183,6 @@ else
         Navigation.NavigateTo($"/program/{program_name}");
     }
 
-    private string GetRoleNameById(int roleId)
-    {
-        return Enum.GetName(typeof(Role.Roles), roleId);
-    }
-
     private async Task SaveChanges()
     {
         await ApiService.UpdateUserRole(user.UserName, selectedRole.RoleId);
