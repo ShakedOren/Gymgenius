@@ -10,6 +10,14 @@
 				Data="@exercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
 	<Columns>
 		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Deletion" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+			<Template Context="exercise">
+				<RadzenButton Text="Delete"
+							  Click="@(() => DeleteExercise(exercise.Name))"
+							  ButtonStyle="ButtonStyle.Danger"
+							  Style="margin: 2px; text-transform: none;" />
+			</Template>
+		</RadzenDataGridColumn>
 	</Columns>
 </RadzenDataGrid>
 

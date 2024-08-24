@@ -45,6 +45,9 @@ else
                 <RadzenLabel Text="Training Program:" Style="font-weight: bold; margin-right: 10px;" />
                 <RadzenButton Text="@program.Name" Click="@(() => NavigateToProgramDetails(program.Name))"
                               Style="background-color: transparent; text-transform: none; border: none; color: inherit; font-weight: bold;" />
+
+				<RadzenButton Text="Delete" Click="@(() => DeleteProgramFromUser())" ButtonStyle="ButtonStyle.Danger" 
+                    Style="margin: 2px; text-transform: none;" />
             </div>
         }
         else
@@ -56,14 +59,14 @@ else
                               Style="background-color: transparent; border: none; color: inherit; font-weight: bold;" />
             </div>
 
-            if (showAddProgram)
+            if (showAddProgram )
             {
                 <RadzenStack Gap="1rem">
 
                 <RadzenCard Variant="Variant.Outlined">
                     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
                         <RadzenButton Click="@AddProgramToUser" Text="Add Program" />
-                        @if (selectedProgram?.Any() == true)
+                        @if (programs.Count() > 0 && selectedProgram?.Any() == true)
                         {
                             <div>
                                     Selected Program: @selectedProgram[0].Name
@@ -111,7 +114,18 @@ else
     }
 
     async Task AddProgramToUser() {
+        if (selectedProgram.FirstOrDefault() is null)
+        {
+            return;
+        }
+
         await ApiService.AddProgramToUser(user.UserName, selectedProgram.FirstOrDefault().Name);
+        program = await ApiService.GetUserProgramAsync(username);
+    }
+
+    async Task DeleteProgramFromUser()
+    {
+        await ApiService.RemoveProgramFromUser(user.UserName);
         program = await ApiService.GetUserProgramAsync(username);
     }
 

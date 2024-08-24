@@ -17,15 +17,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        string username = await getCurrentUser();
+        user = await ApiService.GetUserAsync(username);
+        program = await ApiService.GetUserProgramAsync(username);
+        if (program is not null)
         {
-            string username = await getCurrentUser();
-            user = await ApiService.GetUserAsync(username);
-            program = await ApiService.GetUserProgramAsync(username);
             Navigation.NavigateTo($"/program/{program.Name}");
-        }
-        catch (Exception ex)
-        {
         }
     }
 

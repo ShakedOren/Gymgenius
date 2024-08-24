@@ -85,6 +85,12 @@ namespace GymGenius.WebUI.Services
         {
             await httpClient.PostAsync($"/UserToProgram/add_program_to_user/{username}/{program}", null);
         }
+
+        public async Task RemoveProgramFromUser(string username)
+        {
+            await httpClient.DeleteAsync($"/UserToProgram/remove_program_from_user/{username}");
+        }
+
         // User MethodsGetUserByUsername
         public async Task<string> LoginAsync(UserLogin userLoginDto)
         {
@@ -112,5 +118,15 @@ namespace GymGenius.WebUI.Services
         {
             return await httpClient.GetFromJsonAsync<List<Role>>("/Role/list_roles");
         }
-    }
+
+		public async Task AddExerciseToProgramAsync(string exercise, string program)
+		{
+			await httpClient.PostAsync($"/ExerciseToProgram/add_exercise_to_program/{exercise}/{program}", null);
+		}
+
+		public async Task RemoveExerciseFromProgramAsync(string exercise, string program)
+		{
+			await httpClient.DeleteAsync($"/ExerciseToProgram/delete_exercise_from_program/{exercise}/{program}");
+		}
+	}
 }

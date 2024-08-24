@@ -2,6 +2,8 @@
 @using Gymgenius.bo
 @using GymGenius.BO
 @using GymGenius.WebUI.Services
+@using Microsoft.AspNetCore.Components.Authorization
+
 @inject ApiService ApiService
 @inject NavigationManager Navigation
 
@@ -18,13 +20,49 @@ else
 		<p><strong>Description:</strong> @program.Description</p>
 	</div>
 	<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-					Data="@programExercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
+					Data="@programExercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedFromProgramExercises>
 		<Columns>
 			<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+
+			<AuthorizeView Roles="Trainer">
+				<Authorized>
+					<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Deletion" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+
+						<Template Context="exercise">
+							<RadzenButton Text="Delete"
+										  Click="@(() => RemoveExercisesFromProgram(exercise.Name))"
+										  ButtonStyle="ButtonStyle.Danger"
+										  Style="margin: 2px; text-transform: none;" />
+						</Template>
+
+					</RadzenDataGridColumn>
+				</Authorized>
+			</AuthorizeView>
 		</Columns>
 	</RadzenDataGrid>
-}
 
+    <AuthorizeView Roles="Trainer">
+        <Authorized>
+			<RadzenCard Variant="Variant.Outlined">
+				<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
+					<RadzenButton Click="@AddExercisesToProgram" Text="Add Exercises" />
+				</RadzenStack>
+			</RadzenCard>
+			<RadzenDataGrid @ref="grid" AllowRowSelectOnRowClick=true AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
+							AllowSorting="true" Data="@notInProgramExercises" ColumnWidth="200px"
+                                SelectionMode="DataGridSelectionMode.Multiple" @bind-Value=@selectedExercises>
+	            <Columns>
+		            <RadzenDataGridColumn Width="80px" TextAlign="TextAlign.Center">
+						<Template Context="data">
+						<RadzenCheckBox TabIndex="-1" TriState="false" Value="@(selectedExercises != null && selectedExercises.Contains(data))" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Select item" }})"/>
+						</Template>
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Title="Exercise Name" />
+				</Columns>
+                </RadzenDataGrid>
+		</Authorized>
+	</AuthorizeView>
+}
 @code {
 	[Parameter]
 	public string programName { get; set; }
@@ -32,13 +70,41 @@ else
 	private TrainingProgram program;
 
 	IEnumerable<Exercise> programExercises;
-	IList<Exercise> selectedExercise;
-
+	IEnumerable<Exercise> notInProgramExercises;
+	IList<Exercise> selectedExercises;
+	IList<Exercise> selectedFromProgramExercises;
+	RadzenDataGrid<Exercise> grid;
 
 	protected override async Task OnInitializedAsync()
 	{
 		program = await ApiService.GetProgramAsync(programName);
+				
+		await GetAllData();
+	}
+
+	async Task GetAllData()
+	{
 		programExercises = await ApiService.GetExercisesOfProgramAsync(programName);
-		selectedExercise = new List<Exercise>() { programExercises.FirstOrDefault() };
+		selectedFromProgramExercises = new List<Exercise>() { programExercises.FirstOrDefault() };
+		IEnumerable<Exercise> allExercises = await ApiService.GetExercisesAsync();
+		notInProgramExercises = allExercises.Except(programExercises).ToList();
+		selectedExercises = new List<Exercise>() { };
+	}
+
+	async Task AddExercisesToProgram()
+	{
+		foreach (Exercise exercise in selectedExercises)
+		{
+			await ApiService.AddExerciseToProgramAsync(exercise.Name, program.Name);
+		}
+
+		await GetAllData();
+	}
+
+	async Task RemoveExercisesFromProgram(string exercise)
+	{
+		await ApiService.RemoveExerciseFromProgramAsync(exercise, program.Name);
+
+		await GetAllData();
 	}
 }
