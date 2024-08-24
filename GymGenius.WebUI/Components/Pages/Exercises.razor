@@ -9,7 +9,15 @@
 <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
 				Data="@exercises" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedExercise>
 	<Columns>
-		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Exercise Name" Frozen="true" Width="80px" TextAlign="TextAlign.Start" />
+		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+		<RadzenDataGridColumn Property="@nameof(Exercise.Name)" Filterable="false" Title="Deletion" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+			<Template Context="exercise">
+				<RadzenButton Text="Delete"
+							  Click="@(() => DeleteExercise(exercise.Name))"
+							  ButtonStyle="ButtonStyle.Danger"
+							  Style="margin: 2px; text-transform: none;" />
+			</Template>
+		</RadzenDataGridColumn>
 	</Columns>
 </RadzenDataGrid>
 
