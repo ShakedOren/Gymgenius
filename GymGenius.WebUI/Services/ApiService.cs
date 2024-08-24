@@ -109,16 +109,19 @@ namespace GymGenius.WebUI.Services
             var response = await httpClient.PostAsJsonAsync("/Auth/signup", userSignupDto);
             response.EnsureSuccessStatusCode();
         }
-        public async Task<string> GetUserRoleAsync(string username)
+        public async Task<Role?> GetUserRoleAsync(string username)
         {
-            return await httpClient.GetStringAsync($"/Auth/user-role/{username}");
+            return await httpClient.GetFromJsonAsync<Role>($"/Role/user-role/{username}");
         }
 
         public async Task<List<Role>?> GetRolesAsync()
         {
             return await httpClient.GetFromJsonAsync<List<Role>>("/Role/list_roles");
         }
-
+        public async Task UpdateUserRole(string username, int roleId)
+        {
+            await httpClient.PostAsync($"/User/change_user_role/{username}/{roleId}", null);
+        }
 		public async Task AddExerciseToProgramAsync(string exercise, string program)
 		{
 			await httpClient.PostAsync($"/ExerciseToProgram/add_exercise_to_program/{exercise}/{program}", null);

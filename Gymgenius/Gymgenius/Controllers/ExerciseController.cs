@@ -1,5 +1,4 @@
-﻿using Gymgenius.bll;
-using Gymgenius.bo;
+﻿using Gymgenius.bo;
 using Gymgenius.dal;
 using GymGenius.DAL;
 using Microsoft.AspNetCore.Mvc;

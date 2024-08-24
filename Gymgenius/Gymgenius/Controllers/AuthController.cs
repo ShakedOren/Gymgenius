@@ -22,13 +22,11 @@ namespace GymGenius.WebAPI.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
-        private readonly DapperContext _dapperContext;
 
-        public AuthController(IConfiguration configuration, IUserRepository userRepository, DapperContext dapperContext)
+        public AuthController(IConfiguration configuration, IUserRepository userRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;
-            _dapperContext = dapperContext;
         }
 
         [HttpPost("signup")]
@@ -53,15 +51,6 @@ namespace GymGenius.WebAPI.Controllers
             
         }
 
-        [HttpGet("user-role/{username}")]
-        public async Task<IActionResult> GetUserRole(string username)
-        {
-            using var connection = _dapperContext.CreateConnection();
-            var query = "SELECT r.RoleName FROM Users u INNER JOIN Roles r ON u.RoleId = r.RoleId WHERE u.Username = @Username";
-            var roleName = await connection.QuerySingleOrDefaultAsync<string>(query, new { Username = username });
-            return Ok(roleName );
-            
-        }
         //TODO: need to make it in some other place
         private string HashPassword(string password)
         {

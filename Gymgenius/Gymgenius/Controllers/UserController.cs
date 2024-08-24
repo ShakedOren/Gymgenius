@@ -1,5 +1,4 @@
-﻿using Gymgenius.bll;
-using Gymgenius.bo;
+﻿using Gymgenius.bo;
 using Gymgenius.dal;
 using GymGenius.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +64,20 @@ namespace Gymgenius.Controllers
             try
             {
                 await _userManagment.DeleteUser(username);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        // add function to update user role
+        [HttpPost("change_user_role/{username}/{roleId}")]
+        public async Task<ActionResult> ChangeUserRole(string username, int roleId)
+        {
+            try
+            {
+                await _userManagment.ChangeUserRole(username, roleId);
                 return NoContent();
             }
             catch (Exception ex)

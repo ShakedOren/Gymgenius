@@ -21,24 +21,67 @@ else
 
         <div class="profile-item">
             <RadzenLabel Text="First Name:" Style="font-weight: bold; margin-right: 10px;" />
-            <RadzenTextBox Value="@user.FirstName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            @if (isEditing)
+            {
+                <RadzenTextBox @bind-Value="@user.FirstName" Style="font-weight: normal;" />
+            }
+            else
+            {
+                <RadzenTextBox Value="@user.FirstName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            }
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Last Name:" Style="font-weight: bold; margin-right: 10px;" />
-            <RadzenTextBox Value="@user.LastName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            @if (isEditing)
+            {
+                <RadzenTextBox @bind-Value="@user.LastName" Style="font-weight: normal;" />
+            }
+            else
+            {
+                <RadzenTextBox Value="@user.LastName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            }
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Email:" Style="font-weight: bold; margin-right: 10px;" />
-            <RadzenTextBox Value="@user.Email" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            @if (isEditing)
+            {
+                <RadzenTextBox @bind-Value="@user.Email" Style="font-weight: normal;" />
+            }
+            else
+            {
+                <RadzenTextBox Value="@user.Email" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            }
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Age:" Style="font-weight: bold; margin-right: 10px;" />
-            <RadzenTextBox Value="@user.Age.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            @if (isEditing)
+            {
+                <RadzenNumeric @bind-Value="@user.Age" Style="font-weight: normal;" />
+            }
+            else
+            {
+                <RadzenTextBox Value="@user.Age.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+            }
         </div>
 
+		
+
+        <div class="profile-item">
+	        <RadzenLabel Text="Role:" Style="font-weight: bold; margin-right: 10px;" />
+	        @if (isEditing)
+	        {
+		        <RadzenDropDown @bind-Value="@selectedRole.RoleName" Data="@roles" TextProperty="@nameof(Role.RoleName)" ValueProperty="@nameof(Role.RoleName)" Style="font-weight: normal;" />
+	        }
+	        else
+	        {
+                <RadzenTextBox Value="@(Enum.GetName(typeof(Role.Roles), user.RoleId))" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
+	        }
+        </div>
+
+        
         @if (program != null)
         {
             <div class="profile-item">
@@ -77,9 +120,9 @@ else
                 <RadzenDataGrid AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4"
                                 AllowSorting="true" Data="@programs" ColumnWidth="200px"
                                 SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedProgram>
-	                <Columns>
-		                <RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
-		                <RadzenDataGridColumn Property="@nameof(TrainingProgram.Description)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+                 <Columns>
+                  <RadzenDataGridColumn Property="@nameof(TrainingProgram.Name)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+                  <RadzenDataGridColumn Property="@nameof(TrainingProgram.Description)" Filterable="false" Title="Name" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
                     </Columns>
                 </RadzenDataGrid>
                 <RadzenButton Text="Add Program" Click="@(() => showAddProgram = true)"
@@ -88,6 +131,18 @@ else
 
             }
         }
+
+        <div class="profile-item">
+            @if (isEditing)
+            {
+                <RadzenButton Text="Save" Click="@SaveChanges" Style="margin-right: 10px;" />
+                <RadzenButton Text="Cancel" Click="@CancelEdit" />
+            }
+            else
+            {
+                <RadzenButton Text="Edit" Click="@(() => isEditing = true)" />
+            }
+        </div>
     </div>
 }
 
@@ -101,15 +156,23 @@ else
 
     private bool showAddProgram { get; set; }
 
+    private bool isEditing { get; set; }
+
     private IEnumerable<TrainingProgram> programs;
 
-    IList<TrainingProgram> selectedProgram;
+    private IList<TrainingProgram> selectedProgram;
+
+    private IEnumerable<Role> roles;
+
+    private Role selectedRole;
 
     protected override async Task OnInitializedAsync()
     {
         user = await ApiService.GetUserAsync(username);
         program = await ApiService.GetUserProgramAsync(username);
         programs = await ApiService.GetProgramsAsync();
+        roles = await ApiService.GetRolesAsync();
+        selectedRole = await ApiService.GetUserRoleAsync(username);
         selectedProgram = new List<TrainingProgram>() { programs.FirstOrDefault() };
     }
 
@@ -132,5 +195,19 @@ else
     private void NavigateToProgramDetails(string program_name)
     {
         Navigation.NavigateTo($"/program/{program_name}");
+    }
+
+    private async Task SaveChanges()
+    {
+        await ApiService.UpdateUserRole(user.UserName, selectedRole.RoleId);
+        isEditing = false;
+        await OnInitializedAsync();// Reload user details to reflect changes
+    }
+
+    private async Task CancelEdit()
+    {
+        isEditing = false;
+        // Reload user details to discard changes
+        await OnInitializedAsync();
     }
 }

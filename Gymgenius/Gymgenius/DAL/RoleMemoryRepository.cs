@@ -15,6 +15,11 @@ namespace GymGenius.DAL
             return Task.FromResult(_roles);
         }
 
+        public Task<Role> GetUserRole(string username)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Role> GetRoleByName(string name)
         {
             var role = _roles.FirstOrDefault(r => r.RoleName == name);
