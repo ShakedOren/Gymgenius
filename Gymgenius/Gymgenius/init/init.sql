@@ -28,7 +28,6 @@ BEGIN
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL
     );
 
-
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Roles' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         DROP TABLE Roles;
@@ -43,7 +42,6 @@ BEGIN
     INSERT INTO Roles (RoleName) VALUES ('Trainer');
     INSERT INTO Roles (RoleName) VALUES ('Trainee');
     
-
     IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Users' AND schema_id = SCHEMA_ID('dbo'))
     BEGIN
         DROP TABLE Users;
@@ -88,7 +86,7 @@ BEGIN
     BEGIN
         DROP TABLE UserToTrainingProgram;
     END
-   CREATE TABLE dbo.UserToTrainingProgram (
+    CREATE TABLE dbo.UserToTrainingProgram (
         Id INT IDENTITY PRIMARY KEY NOT NULL,
         DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
         TrainingProgramName NVARCHAR(50) NOT NULL,
@@ -96,4 +94,32 @@ BEGIN
         FOREIGN KEY (TrainingProgramName) REFERENCES dbo.TrainingPrograms(Name),
         FOREIGN KEY (UserName) REFERENCES dbo.Users(UserName)
     );
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TrainingLogs' AND schema_id = SCHEMA_ID('dbo'))
+    BEGIN
+        DROP TABLE TrainingLogs;
+    END
+    CREATE TABLE dbo.TrainingLogs (
+        Id INT IDENTITY PRIMARY KEY NOT NULL,
+        DateCreated DATETIME DEFAULT (GETDATE()) NOT NULL,
+        TrainingProgramName NVARCHAR(50) NOT NULL,
+        UserName NVARCHAR(50) NOT NULL,
+        FOREIGN KEY (TrainingProgramName) REFERENCES dbo.TrainingPrograms(Name),
+        FOREIGN KEY (UserName) REFERENCES dbo.Users(UserName)
+    );
+
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ExerciseLogs' AND schema_id = SCHEMA_ID('dbo'))
+    BEGIN
+        DROP TABLE ExerciseLogs;
+    END
+    CREATE TABLE dbo.ExerciseLogs (
+        Id INT IDENTITY PRIMARY KEY NOT NULL,
+        TrainingLogId INT NOT NULL,
+        ExerciseName NVARCHAR(50) NOT NULL,
+        Sets INT NOT NULL,
+        Reps INT NOT NULL,
+        FOREIGN KEY (TrainingLogId) REFERENCES dbo.TrainingLogs(Id),
+        FOREIGN KEY (ExerciseName) REFERENCES dbo.Exercises(Name)
+    );
+
 END

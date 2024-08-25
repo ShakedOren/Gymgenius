@@ -1,0 +1,28 @@
+﻿@page "/exercise-window"
+@using GymGenius.BO
+@inject DialogService DialogService
+@code {
+	[Parameter]
+	public List<ExerciseLog> ExerciseLogs { get; set; }
+}
+
+<h3>Exercise Log</h3>
+
+@if (ExerciseLogs != null && ExerciseLogs.Any())
+{
+	<ul>
+		@foreach (var log in ExerciseLogs)
+		{
+			<li>@log.ExerciseName - Sets: @log.Sets, Reps: @log.Reps</li>
+		}
+	</ul>
+}
+
+<RadzenButton Text="Close" Click="Close" />
+
+@code {
+	void Close()
+	{
+		DialogService.Close();
+	}
+}

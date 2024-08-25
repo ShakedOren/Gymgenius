@@ -4,6 +4,7 @@ using GymGenius.BLL;
 using GymGenius.BO;
 using GymGenius.dal;
 using GymGenius.DAL;
+using GymGenius.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddSingleton<TrainingProgramManagment>();
 builder.Services.AddSingleton<ExerciseToProgramManagment>();
 builder.Services.AddSingleton<UserToProgramManagment>();
 builder.Services.AddSingleton<RoleManagement>();
+builder.Services.AddSingleton<TrainingLogManagement>();
 
 //builder.Services.AddSingleton<IUserRepository, UserMemoryRepository>();
 //builder.Services.AddSingleton<IExerciseRepository, ExerciseMemoryRepository>();
@@ -30,6 +32,9 @@ builder.Services.AddSingleton<ITrainingProgramRepository, TrainingProgramMSSQLRe
 builder.Services.AddSingleton<IExerciseToProgramRepository, ExerciseToProgramMSSQLRepository>();
 builder.Services.AddSingleton<IUserToProgramRepository, UserToProgramMSSQLRepository>();
 builder.Services.AddSingleton<IRoleRepository, RoleMSSQLRepository>();
+builder.Services.AddSingleton<ITrainingLogRepository, TrainingLogMSSQLRepository>();
+builder.Services.AddSingleton<IExerciseLogRepository, ExerciseLogMSSQLRepository>();
+
 
 builder.Services.AddControllers();
 
