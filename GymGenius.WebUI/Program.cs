@@ -21,7 +21,8 @@ namespace GymGenius.WebUI
 
             // Register CustomAuthenticationStateProvider
             builder.Services.AddScoped<CustomAuthenticationStateProvider>();
-            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddScoped<DialogService>();
+			builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, BlazorAuthorizationMiddlewareResultHandler>();
 
             // Add services to the container.

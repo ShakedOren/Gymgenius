@@ -131,5 +131,20 @@ namespace GymGenius.WebUI.Services
 		{
 			await httpClient.DeleteAsync($"/ExerciseToProgram/delete_exercise_from_program/{exercise}/{program}");
 		}
-	}
+        public async Task LogTrainingAsync(TrainingLog trainingLog)
+        {
+            var response = await httpClient.PostAsJsonAsync("/TrainingLog/log_training", trainingLog);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<IEnumerable<TrainingLog>> GetTrainingLogsAsync()
+        {
+            return await httpClient.GetFromJsonAsync<IEnumerable<TrainingLog>>("/TrainingLog/get_logs");
+        }
+
+        public async Task<IEnumerable<TrainingLog>> GetTrainingLogsByUserAsync(string userName)
+        {
+            return await httpClient.GetFromJsonAsync<IEnumerable<TrainingLog>>($"/TrainingLog/get_logs_by_user/{userName}");
+        }
+    }
 }

@@ -1,0 +1,39 @@
+﻿@page "/training-logs"
+@using GymGenius.BO
+@using GymGenius.WebUI.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@using Radzen
+@inject ApiService ApiService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DialogService DialogService
+
+<RadzenDataGrid TItem="TrainingLog" Data="@trainingLogs" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+	<Columns>
+		<RadzenDataGridColumn TItem="TrainingLog" Property="DateCreated" Title="Date Logged" />
+		<RadzenDataGridColumn TItem="TrainingLog" Property="ProgramName" Title="Program Name"/>
+		<RadzenDataGridColumn TItem="TrainingLog" Property="UserName" Title="User Name"/>
+		<RadzenDataGridColumn TItem="TrainingLog" Title="Exercises">
+			<Template Context="trainingLog">
+				<RadzenButton Click="@(async () => await OpenExerciseWindow(trainingLog.ExerciseLogs))" Text="View Exercises"/>
+			</Template>
+		</RadzenDataGridColumn>
+	</Columns>
+</RadzenDataGrid>
+
+@code {
+    private List<TrainingLog> trainingLogs;
+
+    private async Task OpenExerciseWindow(List<ExerciseLog> exerciseLogs)
+    {
+        var parameters = new Dictionary<string, object>();
+        parameters.Add("ExerciseLogs", exerciseLogs);
+
+        await DialogService.OpenAsync<ExerciseWindow>("Exercise Log", parameters, new DialogOptions { Width = "600px", Height = "400px" });
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        trainingLogs = (await ApiService.GetTrainingLogsAsync()).ToList();
+    }
+}
