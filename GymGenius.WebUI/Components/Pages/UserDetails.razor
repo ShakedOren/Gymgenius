@@ -21,50 +21,22 @@ else
 
         <div class="profile-item">
             <RadzenLabel Text="First Name:" Style="font-weight: bold; margin-right: 10px;" />
-            @if (isEditing)
-            {
-                <RadzenTextBox @bind-Value="@user.FirstName" Style="font-weight: normal;" />
-            }
-            else
-            {
-                <RadzenTextBox Value="@user.FirstName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
-            }
+            <RadzenTextBox Value="@user.FirstName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Last Name:" Style="font-weight: bold; margin-right: 10px;" />
-            @if (isEditing)
-            {
-                <RadzenTextBox @bind-Value="@user.LastName" Style="font-weight: normal;" />
-            }
-            else
-            {
-                <RadzenTextBox Value="@user.LastName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
-            }
+            <RadzenTextBox Value="@user.LastName" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Email:" Style="font-weight: bold; margin-right: 10px;" />
-            @if (isEditing)
-            {
-                <RadzenTextBox @bind-Value="@user.Email" Style="font-weight: normal;" />
-            }
-            else
-            {
-                <RadzenTextBox Value="@user.Email" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
-            }
+            <RadzenTextBox Value="@user.Email" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
         </div>
 
         <div class="profile-item">
             <RadzenLabel Text="Age:" Style="font-weight: bold; margin-right: 10px;" />
-            @if (isEditing)
-            {
-                <RadzenNumeric @bind-Value="@user.Age" Style="font-weight: normal;" />
-            }
-            else
-            {
-                <RadzenTextBox Value="@user.Age.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
-            }
+            <RadzenTextBox Value="@user.Age.ToString()" Style="border: none; background: transparent; font-weight: normal;" ReadOnly="true" />
         </div>
 
 		
