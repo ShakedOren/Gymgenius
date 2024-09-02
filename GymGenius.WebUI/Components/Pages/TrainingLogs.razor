@@ -8,12 +8,12 @@
 @inject DialogService DialogService
 
 <RadzenDataGrid TItem="TrainingLog" Data="@trainingLogs" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-                ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+                LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
 	<Columns>
 		<RadzenDataGridColumn TItem="TrainingLog" Property="DateCreated" Title="Date Logged" />
-		<RadzenDataGridColumn TItem="TrainingLog" Property="ProgramName" Title="Program Name"/>
-		<RadzenDataGridColumn TItem="TrainingLog" Property="UserName" Title="User Name"/>
-		<RadzenDataGridColumn TItem="TrainingLog" Title="Exercises">
+        <RadzenDataGridColumn TItem="TrainingLog" Property="ProgramName" Title="Program Name"/>
+        <RadzenDataGridColumn TItem="TrainingLog" Property="UserName" Title="User Name"/>
+        <RadzenDataGridColumn TItem="TrainingLog" Title="Exercises">
 			<Template Context="trainingLog">
 				<RadzenButton Click="@(async () => await OpenExerciseWindow(trainingLog.ExerciseLogs))" Text="View Exercises"/>
 			</Template>
