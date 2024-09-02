@@ -34,6 +34,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        trainingLogs = (await ApiService.GetTrainingLogsAsync()).ToList();
+        trainingLogs = (await ApiService.GetTrainingLogsByUserAsync(await getCurrentUser())).ToList();
+    }
+
+    protected async Task<string> getCurrentUser()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        return user.Identity.Name;
     }
 }
