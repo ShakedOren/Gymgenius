@@ -29,7 +29,7 @@ namespace GymGenius.WebUI.Services
         }
 
         public async Task DeleteExerciseAsync(string name)
-        {
+        {   
             var response = await httpClient.DeleteAsync($"/Exercise/delete_exercise/{name}");
             response.EnsureSuccessStatusCode();
         }

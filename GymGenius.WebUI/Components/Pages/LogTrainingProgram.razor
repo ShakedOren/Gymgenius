@@ -5,25 +5,31 @@
 @inject ApiService ApiService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<RadzenDataGrid TItem="ExerciseLog" Data="@exerciseLogs" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-                ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
-	<Columns>
-		<RadzenDataGridColumn TItem="ExerciseLog" Property="ExerciseName" Title="Exercise Name" />
-		<RadzenDataGridColumn TItem="ExerciseLog" Title="Sets">
-			<Template Context="exerciseLog">
-				<RadzenDropDown @bind-Value="exerciseLog.Sets" Data="Enumerable.Range(1, 10)" />
-			</Template>
-		</RadzenDataGridColumn>
-		<RadzenDataGridColumn TItem="ExerciseLog" Title="Reps">
-			<Template Context="exerciseLog">
-				<RadzenDropDown @bind-Value="exerciseLog.Reps" Data="Enumerable.Range(1, 20)" />
-			</Template>
-		</RadzenDataGridColumn>
-	</Columns>
-</RadzenDataGrid>
+@if (currentProgram == null)
+{
+	<p><em>No Program To Log</em></p>
+}
+else
+{
+	<RadzenDataGrid TItem="ExerciseLog" Data="@exerciseLogs" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+	ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+		<Columns>
+			<RadzenDataGridColumn TItem="ExerciseLog" Property="ExerciseName" Title="Exercise Name" />
+			<RadzenDataGridColumn TItem="ExerciseLog" Title="Sets">
+				<Template Context="exerciseLog">
+					<RadzenDropDown @bind-Value="exerciseLog.Sets" Data="Enumerable.Range(1, 10)" />
+				</Template>
+			</RadzenDataGridColumn>
+			<RadzenDataGridColumn TItem="ExerciseLog" Title="Reps">
+				<Template Context="exerciseLog">
+					<RadzenDropDown @bind-Value="exerciseLog.Reps" Data="Enumerable.Range(1, 20)" />
+				</Template>
+			</RadzenDataGridColumn>
+		</Columns>
+	</RadzenDataGrid>
 
-<RadzenButton Text="Log Training" Click="LogTraining" />
-
+	<RadzenButton Text="Log Training" Click="LogTraining" />
+}
 @if (submissionSuccess)
 {
 	<div class="alert alert-success mt-3">
@@ -41,8 +47,11 @@
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		currentUser = authState.User.Identity.Name;
 		currentProgram = await ApiService.GetUserProgramAsync(currentUser);
-		var exercises = await ApiService.GetExercisesOfProgramAsync(currentProgram.Name);
-		exerciseLogs = exercises.Select(e => new ExerciseLog { ExerciseName = e.Name , Sets = 3, Reps = 3}).ToList();
+		if (currentProgram != null)
+		{
+			var exercises = await ApiService.GetExercisesOfProgramAsync(currentProgram.Name);
+			exerciseLogs = exercises.Select(e => new ExerciseLog { ExerciseName = e.Name, Sets = 3, Reps = 3 }).ToList();
+		}
 	}
 
 	private async Task LogTraining()

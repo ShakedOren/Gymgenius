@@ -30,10 +30,19 @@
 		</RadzenDataGridColumn>
 	</Columns>
 </RadzenDataGrid>
- 
+
+@if (deletionFailed)
+{
+	<div class="alert alert-danger mt-3">
+		Can't Delete Program, Check If Program Associated To User
+	</div>
+}
+
 @code {
 	private IEnumerable<TrainingProgram> programs;
 	IList<TrainingProgram> selectedProgram;
+
+	public bool deletionFailed { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -44,8 +53,16 @@
 
 	private async Task DeleteProgram(string name)
 	{
-		await ApiService.DeleteProgramAsync(name);
-		programs = await ApiService.GetProgramsAsync(); // Refresh the list
+		try
+		{
+			await ApiService.DeleteProgramAsync(name);
+			programs = await ApiService.GetProgramsAsync(); // Refresh the list
+			deletionFailed = false;			
+		}
+		catch (HttpRequestException ex)
+		{
+			deletionFailed = true;
+		}
 	}
 
 	private void NavigateToProgramDetails(string name)

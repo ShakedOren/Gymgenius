@@ -21,9 +21,18 @@
 	</Columns>
 </RadzenDataGrid>
 
+@if (deletionFailed)
+{
+	<div class="alert alert-danger mt-3">
+		Can't Delete Exercise, Check If Exercise Associated To Program
+	</div>
+}
+
 @code {
 	private IEnumerable<Exercise> exercises;
 	IList<Exercise> selectedExercise;
+
+	public bool deletionFailed { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -34,8 +43,17 @@
 
 	private async Task DeleteExercise(string name)
 	{
-		await ApiService.DeleteExerciseAsync(name);
-		exercises = await ApiService.GetExercisesAsync(); // Refresh the list
+		try
+		{
+			await ApiService.DeleteExerciseAsync(name);
+			exercises = await ApiService.GetExercisesAsync(); // Refresh the list
+			deletionFailed = false;
+
+		}
+		catch (HttpRequestException ex)
+		{
+			deletionFailed = true;
+		}
 	}
 
 	private void NavigateToExerciseDetails(string name)

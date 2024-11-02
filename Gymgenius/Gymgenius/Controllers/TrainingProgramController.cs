@@ -50,8 +50,8 @@ namespace Gymgenius.Controllers
             try
             {
                 await _trainingManagment.AddTrainingProgram(trainingProgram);
-                return CreatedAtAction(nameof(GetProgram), new { name = trainingProgram.Name }, trainingProgram);
-            } 
+                return CreatedAtAction(nameof(GetProgram), new { program_name = trainingProgram.Name }, trainingProgram);
+            }
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
